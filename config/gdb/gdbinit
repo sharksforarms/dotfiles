@@ -1,0 +1,3 @@
+set target-async 1
+set non-stop on
+source ~/bin/peda/peda.py

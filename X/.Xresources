@@ -1,0 +1,114 @@
+
+Xft.lcdfilter: lcddefault
+Xft.antialias: true
+Xft.autohint: 0
+Xft.hinting: true
+Xft.hintstyle: hintslight
+Xft.rgba: rgb
+Xft.dpi: 96
+
+*.font: JetBrainsMono Nerd Font:pixelsize=14:antialias=true:autohint=true;
+*.alpha: 1
+! ----------------
+! Colors
+! ----------------
+*.foreground:   #e1e3e4
+*.background:   #2b2d3a
+*.cursorColor:  #5dbbc1
+*.fading: 35
+*.fadeColor: #a0c980
+*.color0: #363a4e
+*.color1: #ec7279
+*.color2: #a0c980
+*.color3: #deb974
+*.color4: #6cb6eb
+*.color5: #d38aea
+*.color6: #5dbbc1
+*.color7: #c5cdd9
+*.color8: #666666
+*.color9: #fc626b
+*.color10: #9de465
+*.color11: #efbe63
+*.color12: #5bb9fc
+*.color13: #da7cf8
+*.color14: #30e2ee
+*.color15: #b2c9ec
+
+!#define nord0 #2E3440
+!#define nord1 #3B4252
+!#define nord2 #434C5E
+!#define nord3 #4C566A
+!#define nord4 #D8DEE9
+!#define nord5 #E5E9F0
+!#define nord6 #ECEFF4
+!#define nord7 #8FBCBB
+!#define nord8 #88C0D0
+!#define nord9 #81A1C1
+!#define nord10 #5E81AC
+!#define nord11 #BF616A
+!#define nord12 #D08770
+!#define nord13 #EBCB8B
+!#define nord14 #A3BE8C
+!#define nord15 #B48EAD
+!*.foreground:   nord4
+!*.background:   nord0
+!*.cursorColor:  nord4
+!*.fading: 35
+!*.fadeColor: nord3
+!*.color0: nord1
+!*.color1: nord11
+!*.color2: nord14
+!*.color3: nord13
+!*.color4: nord9
+!*.color5: nord15
+!*.color6: nord8
+!*.color7: nord5
+!*.color8: nord3
+!*.color9: nord11
+!*.color10: nord14
+!*.color11: nord13
+!*.color12: nord9
+!*.color13: nord15
+!*.color14: nord7
+!*.color15: nord6
+
+! ----------------
+! URXVT SETTINGS
+! ----------------
+
+URxvt.depth:32
+
+URxvt*font: xft:monospace:pixelsize=14
+URxvt.internalBorder: 13
+URxvt*scrollBar: false
+URxvt.cursorBlink:1
+URxvt.letterSpace: -1
+
+URxvt.iso14755: False
+URxvt.keysym.Shift-Control-V: eval:paste_clipboard
+URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+URxvt.keysym.Control-Up:   \033[1;5A
+URxvt.keysym.Control-Down:    \033[1;5B
+URxvt.keysym.Control-Left:    \033[1;5D
+URxvt.keysym.Control-Right:    \033[1;5C
+URxvt*scrollTtyOutput:      false
+URxvt*scrollWithBuffer:     true
+URxvt*scrollTtyKeypress:    true
+
+URxvt.tabbed.title: 0
+URxvt.tabbed.tabbar-fg: 10
+URxvt.tabbed.tabbar-bg: 0
+URxvt.tabbed.tab-fg: 0
+URxvt.tabbed.tab-bg: 10
+
+! ----------------
+! ROFI SETTINGS
+! ----------------
+
+rofi.color-enabled: true
+rofi.color-window: nord1, nord3, nord3
+rofi.color-normal: nord1, nord4, nord2, nord4, nord1
+rofi.color-active: nord1, nord14, nord2, nord14, nord1
+rofi.color-urgent: nord1, nord11, nord2, nord11, nord1
+
+

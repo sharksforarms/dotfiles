@@ -1,0 +1,8 @@
+[user]
+	email = eet6646@gmail.com
+	name = Emmanuel Thompson
+[core]
+	editor = nvim
+[merge]
+	tool = meld
+	conflictstyle = diff3

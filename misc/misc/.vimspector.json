@@ -1,0 +1,14 @@
+{
+  "$schema": "https://puremourning.github.io/vimspector/schema/vimspector.schema.json",
+  "configurations": {
+    "Run - CodeLLDB": {
+      "adapter": "vscode-cpptools",
+      "configuration": {
+        "request": "launch",
+        "program": "${workspaceRoot}/target/debug/examples/ipv4",
+        "externalConsole": true,
+        "MIMode": "gdb"
+      }
+    }
+  }
+}
