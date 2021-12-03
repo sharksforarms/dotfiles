@@ -44,17 +44,7 @@
     name: "{{ localuser }}"
     group: docker
 
-- name: Download docker-compose
-  get_url:
-    url: https://github.com/docker/compose/releases/download/v2.1.1/docker-compose-Linux-x86_64
-    dest: /tmp/docker-compose
-    mode: '+x'
-
-- name: Check docker-compose exists
-  stat: path=/tmp/docker-compose
-  register: docker_compose
-
-- name: Move docker-compose to /usr/local/bin/docker-compose
+- name: Install docker-compose
   become: true
-  command: mv /tmp/docker-compose /usr/local/bin/docker-compose
-  when: docker_compose.stat.exists
+  pip:
+    name: docker-compose

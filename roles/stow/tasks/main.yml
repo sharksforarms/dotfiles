@@ -15,11 +15,10 @@
     dest: "{{ localuser_dir }}/.bashrc.original"
     mode: preserve
   when: bashrc_stat.stat.islnk is defined and not bashrc_stat.stat.islnk
-  register: backup
 
 - name: Remove old bashrc
   file: "path={{ localuser_dir }}/.bashrc state=absent"
-  when: backup is defined
+  when: bashrc_stat.stat.islnk is defined and not bashrc_stat.stat.islnk
 
 - name: Run stow
   shell: |

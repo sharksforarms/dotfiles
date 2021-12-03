@@ -9,4 +9,5 @@
 
 - name: Install fzf
   command: "{{ localuser_dir }}/.fzf/install --all"
-  changed_when: true
+  register: fzf_result
+  changed_when: '"Already exists" not in fzf_result.stdout'

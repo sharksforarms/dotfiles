@@ -2,6 +2,7 @@
 
 # https://github.com/rust-analyzer/rust-analyzer/releases/tag/nightly
 
+# TODO: changed_when checksum changes would be cleaner
 - name: Get rust-analyzer
   become: true
   get_url:
@@ -17,5 +18,3 @@
   args:
     chdir: /usr/local/bin/
   changed_when: false
-
-# TODO: changed_when checksum changes would be cleaner
