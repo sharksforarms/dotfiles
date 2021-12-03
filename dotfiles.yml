@@ -1,0 +1,44 @@
+---
+
+- name: Set up local workstation
+  hosts: local
+  roles:
+    - role: apt
+      tags:
+        - apt
+    - role: sudo
+      tags:
+        - sudo
+    - role: zsh
+      tags:
+        - zsh
+    - role: rust
+      tags:
+        - rust
+    - role: rust_analyzer
+      tags:
+        - rust_analyzer
+    - role: alacritty
+      tags:
+        - alacritty
+    - role: fonts
+      tags:
+        - fonts
+    - role: nvim
+      tags:
+        - nvim
+    - role: fzf
+      tags:
+        - fzf
+    - role: github
+      tags:
+        - github
+    - role: docker
+      tags:
+        - docker
+    - role: misc
+      tags:
+        - misc
+    - role: stow
+      tags:
+        - stow

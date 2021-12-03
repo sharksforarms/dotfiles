@@ -1,0 +1,33 @@
+---
+
+packages:
+  # Env
+  - i3
+  - tmux
+  - py3status
+  # Utils
+  - zsh
+  - fzf
+  - git
+  - git-gui
+  - meld
+  - fonts-symbola  # to fix gitk
+  - vim
+  - curl
+  - wget
+  - htop
+  - fzf
+  - jq
+  - ripgrep
+  - yamllint
+  # Dev
+  - build-essential
+  - gcc
+  - g++
+  - clangd
+  - python3
+  - python3-pip
+  - python3-virtualenv
+  - python3-virtualenvwrapper
+  - sqlite3
+  - libsqlite3-dev

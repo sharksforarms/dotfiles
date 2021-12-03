@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -e
+
+ROOTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+HOSTS="$ROOTDIR/hosts"
+PLAYBOOK="$ROOTDIR/dotfiles.yml"
+
+if ! [ -x "$(command -v ansible)" ]; then
+  sudo apt update && sudo apt install -y ansible
+fi
+
+ansible-playbook -v -i $HOSTS $PLAYBOOK --ask-become-pass --e "localuser=$USER" --e "localuser_dir=$HOME" $@

@@ -1,0 +1,25 @@
+---
+
+- name: Add an apt signing key
+  become: true
+  apt_key:
+    url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+    state: present
+
+- name: Add apt repository
+  become: true
+  apt_repository:
+    repo: deb [arch=amd64] https://cli.github.com/packages stable main
+    state: present
+
+- name: Install gh
+  become: true
+  apt:
+    name: gh
+    state: present
+    update_cache: true
+
+- name: gh alias  # noqa risky-shell-pipe
+  shell: |
+    gh alias set co --shell 'id="$(gh pr list -L100 | fzf | cut -f1)"; [ -n "$id" ] && gh pr checkout "$id"'
+  changed_when: false

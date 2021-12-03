@@ -1,0 +1,28 @@
+---
+
+- name: Install zsh
+  become: true
+  apt: name=zsh state=present
+
+- name: Check for oh-my-zsh installation
+  stat: "path={{ localuser_dir }}/.oh-my-zsh"
+  register: oh_my_zsh_stat
+
+- name: Install oh-my-zsh
+  git:
+    repo: https://github.com/robbyrussell/oh-my-zsh.git
+    version: master
+    depth: "1"
+    dest: "{{ localuser_dir }}/.oh-my-zsh/"
+  when: not oh_my_zsh_stat.stat.exists
+
+- name: Install zsh plugins
+  git:
+    repo: "{{ item.repo }}"
+    dest: "{{ localuser_dir }}/.oh-my-zsh/custom/plugins/{{ item.name }}"
+    version: "master"
+  loop:
+    - { name: "zsh-autosuggestions", repo: "https://github.com/zsh-users/zsh-autosuggestions" }
+    - { name: "fast-syntax-highlighting", repo: "https://github.com/zdharma-continuum/fast-syntax-highlighting" }
+    - { name: "nice-exit-code", repo: "https://github.com/bric3/nice-exit-code" }
+    - { name: "zsh-z", repo: "https://github.com/agkozak/zsh-z" }

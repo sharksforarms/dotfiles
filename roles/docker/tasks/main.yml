@@ -1,0 +1,60 @@
+---
+
+- name: Install dependencies
+  become: true
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: true
+  vars:
+    packages:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+      - gnupg-agent
+
+- name: Add an apt signing key for Docker
+  become: true
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add apt repository for stable version
+  become: true
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+    state: present
+
+- name: Install Docker
+  become: true
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: true
+  vars:
+    packages:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+
+- name: Add user to docker group
+  become: true
+  user:
+    name: "{{ localuser }}"
+    group: docker
+
+- name: Download docker-compose
+  get_url:
+    url: https://github.com/docker/compose/releases/download/v2.1.1/docker-compose-Linux-x86_64
+    dest: /tmp/docker-compose
+    mode: '+x'
+
+- name: Check docker-compose exists
+  stat: path=/tmp/docker-compose
+  register: docker_compose
+
+- name: Move docker-compose to /usr/local/bin/docker-compose
+  become: true
+  command: mv /tmp/docker-compose /usr/local/bin/docker-compose
+  when: docker_compose.stat.exists

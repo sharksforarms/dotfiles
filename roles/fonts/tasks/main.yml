@@ -1,0 +1,33 @@
+---
+
+# latest: https://github.com/ryanoasis/nerd-fonts/releases
+
+- name: Create temporary directory
+  tempfile:
+    state: directory
+    suffix: tmp
+  register: temp_dir
+
+- name: Get Jetbrains fonts
+  get_url:
+    url: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/JetBrainsMono.zip
+    dest: "{{ temp_dir.path }}/JetBrainsMono.zip"
+
+- name: Create local fonts directory
+  file:
+    path: "{{ localuser_dir }}/.local/share/fonts"
+    state: directory
+    mode: '0755'
+
+- name: Extract zip
+  unarchive:
+    src: "{{ temp_dir.path }}/JetBrainsMono.zip"
+    dest: "{{ temp_dir.path }}"
+
+- name: Install JetBrains fonts
+  shell: |
+    mv -f ./*.ttf {{ localuser_dir }}/.local/share/fonts
+    fc-cache -f -v
+  args:
+    chdir: "{{ temp_dir.path }}"
+  changed_when: false

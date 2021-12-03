@@ -1,0 +1,26 @@
+---
+
+- name: Check for rust installation
+  stat: "path={{ localuser_dir }}/.cargo"
+  register: rust_stat
+
+- name: Install Rust
+  shell: |
+    set -o pipefail
+    curl https://sh.rustup.rs -sSf | sh -s -- -y
+  changed_when: false
+  args:
+    warn: false
+  when: not rust_stat.stat.exists
+
+- name: Install toolchains
+  command: "{{ localuser_dir }}/.cargo/bin/rustup install {{ item }}"
+  register: rustup_toolchain
+  changed_when: '"installed" in rustup_toolchain.stdout'
+  loop:
+    - stable
+    - nightly
+
+- name: Set Default
+  command: "{{ localuser_dir }}/.cargo/bin/rustup default stable"
+  changed_when: false

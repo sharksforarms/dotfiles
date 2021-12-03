@@ -1,0 +1,14 @@
+---
+- name: Stat sudoers file
+  stat: "path=/etc/sudoers"
+  register: sudoers_stat
+
+- name: Allow 'wheel' group to have passwordless sudo
+  become: true
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%sudo'
+    line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+  when: sudoers_stat.stat.exists

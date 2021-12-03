@@ -1,0 +1,13 @@
+---
+
+# 0.6 release: https://github.com/neovim/neovim/releases/download/v0.6.0/nvim.appimage
+
+# nightly
+- name: Install neovim
+  become: true
+  get_url:
+    url: https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+    dest: /usr/local/bin/nvim
+    mode: u=rx,g=rx,o=rx
+
+# TODO: changed_when checksum changes would be cleaner

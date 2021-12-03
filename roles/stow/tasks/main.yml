@@ -1,0 +1,48 @@
+---
+
+
+- name: Install stow
+  become: true
+  apt: name=stow state=present
+
+- name: Stat bashrc
+  stat: "path={{ localuser_dir }}/.bashrc"
+  register: bashrc_stat
+
+- name: Backup original bashrc
+  copy:
+    src: "{{ localuser_dir }}/.bashrc"
+    dest: "{{ localuser_dir }}/.bashrc.original"
+    mode: preserve
+  when: bashrc_stat.stat.islnk is defined and not bashrc_stat.stat.islnk
+  register: backup
+
+- name: Remove old bashrc
+  file: "path={{ localuser_dir }}/.bashrc state=absent"
+  when: backup is defined
+
+- name: Run stow
+  shell: |
+    # bin
+    stow --dotfiles -R --verbose=3 -t ~/ tools/
+    # config
+    stow --dotfiles -R --verbose=3 -t ~/.config/ config/
+    # X
+    stow --dotfiles -R --verbose=3 -t ~/ X/
+    xrdb ~/.Xresources || true
+    # zsh
+    stow --dotfiles -R --verbose=3 -t ~/ zsh/
+    stow --dotfiles -R --verbose=3 -t ~/.oh-my-zsh/ oh-my-zsh/
+    # git
+    stow --dotfiles -R --verbose=3 -t ~/ git/
+    # bash
+    stow --dotfiles -R --verbose=3 -t ~/ bash/
+    # tmux
+    stow --dotfiles -R --verbose=3 -t ~/ tmux/
+    # misc
+    stow --dotfiles -R --verbose=3 -t ~/ misc/
+  register: stow_result
+  failed_when:
+    - '"CONFLICT" in stow_result.stdout'
+    - '"WARNING" in stow_result.stdout'
+  changed_when: true
