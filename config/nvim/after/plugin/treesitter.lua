@@ -54,6 +54,18 @@ require('nvim-treesitter.configs').setup {
       node_decremental = "grm",
     },
   },
+  context_commentstring = {
+    enable = true,
+
+    -- With Comment.nvim, we don't need to run this on the autocmd.
+    -- Only run it in pre-hook
+    enable_autocmd = false,
+
+    config = {
+      c = "// %s",
+      lua = "-- %s",
+    },
+  },
   playground = {
     enable = true,
     disable = {},
@@ -79,3 +91,4 @@ require('nvim-treesitter.configs').setup {
     }
   },
 }
+

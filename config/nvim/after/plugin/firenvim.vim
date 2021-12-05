@@ -28,7 +28,6 @@ function! OnUIEnter(event) abort
     set laststatus=0
     set wrap
     set linebreak
-    "AirlineToggle
   endif
 endfunction
 autocmd UIEnter * call OnUIEnter(deepcopy(v:event))

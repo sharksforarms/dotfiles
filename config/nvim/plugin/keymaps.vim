@@ -1,20 +1,11 @@
 "
 " GENERAL
 "
-if !exists('*SourceConfig')
-    function! SourceConfig()
-        source $MYVIMRC
-        for fpath in split(globpath('~/.config/nvim/after/plugin/', '*.vim'), '\n')
-          exe 'source' fpath
-        endfor
-    endfunction
-endif
 
 " Quickly edit/reload the vimrc file
 noremap <silent><leader>ev :lua require('sharks.telescope').dotfiles()<cr>
-noremap <silent><leader>ej :lua require('sharks.telescope').journal()<cr>
 noremap <silent><leader>et :vsplit ~/TODO.md<cr>
-noremap <silent><leader>sv :call SourceConfig()<cr>
+noremap <silent><leader>en :vsplit ~/NOTES.md<cr>
 
 " move visual selection up and down
 vnoremap J :m '>+1<CR>gv=gv
@@ -122,8 +113,8 @@ endfunction
 nnoremap <leader>m :MaximizerToggle!<CR>
 
 " nerdcommenter
-nmap <C-_>   <Plug>NERDCommenterToggle
-vmap <C-_>   <Plug>NERDCommenterToggle
+nmap <C-_>   :lua require('Comment.api').toggle()<CR>
+vmap <C-_>   :lua require('Comment.api').gcc('V', nil)<CR>
 
 " fzf
 nnoremap <leader>pw :Rg <C-R>=expand("<cword>")<CR><CR>
@@ -173,4 +164,3 @@ function! <SID>SynStack()
 endfunc
 
 nmap <leader>hi :call <SID>SynStack()<CR>
-

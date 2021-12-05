@@ -2,8 +2,8 @@ local nvim_lsp = require('lspconfig')
 local protocol = require('vim.lsp.protocol')
 local util = require('lspconfig/util')
 local lsp_status = require("lsp-status")
-local status = require('sharks.lsp_status')
-local sharks_lsp = require('sharks.lsp')
+local status = require('sharks.lsp.status')
+local sharks_lsp = require('sharks.lsp.config')
 
 local on_attach = function(client)
   protocol.CompletionItemKind = {

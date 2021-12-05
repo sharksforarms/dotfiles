@@ -70,7 +70,7 @@ end
 
 function M.dotfiles(opts)
   local opts = require('telescope.themes').get_dropdown{
-    cwd = "~/source/dotfiles", --vim.fn.stdpath("config"),
+    cwd = "~/dotfiles", --vim.fn.stdpath("config"),
     file_ignore_patterns = { "plugged/" },
   }
 
@@ -80,33 +80,6 @@ end
 function M.search_all_files()
   local opts = require('telescope.themes').get_dropdown{
     find_command = { 'rg', '--no-ignore', '--files', '--hidden' },
-  }
-  require('telescope.builtin').find_files(opts)
-end
-
-function M.journal()
-  local journal_dir = vim.fn.expand("~/source/dotfiles/journal")
-
-  local opts = require('telescope.themes').get_dropdown{
-    cwd = journal_dir,
-    attach_mappings = function(prompt_bufnr, map)
-      local create_file = function()
-        local picker = actions.get_current_picker(prompt_bufnr)
-        local picker_text = picker:_get_prompt()
-
-        -- Create new journal entry
-        local new_file = Path:new(journal_dir):joinpath(picker_text)
-        new_file:touch()
-
-        actions.close(prompt_bufnr)
-        M.journal()
-      end
-
-      map('i', '<C-c>', create_file)
-      map('n', 'c', create_file)
-
-      return true
-    end
   }
   require('telescope.builtin').find_files(opts)
 end

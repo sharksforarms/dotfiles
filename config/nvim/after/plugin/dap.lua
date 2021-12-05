@@ -1,3 +1,6 @@
+-- sudo pip3 install debugpy
+require('dap-python').setup('/usr/bin/python3')
+
 local keymap_lua = require('sharks.keymap').keymap_lua
 
 keymap_lua('n', '<leader>dd', "require('dapui').toggle()")

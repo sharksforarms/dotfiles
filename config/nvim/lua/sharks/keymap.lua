@@ -15,7 +15,6 @@ M.keymap_lua = function(mode, key, action)
   api.nvim_set_keymap(mode, key, action, { noremap = true, silent = true })
 end
 
-
 M.toggle_quickfix = function ()
   local windows = api.nvim_tabpage_list_wins(0)
   local closed = false
@@ -52,6 +51,8 @@ M.keymap('n', '<leader>k', "<CMD>cprev<CR>")
 
 -- Clear highlights
 M.keymap('n', '<leader>l', "<CMD>nohl<CR>")
+
+M.keymap_lua('n', '<leader>$', "require('hop').hint_words()", {})
 
 return M
 
