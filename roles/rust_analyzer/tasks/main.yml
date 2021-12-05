@@ -18,3 +18,31 @@
   args:
     chdir: /usr/local/bin/
   changed_when: false
+
+
+- name: Remove old codelldb
+  become: true
+  file:
+    state: absent
+    path: /opt/codelldb
+
+- name: Create codelldb directory
+  become: true
+  file:
+    path: /opt/codelldb
+    state: directory
+    mode: '0755'
+
+- name: Get vscode-lldb
+  become: true
+  get_url:
+    url: https://github.com/vadimcn/vscode-lldb/releases/download/v1.6.10/codelldb-x86_64-linux.vsix
+    dest: /opt/codelldb/codelldb.vsix
+
+- name: Extract zip
+  become: true
+  unarchive:
+    src: /opt/codelldb/codelldb.vsix
+    dest: /opt/codelldb/
+  changed_when: false
+

@@ -67,7 +67,7 @@ local updated_capabilities = vim.lsp.protocol.make_client_capabilities()
 
 updated_capabilities = require('cmp_nvim_lsp').update_capabilities(updated_capabilities)
 
-local extension_path = os.getenv('HOME') .. '/source/dotfiles/bin/vadimcn.vscode-lldb-1.6.8/'
+local extension_path = '/opt/codelldb/extension/'
 local codelldb_path = extension_path .. 'adapter/codelldb'
 local liblldb_path = extension_path .. 'lldb/lib/liblldb.so'
 
@@ -207,7 +207,7 @@ nvim_lsp.gopls.setup({
   },
 })
 
-local sumneko_root_path = "/tmp/lua/lua-language-server"
+local sumneko_root_path = "/opt/lua-language-server/"
 local sumneko_binary = sumneko_root_path .. "/bin/Linux/lua-language-server"
 
 require("lspconfig").sumneko_lua.setup({
