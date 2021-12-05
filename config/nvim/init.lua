@@ -1,11 +1,9 @@
---pcall(require, "impatient")
-require'impatient'.enable_profile()
+pcall(require, "impatient")
+-- require'impatient'.enable_profile()
 
 if require "sharks.first_load"() then
   return
 end
-
---require('sharks.plugins')
 
 -- Leader Key
 vim.g.mapleader = " "
