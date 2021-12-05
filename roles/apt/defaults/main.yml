@@ -25,6 +25,7 @@ packages:
   - gcc
   - g++
   - clangd
+  - bear
   - python3
   - python3-pip
   - python3-virtualenv
