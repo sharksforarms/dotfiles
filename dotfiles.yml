@@ -18,6 +18,9 @@
     - role: rust_analyzer
       tags:
         - rust_analyzer
+    - role: lua_language_server
+      tags:
+        - lua_language_server
     - role: alacritty
       tags:
         - alacritty
