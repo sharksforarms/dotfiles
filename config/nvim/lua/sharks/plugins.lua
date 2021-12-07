@@ -61,6 +61,12 @@ return require('packer').startup {
     use 'mizlan/iswap.nvim'
     use 'lspcontainers/lspcontainers.nvim'
     use 'neovim/nvim-lspconfig'
+    use { "folke/trouble.nvim",
+      requires = "kyazdani42/nvim-web-devicons",
+      config = function()
+        require("trouble").setup()
+      end
+    }
     use 'simrat39/rust-tools.nvim'
     -- temporary until glepnir is back?
     use 'tami5/lspsaga.nvim'
