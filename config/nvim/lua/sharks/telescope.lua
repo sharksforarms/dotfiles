@@ -71,8 +71,9 @@ end
 
 function M.dotfiles(opts)
   local opts = require('telescope.themes').get_dropdown{
+    find_command = { 'rg', '--no-ignore', '--files', '--hidden' },
     cwd = "~/dotfiles", --vim.fn.stdpath("config"),
-    file_ignore_patterns = { "plugged/" },
+    file_ignore_patterns = { ".git", "plugged/" },
   }
 
   require('telescope.builtin').find_files(opts)
