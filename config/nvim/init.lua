@@ -8,6 +8,7 @@ end
 -- Leader Key
 vim.g.mapleader = " "
 
+require('sharks.globals')
 require('sharks.lsp')
 require('sharks.telescope').setup()
 require('sharks.statusline').setup()

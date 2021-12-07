@@ -64,6 +64,7 @@ function M.setup()
   telescope.load_extension('frecency')
   telescope.load_extension('fzy_native')
   telescope.load_extension('octo')
+  telescope.load_extension('dap')
 
   keymap_lua('n', '<leader>fe', "require('telescope.builtin').file_browser()")
 end

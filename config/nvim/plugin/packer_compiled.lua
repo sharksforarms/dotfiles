@@ -335,6 +335,11 @@ _G.packer_plugins = {
     path = "/home/sharks/.local/share/nvim/site/pack/packer/start/targets.vim",
     url = "https://github.com/wellle/targets.vim"
   },
+  ["telescope-dap.nvim"] = {
+    loaded = true,
+    path = "/home/sharks/.local/share/nvim/site/pack/packer/start/telescope-dap.nvim",
+    url = "https://github.com/nvim-telescope/telescope-dap.nvim"
+  },
   ["telescope-frecency.nvim"] = {
     loaded = true,
     path = "/home/sharks/.local/share/nvim/site/pack/packer/start/telescope-frecency.nvim",

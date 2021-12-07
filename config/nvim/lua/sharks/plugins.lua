@@ -93,6 +93,7 @@ return require('packer').startup {
     use 'nvim-telescope/telescope-fzy-native.nvim'
     use 'tami5/sql.nvim'
     use 'nvim-telescope/telescope-frecency.nvim'
+    use 'nvim-telescope/telescope-dap.nvim'
 --  use 'wincent/scalpel'
 --  use 'wincent/ferret'
 
