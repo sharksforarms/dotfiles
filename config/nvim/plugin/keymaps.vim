@@ -113,8 +113,8 @@ endfunction
 nnoremap <leader>m :MaximizerToggle!<CR>
 
 " nerdcommenter
-nmap <C-_>   :lua require('Comment.api').toggle()<CR>
-vmap <C-_>   :lua require('Comment.api').gcc('V', nil)<CR>
+nmap <silent> <C-_>   :lua require('Comment.api').toggle_current_linewise()<CR>
+vmap <silent> <C-_>   :lua require("Comment.api").toggle_linewise_op(vim.fn.visualmode())<CR>
 
 " fzf
 nnoremap <leader>pw :Rg <C-R>=expand("<cword>")<CR><CR>
