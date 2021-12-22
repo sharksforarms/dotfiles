@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [[ $# -ne 2 ]]; then
+    echo "This script decrypts a p12 and outputs public .crt and private .key file"
+    echo "Usage: <in.p12> <out_name>"
+    exit
+fi
+
+# Get public
+openssl pkcs12 -in "$1" -out "$2.crt" -nokeys
+
+# Get private
+openssl pkcs12 -in "$1" -out "$2.key" -nodes -nocerts

@@ -20,6 +20,7 @@ packages:
   - jq
   - ripgrep
   - yamllint
+  - xdotool
   # Dev
   - build-essential
   - gcc
@@ -32,3 +33,8 @@ packages:
   - python3-virtualenvwrapper
   - sqlite3
   - libsqlite3-dev
+  - cmake
+  - clang
+  - automake
+  - autotools
+  - libtool

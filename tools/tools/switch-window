@@ -1,0 +1,19 @@
+#!/bin/bash
+
+APP=$1
+if [ -z "$APP" ]; then
+  echo Usage: $0 EXECUTABLE_NAME
+  exit 1
+fi
+
+PID=$(pgrep -f $APP | head -n 1)
+if [ -z "$PID" ]; then
+  echo $APP executable not found
+  exit 2
+fi
+
+for WINDOW_ID in $(xdotool search --pid $PID); do
+  xdotool windowactivate $WINDOW_ID
+done
+
+# notify-send "Switched to $APP (PID=$PID)"

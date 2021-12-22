@@ -182,15 +182,74 @@ local rust_opts = {
 
 require('rust-tools').setup(rust_opts)
 
+local function switch_source_header_splitcmd(bufnr, splitcmd)
+  bufnr = require'lspconfig'.util.validate_bufnr(bufnr)
+  local clangd_client = require'lspconfig'.util.get_active_client_by_name(bufnr, 'clangd')
+  local params = {uri = vim.uri_from_bufnr(bufnr)}
+  if clangd_client then
+    clangd_client.request("textDocument/switchSourceHeader", params, function(err, result)
+      if err then
+        error(tostring(err))
+      end
+      if not result then
+        print("Corresponding file can’t be determined")
+        return
+      end
+      vim.api.nvim_command(splitcmd .. " " .. vim.uri_to_fname(result))
+    end, bufnr)
+  else
+    print 'textDocument/switchSourceHeader is not supported by the clangd server active on the current buffer'
+  end
+end
+
+-- TODO: Check out these checks
+-- local clangd_flags = {
+--   "--background-index",
+--   "--cross-file-rename",
+--   "--clang-tidy-checks=clang-diagnostic-*,clang-analyzer-*,-*,bugprone*,modernize*,performance*,-modernize-pass-by-value,-modernize-use-auto,-modernize-use-using,-modernize-use-trailing-return-type",
+-- }
+--
+-- require("lspconfig").clangd.setup {
+--   cmd = {"clangd", unpack(clangd_flags)},
+--   capabilities = require'lsp'.capabilities
+-- }
+
 -- local util = require 'lspconfig/util'
 nvim_lsp.clangd.setup({
   on_attach=on_attach,
-  cmd = { "clangd", "--background-index", "--compile-commands-dir", "build/" },
+  -- cmd = { "clangd", "--background-index", "--compile-commands-dir", "build/" },
+  cmd = { "clangd",
+    "--background-index",
+    "--suggest-missing-includes",
+    "--clang-tidy",
+    "--header-insertion=iwyu",
+    "--cross-file-rename",
+    "--clang-tidy-checks=clang-diagnostic-*,clang-analyzer-*,-*,bugprone*,modernize*,performance*,-modernize-pass-by-value,-modernize-use-auto,-modernize-use-using,-modernize-use-trailing-return-type",
+    -- "--clang-tidy-checks=*",
+  },
+  filetypes = { "c", "cpp", "objc", "objcpp" },
+  init_options = {
+    compilationDatabasePath="build",
+  },
+  commands = {
+    ClangdSwitchSourceHeader = {
+      function() switch_source_header_splitcmd(0, "edit") end;
+      description = "Open source/header in current buffer";
+    },
+    ClangdSwitchSourceHeaderVSplit = {
+      function() switch_source_header_splitcmd(0, "vsplit") end;
+      description = "Open source/header in a new vsplit";
+    },
+    ClangdSwitchSourceHeaderSplit = {
+      function() switch_source_header_splitcmd(0, "split") end;
+      description = "Open source/header in a new split";
+    }
+  }
   -- root_dir=util.root_pattern("build/compile_commands.json", "compile_commands.json", "compile_flags.txt", ".git") or util.path.dirname
 })
 nvim_lsp.pylsp.setup({ 
   -- pip install 'python-language-server[all]'
-  cmd={"/home/sharks/.virtualenvs/pyls/bin/pyls"},
+  cmd={os.getenv("HOME") .. "/.virtualenvs/pyls/bin/pyls"},
   on_attach=on_attach
 })
 nvim_lsp.gopls.setup({
@@ -234,6 +293,11 @@ require("lspconfig").sumneko_lua.setup({
       },
     },
   },
+})
+
+-- sudo cpanm --notest PLS
+require'lspconfig'.perlpls.setup({
+  on_attach=on_attach,
 })
 
 --require'lspconfig'.ansiblels.setup {

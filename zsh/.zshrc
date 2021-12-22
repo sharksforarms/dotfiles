@@ -44,9 +44,8 @@ source ~/.cargo/env
 autoload -U select-word-style
 select-word-style bash
 
-export PATH="/home/sharks/tools/:$PATH"
+export PATH="$HOME/tools/:$PATH"
 export PATH=$PATH:/usr/local/go/bin
-export PATH=$PATH:/home/sharks/.local/bin
-export PATH="$PATH:$(yarn global bin)"
+export PATH=$PATH:$HOME/.local/bin
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

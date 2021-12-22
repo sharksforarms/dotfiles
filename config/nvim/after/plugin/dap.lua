@@ -3,6 +3,8 @@ local dap = require('dap')
 -- sudo pip3 install debugpy
 require('dap-python').setup('/usr/bin/python3')
 
+require("nvim-dap-virtual-text").setup()
+
 local keymap_lua = require('sharks.keymap').keymap_lua
 
 keymap_lua('n', '<leader>dd', "require('dapui').toggle()")
