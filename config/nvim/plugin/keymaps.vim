@@ -91,7 +91,8 @@ nnoremap <leader>ps <cmd>lua require('telescope.builtin').grep_string({ search =
 nnoremap <silent><leader>tg <cmd>lua require'telescope.builtin'.live_grep{}<CR>
 nnoremap <silent><leader>tp <cmd>lua require'telescope.builtin'.git_files{}<CR>
 "nnoremap <silent><C-p> <cmd>lua require'telescope.builtin'.find_files{}<CR>
-nnoremap <silent><C-p> <cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({}))<CR>
+"nnoremap <silent><C-p> <cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({}))<CR>
+nnoremap <silent><C-p> <cmd>lua require'sharks.telescope'.find_files()<CR>
 "nnoremap <silent><leader>ch <cmd>lua require('telescope.builtin').command_history{}<CR>
 nnoremap <silent><leader>qf :lua require'telescope.builtin'.quickfix{}<CR>
 nnoremap <silent><leader>gc    <cmd>lua require'telescope.builtin'.git_branches{}<CR>
