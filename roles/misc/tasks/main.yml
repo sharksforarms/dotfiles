@@ -1,0 +1,6 @@
+---
+
+- name: Install stylua
+  command: "{{ localuser_dir }}/.cargo/bin/cargo install stylua"
+  register: alacritty
+  changed_when: '"release [optimized]" in alacritty.stdout'

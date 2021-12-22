@@ -27,7 +27,7 @@ M.quickfix_toggle = function()
     end
   end
   if not closed then
-    vim.cmd [[ copen ]]
+    vim.cmd([[ copen ]])
     local height = vim.o.previewheight
     api.nvim_win_set_height(0, height)
   end
@@ -35,15 +35,15 @@ end
 
 M.quickfix_clear = function()
   vim.fn.setqflist({})
-  vim.cmd [[ cclose ]]
+  vim.cmd([[ cclose ]])
 end
 
 local function trouble_is_open()
   local wins = vim.api.nvim_list_wins()
   for i, win in ipairs(wins) do
     local buf = vim.api.nvim_win_get_buf(win)
-    local ft = vim.api.nvim_buf_get_option(buf, 'filetype')
-    if ft == 'Trouble' then
+    local ft = vim.api.nvim_buf_get_option(buf, "filetype")
+    if ft == "Trouble" then
       return true
     end
   end
@@ -53,39 +53,37 @@ end
 
 M.qf_next = function()
   if trouble_is_open() then
-    require("trouble").next({skip_groups = true, jump = true})
+    require("trouble").next({ skip_groups = true, jump = true })
   else
     -- loop over
-    vim.cmd [[ try | cnext | catch | cfirst | catch | endtry ]]
+    vim.cmd([[ try | cnext | catch | cfirst | catch | endtry ]])
   end
 end
 
 M.qf_prev = function()
   if trouble_is_open() then
-    require("trouble").previous({skip_groups = true, jump = true})
+    require("trouble").previous({ skip_groups = true, jump = true })
   else
     -- loop over
-    vim.cmd [[ try | cprev | catch | clast | catch | endtry ]]
+    vim.cmd([[ try | cprev | catch | clast | catch | endtry ]])
   end
 end
-
 
 -- Start keymaps
 
 -- Quickfix actions
-M.keymap('n', '<leader>qe', "<CMD>lua require('sharks.diagnostics').errors_to_quickfix()<CR><CMD>copen<CR>")
-M.keymap('n', '<leader>qw', "<CMD>lua require('sharks.diagnostics').warnings_to_quickfix()<CR><CMD>copen<CR>")
-M.keymap_lua('n', '<leader>qo', "require('sharks.keymap').quickfix_toggle()")
-M.keymap_lua('n', '<leader>ql', "require('sharks.keymap').quickfix_clear()")
-M.keymap_lua('n', '<leader>qt', "require('telescope.builtin').quickfix()")
-M.keymap_lua('n', '<leader>j', "require('sharks.keymap').qf_next()")
-M.keymap_lua('n', '<leader>k', "require('sharks.keymap').qf_prev()")
-M.keymap('n', '<leader>tt', "<CMD>Trouble<CR>")
+M.keymap("n", "<leader>qe", "<CMD>lua require('sharks.diagnostics').errors_to_quickfix()<CR><CMD>copen<CR>")
+M.keymap("n", "<leader>qw", "<CMD>lua require('sharks.diagnostics').warnings_to_quickfix()<CR><CMD>copen<CR>")
+M.keymap_lua("n", "<leader>qo", "require('sharks.keymap').quickfix_toggle()")
+M.keymap_lua("n", "<leader>ql", "require('sharks.keymap').quickfix_clear()")
+M.keymap_lua("n", "<leader>qt", "require('telescope.builtin').quickfix()")
+M.keymap_lua("n", "<leader>j", "require('sharks.keymap').qf_next()")
+M.keymap_lua("n", "<leader>k", "require('sharks.keymap').qf_prev()")
+M.keymap("n", "<leader>tt", "<CMD>Trouble<CR>")
 
 -- Clear highlights
-M.keymap('n', '<leader>l', "<CMD>nohl<CR>")
+M.keymap("n", "<leader>l", "<CMD>nohl<CR>")
 
-M.keymap_lua('n', '<leader>$', "require('hop').hint_words()", {})
+M.keymap_lua("n", "<leader>$", "require('hop').hint_words()", {})
 
 return M
-

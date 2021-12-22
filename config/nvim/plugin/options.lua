@@ -1,7 +1,7 @@
 local opt = vim.opt
 --" Do not display messages like "Pattern not found"
 --" This made it compete with the mode and flicker
-opt.shortmess = opt.shortmess + 'c'
+opt.shortmess = opt.shortmess + "c"
 
 --" disable python2
 --let g:loaded_python_provider = 0
@@ -15,11 +15,11 @@ opt.wildignore = opt.wildignore + { "*.o", "*~", "*.pyc", "*pycache*" }
 -- number of visual spaces per tab
 opt.tabstop = 4
 -- number of indent using >> and <<
-opt.shiftwidth = 4 
+opt.shiftwidth = 4
 -- number of spaces in a tab when editing
-opt.softtabstop = 4 
+opt.softtabstop = 4
 -- tabs are spaces
-opt.expandtab = true 
+opt.expandtab = true
 -- auto indent when editing
 opt.autoindent = true
 -- don't wrap
@@ -39,7 +39,7 @@ opt.updatetime = 100
 --opt.lazyredraw
 
 --opt.spell " spelling
-vim.cmd [[ au TermOpen * setlocal nospell ]]
+vim.cmd([[ au TermOpen * setlocal nospell ]])
 
 -- General config
 -- show line numbers
@@ -47,27 +47,27 @@ opt.number = true
 -- show relative numbers in gutter
 opt.relativenumber = true
 -- start scrolling x lines before edge of viewport
-opt.scrolloff=10 
+opt.scrolloff = 10
 -- same as scrolloff, but for columns
-opt.sidescrolloff=5 
+opt.sidescrolloff = 5
 -- show information in visual select, show cmd info
 opt.showcmd = true
 -- highlight matching brackets
 opt.showmatch = true
 -- highlight current line
-opt.cursorline = true 
+opt.cursorline = true
 -- display cursor position
-opt.ruler  = true
+opt.ruler = true
 -- display status line
-opt.laststatus = 2 
+opt.laststatus = 2
 -- raise dialog to save changed files
 opt.confirm = true
 -- switch buffers without needing to save
 opt.hidden = true
 -- turn off bell
-opt.belloff = "all" 
+opt.belloff = "all"
 -- command window height
-opt.cmdheight = 1 
+opt.cmdheight = 1
 -- toggle paste mode
 opt.pastetoggle = "<F10>"
 -- show whitespace
@@ -118,14 +118,14 @@ opt.backup = false
 opt.swapfile = false
 
 -- Undo history
-opt.undodir = vim.fn.stdpath('data') .. '/undodir'
+opt.undodir = vim.fn.stdpath("data") .. "/undodir"
 opt.undofile = true
 
 -- Profiling
 --profile start freezing_debug.txt
 --profile func *
 --profile file *
-vim.cmd [[
+vim.cmd([[
 function! InvertArgs()
     " Get the arguments of the current line (remove the spaces)
     let args=substitute(matchstr(getline('.'), '\[\zs.*\ze\]'), '\s', '', 'g')
@@ -140,4 +140,4 @@ function! InvertArgs()
     " Remove the old arguments and put the new list
     execute "normal! 0f[ci[" . invertedArgs
 endfunction
-]]
+]])

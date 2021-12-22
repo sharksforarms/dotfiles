@@ -1,28 +1,28 @@
-local dap = require('dap')
+local dap = require("dap")
 
 -- sudo pip3 install debugpy
-require('dap-python').setup('/usr/bin/python3')
+require("dap-python").setup("/usr/bin/python3")
 
 require("nvim-dap-virtual-text").setup()
 
-local keymap_lua = require('sharks.keymap').keymap_lua
+local keymap_lua = require("sharks.keymap").keymap_lua
 
-keymap_lua('n', '<leader>dd', "require('dapui').toggle()")
-keymap_lua('n', '<leader>db', "require('dap').toggle_breakpoint()")
-keymap_lua('n', '<leader>dc', "require('dap').continue()")
-keymap_lua('n', '<leader>dn', "require('dap').step_over()")
-keymap_lua('n', '<leader>di', "require('dap').step_into()")
-keymap_lua('n', '<leader>do', "require('dap').step_out()")
-keymap_lua('n', '<leader>dr', "require('dap').run_last()")
+keymap_lua("n", "<leader>dd", "require('dapui').toggle()")
+keymap_lua("n", "<leader>db", "require('dap').toggle_breakpoint()")
+keymap_lua("n", "<leader>dc", "require('dap').continue()")
+keymap_lua("n", "<leader>dn", "require('dap').step_over()")
+keymap_lua("n", "<leader>di", "require('dap').step_into()")
+keymap_lua("n", "<leader>do", "require('dap').step_out()")
+keymap_lua("n", "<leader>dr", "require('dap').run_last()")
 
-vim.fn.sign_define('DapBreakpoint', {text='●', texthl='healthError', linehl='CursorLine', numhl=''})
+vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "healthError", linehl = "CursorLine", numhl = "" })
 
 vim.g.dap_virtual_text = true
 
 dap.adapters.lldb = {
-  type = 'executable',
-  command = '/usr/bin/lldb-vscode-11',
-  name = "lldb"
+  type = "executable",
+  command = "/usr/bin/lldb-vscode-11",
+  name = "lldb",
 }
 
 dap.configurations.cpp = {
@@ -31,9 +31,9 @@ dap.configurations.cpp = {
     type = "lldb",
     request = "launch",
     program = function()
-      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+      return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
     end,
-    cwd = '${workspaceFolder}',
+    cwd = "${workspaceFolder}",
     stopOnEntry = false,
     args = {},
 
@@ -49,10 +49,10 @@ dap.configurations.cpp = {
 
 dap.configurations.c = dap.configurations.cpp
 dap.configurations.rust = dap.configurations.cpp
-vim.cmd [[
+vim.cmd([[
   autocmd FileType dapui* set statusline=%!v:lua.inactive_status_line()
   autocmd FileType dap-repl set statusline=%!v:lua.inactive_status_line()
-]]
+]])
 
 require("dapui").setup({
   icons = { expanded = "▾", collapsed = "▸" },

@@ -30,14 +30,15 @@ M.doc_signature_str = function()
 
   local signature_help = function()
     local params = vim.lsp.util.make_position_params()
-    vim.lsp.buf_request(0,'textDocument/signatureHelp', params, call_back)
+    vim.lsp.buf_request(0, "textDocument/signatureHelp", params, call_back)
   end
 
   signature_help()
 end
 
 function M.create_highlights()
-  vim.api.nvim_exec([[
+  vim.api.nvim_exec(
+    [[
     hi StatusLineBg guibg=#23272e guifg=#efefef
     hi StatusLineBg2 guibg=#23272e guifg=#efefef
     hi StatusLineBg2b guibg=#23272e guifg=#5B6268
@@ -106,92 +107,95 @@ function M.create_highlights()
     hi StatusLineHitEnterPromptMode guibg=#ff6c6b guifg=#23272e
     hi StatusLineHitEnterPromptModeItalic guibg=#ff6c6b guifg=#23272e gui=italic
     hi StatusLineHitEnterPromptModeWinNr guibg=#b64a49 guifg=#23272e
-  ]], false)
+  ]],
+    false
+  )
 end
 
-vim.api.nvim_command('augroup sharks')
-vim.api.nvim_command('  au!')
+vim.api.nvim_command("augroup sharks")
+vim.api.nvim_command("  au!")
 vim.api.nvim_command([[  au ColorScheme * lua require'sharks.statusline'.create_highlights()]])
-vim.api.nvim_command('augroup END')
+vim.api.nvim_command("augroup END")
 
 local function vcs_status()
-  local branch = vim.fn['fugitive#head']()
+  local branch = vim.fn["fugitive#head"]()
 
   if #branch == 0 then
-    return ''
+    return ""
   end
 
-  local summary = vim.fn['GitGutterGetHunkSummary']()
+  local summary = vim.fn["GitGutterGetHunkSummary"]()
   local ahl, mhl, rhl
 
   if summary[1] > 0 then
-    ahl = '%#StatusLineGitDiffAdd#'
+    ahl = "%#StatusLineGitDiffAdd#"
   else
-    ahl = '%#StatusLineBg2b#'
+    ahl = "%#StatusLineBg2b#"
   end
 
   if summary[2] > 0 then
-    mhl = '%#StatusLineGitDiffMod#'
+    mhl = "%#StatusLineGitDiffMod#"
   else
-    mhl = '%#StatusLineBg2b#'
+    mhl = "%#StatusLineBg2b#"
   end
 
   if summary[3] > 0 then
-    rhl = '%#StatusLineGitDiffDel#'
+    rhl = "%#StatusLineGitDiffDel#"
   else
-    rhl = '%#StatusLineBg2b#'
+    rhl = "%#StatusLineBg2b#"
   end
 
-  return string.format('%s %i %s %i %s %i %%#StatusLineGitBranchSymbol# %%#StatusLineGitBranchName#%s',
+  return string.format(
+    "%s %i %s %i %s %i %%#StatusLineGitBranchSymbol# %%#StatusLineGitBranchName#%s",
     ahl,
     summary[1],
     mhl,
     summary[2],
     rhl,
     summary[3],
-   branch:gsub('%s+', '')
+    branch:gsub("%s+", "")
   )
 end
 
 local function lsp_status()
   if #vim.lsp.buf_get_clients() > 0 then
-      local res = ""
-      local errors = vim.lsp.diagnostic.get_count(0, "Error")
-      if errors > 0 then
-        res = res .. '%#StatusLineLSPErrors#'
-      else
-        res = res .. '%#StatusLineBg2b#'
-      end
-      res = res .. string.format(' %d', errors)
+    local res = ""
+    local errors = vim.lsp.diagnostic.get_count(0, "Error")
+    if errors > 0 then
+      res = res .. "%#StatusLineLSPErrors#"
+    else
+      res = res .. "%#StatusLineBg2b#"
+    end
+    res = res .. string.format(" %d", errors)
 
-      local warnings = vim.lsp.diagnostic.get_count(0, "Warning")
-      if warnings > 0 then
-        res = res .. '%#StatusLineLSPWarnings#'
-      else
-        res = res .. '%#StatusLineBg2b#'
-      end
-      res = res .. string.format('  %d', warnings)
+    local warnings = vim.lsp.diagnostic.get_count(0, "Warning")
+    if warnings > 0 then
+      res = res .. "%#StatusLineLSPWarnings#"
+    else
+      res = res .. "%#StatusLineBg2b#"
+    end
+    res = res .. string.format("  %d", warnings)
 
-      local informations = vim.lsp.diagnostic.get_count(0, "Information")
-      if informations > 0 then
-        res = res .. '%#StatusLineLSPInformations#'
-      else
-        res = res .. '%#StatusLineBg2b#'
-      end
-      res = res .. string.format('  %d', informations)
+    local informations = vim.lsp.diagnostic.get_count(0, "Information")
+    if informations > 0 then
+      res = res .. "%#StatusLineLSPInformations#"
+    else
+      res = res .. "%#StatusLineBg2b#"
+    end
+    res = res .. string.format("  %d", informations)
 
-      local hints = vim.lsp.diagnostic.get_count(0, "Hint")
-      if hints > 0 then
-        res = res .. '%#StatusLineLSPHints#'
-      else
-        res = res .. '%#StatusLineBg2b#'
-      end
-      res = res .. string.format('  %d', hints)
+    local hints = vim.lsp.diagnostic.get_count(0, "Hint")
+    if hints > 0 then
+      res = res .. "%#StatusLineLSPHints#"
+    else
+      res = res .. "%#StatusLineBg2b#"
+    end
+    res = res .. string.format("  %d", hints)
 
-      return res
+    return res
   end
 
-  return ''
+  return ""
 end
 
 local function signature_help()
@@ -200,19 +204,19 @@ end
 
 local function get_file_name()
   local max_width = vim.fn.winwidth(vim.g.statusline_winid) * 0.25
-  local file_name = vim.fn.fnamemodify(vim.fn.bufname(vim.fn.winbufnr(vim.g.statusline_winid)), ':.')
+  local file_name = vim.fn.fnamemodify(vim.fn.bufname(vim.fn.winbufnr(vim.g.statusline_winid)), ":.")
   local width = vim.fn.strwidth(file_name)
 
   if width == 0 then
-    file_name = '[scratch]'
+    file_name = "[scratch]"
   else
     -- If the file name is too big, we just write its tail part
     if width > max_width then
-      file_name = vim.fn.fnamemodify(file_name, ':t')
+      file_name = vim.fn.fnamemodify(file_name, ":t")
     end
 
-    if vim.fn.exists('*WebDevIconsGetFileTypeSymbol') then
-      file_name = string.format('%s %s', vim.fn['WebDevIconsGetFileTypeSymbol'](file_name), file_name)
+    if vim.fn.exists("*WebDevIconsGetFileTypeSymbol") then
+      file_name = string.format("%s %s", vim.fn["WebDevIconsGetFileTypeSymbol"](file_name), file_name)
     end
   end
 
@@ -222,182 +226,186 @@ end
 local function make_active_status_line()
   local hls = {
     n = {
-      n = 'StatusLineNormalMode',
-      i = 'StatusLineNormalModeItalic',
-      nr = 'StatusLineNormalModeWinNr',
+      n = "StatusLineNormalMode",
+      i = "StatusLineNormalModeItalic",
+      nr = "StatusLineNormalModeWinNr",
     },
     no = {
-      n = 'StatusLineReplaceMode',
-      i = 'StatusLineReplaceModeItalic',
-      nr = 'StatusLineReplaceModeWinNr',
+      n = "StatusLineReplaceMode",
+      i = "StatusLineReplaceModeItalic",
+      nr = "StatusLineReplaceModeWinNr",
     },
     nov = {
-      n = 'StatusLineReplaceMode',
-      i = 'StatusLineReplaceModeItalic',
-      nr = 'StatusLineReplaceModeWinNr',
+      n = "StatusLineReplaceMode",
+      i = "StatusLineReplaceModeItalic",
+      nr = "StatusLineReplaceModeWinNr",
     },
-    ['noV'] = {
-      n = 'StatusLineReplaceMode',
-      i = 'StatusLineReplaceModeItalic',
-      nr = 'StatusLineReplaceModeWinNr',
+    ["noV"] = {
+      n = "StatusLineReplaceMode",
+      i = "StatusLineReplaceModeItalic",
+      nr = "StatusLineReplaceModeWinNr",
     },
-    ['no'] = {
-      n = 'StatusLineReplaceMode',
-      i = 'StatusLineReplaceModeItalic',
-      nr = 'StatusLineReplaceModeWinNr',
+    ["no"] = {
+      n = "StatusLineReplaceMode",
+      i = "StatusLineReplaceModeItalic",
+      nr = "StatusLineReplaceModeWinNr",
     },
     i = {
-      n = 'StatusLineInsertMode',
-      i = 'StatusLineInsertModeItalic',
-      nr = 'StatusLineInsertModeWinNr',
+      n = "StatusLineInsertMode",
+      i = "StatusLineInsertModeItalic",
+      nr = "StatusLineInsertModeWinNr",
     },
     ic = {
-      n = 'StatusLineInsertMode',
-      i = 'StatusLineInsertModeItalic',
-      nr = 'StatusLineInsertModeWinNr',
+      n = "StatusLineInsertMode",
+      i = "StatusLineInsertModeItalic",
+      nr = "StatusLineInsertModeWinNr",
     },
     ix = {
-      n = 'StatusLineInsertMode',
-      i = 'StatusLineInsertModeItalic',
-      nr = 'StatusLineInsertModeWinNr',
+      n = "StatusLineInsertMode",
+      i = "StatusLineInsertModeItalic",
+      nr = "StatusLineInsertModeWinNr",
     },
-    ['niI'] = {
-      n = 'StatusLineInsertMode',
-      i = 'StatusLineInsertModeItalic',
-      nr = 'StatusLineInsertModeWinNr',
+    ["niI"] = {
+      n = "StatusLineInsertMode",
+      i = "StatusLineInsertModeItalic",
+      nr = "StatusLineInsertModeWinNr",
     },
     v = {
-      n = 'StatusLineVisualMode',
-      i = 'StatusLineVisualModeItalic',
-      nr = 'StatusLineVisualModeWinNr',
+      n = "StatusLineVisualMode",
+      i = "StatusLineVisualModeItalic",
+      nr = "StatusLineVisualModeWinNr",
     },
     V = {
-      n = 'StatusLineVisualLineMode',
-      i = 'StatusLineVisualLineModeItalic',
-      nr = 'StatusLineVisualLineModeWinNr',
+      n = "StatusLineVisualLineMode",
+      i = "StatusLineVisualLineModeItalic",
+      nr = "StatusLineVisualLineModeWinNr",
     },
-    [''] = {
-      n = 'StatusLineVisualBlockMode',
-      i = 'StatusLineVisualBlockModeItalic',
-      nr = 'StatusLineVisualBlockModeWinNr',
+    [""] = {
+      n = "StatusLineVisualBlockMode",
+      i = "StatusLineVisualBlockModeItalic",
+      nr = "StatusLineVisualBlockModeWinNr",
     },
-    ['niV'] = {
-      n = 'StatusLineVisualMode',
-      i = 'StatusLineVisualModeItalic',
-      nr = 'StatusLineVisualModeWinNr',
+    ["niV"] = {
+      n = "StatusLineVisualMode",
+      i = "StatusLineVisualModeItalic",
+      nr = "StatusLineVisualModeWinNr",
     },
     s = {
-      n = 'StatusLineVisualMode',
-      i = 'StatusLineVisualModeItalic',
-      nr = 'StatusLineVisualModeWinNr',
+      n = "StatusLineVisualMode",
+      i = "StatusLineVisualModeItalic",
+      nr = "StatusLineVisualModeWinNr",
     },
     S = {
-      n = 'StatusLineVisualMode',
-      i = 'StatusLineVisualModeItalic',
-      nr = 'StatusLineVisualModeWinNr',
+      n = "StatusLineVisualMode",
+      i = "StatusLineVisualModeItalic",
+      nr = "StatusLineVisualModeWinNr",
     },
-    [''] = {
-      n = 'StatusLineVisualMode',
-      i = 'StatusLineVisualModeItalic',
-      nr = 'StatusLineVisualModeWinNr',
+    [""] = {
+      n = "StatusLineVisualMode",
+      i = "StatusLineVisualModeItalic",
+      nr = "StatusLineVisualModeWinNr",
     },
     R = {
-      n = 'StatusLineReplaceMode',
-      i = 'StatusLineReplaceModeItalic',
-      nr = 'StatusLineReplaceModeWinNr',
+      n = "StatusLineReplaceMode",
+      i = "StatusLineReplaceModeItalic",
+      nr = "StatusLineReplaceModeWinNr",
     },
     Rc = {
-      n = 'StatusLineReplaceMode',
-      i = 'StatusLineReplaceModeItalic',
-      nr = 'StatusLineReplaceModeWinNr',
+      n = "StatusLineReplaceMode",
+      i = "StatusLineReplaceModeItalic",
+      nr = "StatusLineReplaceModeWinNr",
     },
     Rv = {
-      n = 'StatusLineReplaceMode',
-      i = 'StatusLineReplaceModeItalic',
-      nr = 'StatusLineReplaceModeWinNr',
+      n = "StatusLineReplaceMode",
+      i = "StatusLineReplaceModeItalic",
+      nr = "StatusLineReplaceModeWinNr",
     },
     Rx = {
-      n = 'StatusLineReplaceMode',
-      i = 'StatusLineReplaceModeItalic',
-      nr = 'StatusLineReplaceModeWinNr',
+      n = "StatusLineReplaceMode",
+      i = "StatusLineReplaceModeItalic",
+      nr = "StatusLineReplaceModeWinNr",
     },
-    ['niR'] = {
-      n = 'StatusLineReplaceMode',
-      i = 'StatusLineReplaceModeItalic',
-      nr = 'StatusLineReplaceModeWinNr',
+    ["niR"] = {
+      n = "StatusLineReplaceMode",
+      i = "StatusLineReplaceModeItalic",
+      nr = "StatusLineReplaceModeWinNr",
     },
     c = {
-      n = 'StatusLineCommandMode',
-      i = 'StatusLineCommandModeItalic',
-      nr = 'StatusLineCommandModeWinNr',
+      n = "StatusLineCommandMode",
+      i = "StatusLineCommandModeItalic",
+      nr = "StatusLineCommandModeWinNr",
     },
     cv = {
-      n = 'StatusLineCommandMode',
-      i = 'StatusLineCommandModeItalic',
-      nr = 'StatusLineCommandModeWinNr',
+      n = "StatusLineCommandMode",
+      i = "StatusLineCommandModeItalic",
+      nr = "StatusLineCommandModeWinNr",
     },
     ce = {
-      n = 'StatusLineCommandMode',
-      i = 'StatusLineCommandModeItalic',
-      nr = 'StatusLineCommandModeWinNr',
+      n = "StatusLineCommandMode",
+      i = "StatusLineCommandModeItalic",
+      nr = "StatusLineCommandModeWinNr",
     },
     r = {
-      n = 'StatusLineHitEnterPromptMode',
-      i = 'StatusLineHitEnterPromptModeItalic',
-      nr = 'StatusLineHitEnterPromptModeWinNr',
+      n = "StatusLineHitEnterPromptMode",
+      i = "StatusLineHitEnterPromptModeItalic",
+      nr = "StatusLineHitEnterPromptModeWinNr",
     },
     rm = {
-      n = 'StatusLineHitEnterPromptMode',
-      i = 'StatusLineHitEnterPromptModeItalic',
-      nr = 'StatusLineHitEnterPromptModeWinNr',
+      n = "StatusLineHitEnterPromptMode",
+      i = "StatusLineHitEnterPromptModeItalic",
+      nr = "StatusLineHitEnterPromptModeWinNr",
     },
-    ['r?'] = {
-      n = 'StatusLineHitEnterPromptMode',
-      i = 'StatusLineHitEnterPromptModeItalic',
-      nr = 'StatusLineHitEnterPromptModeWinNr',
+    ["r?"] = {
+      n = "StatusLineHitEnterPromptMode",
+      i = "StatusLineHitEnterPromptModeItalic",
+      nr = "StatusLineHitEnterPromptModeWinNr",
     },
-    ['!'] = {
-      n = 'StatusLineHitEnterPromptMode',
-      i = 'StatusLineHitEnterPromptModeItalic',
-      nr = 'StatusLineHitEnterPromptModeWinNr',
+    ["!"] = {
+      n = "StatusLineHitEnterPromptMode",
+      i = "StatusLineHitEnterPromptModeItalic",
+      nr = "StatusLineHitEnterPromptModeWinNr",
     },
     t = {
-      n = 'StatusLineReplaceMode',
-      i = 'StatusLineReplaceModeItalic',
-      nr = 'StatusLineReplaceModeWinNr',
+      n = "StatusLineReplaceMode",
+      i = "StatusLineReplaceModeItalic",
+      nr = "StatusLineReplaceModeWinNr",
     },
   }
 
-  local hl = 'StatusLineBg'
-  local hl2 = 'StatusLineBg2c'
+  local hl = "StatusLineBg"
+  local hl2 = "StatusLineBg2c"
 
   local mode = vim.fn.mode()
   if vim.fn.has_key(hls, mode) then
     if vim.bo.mod then
-      hl = hls[mode]['i']
+      hl = hls[mode]["i"]
     else
-      hl = hls[mode]['n']
+      hl = hls[mode]["n"]
     end
 
-    hl2 = hls[mode]['nr']
+    hl2 = hls[mode]["nr"]
   end
 
-  local status_line = string.format('%%#%s# %d %%#%s# %s ',
+  local status_line = string.format(
+    "%%#%s# %d %%#%s# %s ",
     hl2,
     vim.fn.win_id2win(vim.g.statusline_winid),
     hl,
     get_file_name()
   )
-  status_line = status_line .. '%#StatusLineLinNbr# %v%#StatusLineBg2b#:%#StatusLineColNbr#%l%< %#StatusLineBg2b#(%p%% %LL)'
-  status_line = status_line .. string.format('%%=%%#StatusLineBg# %s %s %s ', signature_help(), lsp_status(), vcs_status())
+  status_line = status_line
+    .. "%#StatusLineLinNbr# %v%#StatusLineBg2b#:%#StatusLineColNbr#%l%< %#StatusLineBg2b#(%p%% %LL)"
+  status_line = status_line
+    .. string.format("%%=%%#StatusLineBg# %s %s %s ", signature_help(), lsp_status(), vcs_status())
 
   return status_line
 end
 
 local function make_inactive_status_line()
-  local hl = 'StatusLineBg2c'
-  local hlend = 'StatusLineBg'
-  local status_line = string.format(' %d %%#%s# %s %%#%s#',
+  local hl = "StatusLineBg2c"
+  local hlend = "StatusLineBg"
+  local status_line = string.format(
+    " %d %%#%s# %s %%#%s#",
     vim.fn.win_id2win(vim.g.statusline_winid),
     hl,
     get_file_name(),
@@ -409,9 +417,9 @@ end
 
 function M.make_status_line(active)
   if active then
-    vim.wo.statusline = '%!v:lua.active_status_line()'
+    vim.wo.statusline = "%!v:lua.active_status_line()"
   else
-    vim.wo.statusline = '%!v:lua.inactive_status_line()'
+    vim.wo.statusline = "%!v:lua.inactive_status_line()"
   end
 end
 

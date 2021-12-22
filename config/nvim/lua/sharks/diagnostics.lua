@@ -18,29 +18,29 @@ local function diagnostics_to_items(diagnostics_by_buf, predicate)
       end
     end
   end
-  table.sort(items, function(a, b) return a.lnum < b.lnum end)
+  table.sort(items, function(a, b)
+    return a.lnum < b.lnum
+  end)
   return items
 end
 
 function M.errors_to_quickfix()
-  local items = diagnostics_to_items(
-    vim.lsp.diagnostic.get_all(),
-    function(d) return d.severity == vim.lsp.protocol.DiagnosticSeverity.Error end
-  )
-  vim.fn.setqflist({}, 'r', {
-    title = 'Language Server (Errors)';
-    items = items
+  local items = diagnostics_to_items(vim.lsp.diagnostic.get_all(), function(d)
+    return d.severity == vim.lsp.protocol.DiagnosticSeverity.Error
+  end)
+  vim.fn.setqflist({}, "r", {
+    title = "Language Server (Errors)",
+    items = items,
   })
 end
 
 function M.warnings_to_quickfix()
-  local items = diagnostics_to_items(
-    vim.lsp.diagnostic.get_all(),
-    function(d) return d.severity == vim.lsp.protocol.DiagnosticSeverity.Warning end
-  )
-  vim.fn.setqflist({}, 'r', {
-    title = 'Language Server (Warnings)';
-    items = items
+  local items = diagnostics_to_items(vim.lsp.diagnostic.get_all(), function(d)
+    return d.severity == vim.lsp.protocol.DiagnosticSeverity.Warning
+  end)
+  vim.fn.setqflist({}, "r", {
+    title = "Language Server (Warnings)",
+    items = items,
   })
 end
 

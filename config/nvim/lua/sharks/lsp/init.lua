@@ -1,37 +1,37 @@
-local nvim_lsp = require('lspconfig')
-local protocol = require('vim.lsp.protocol')
-local util = require('lspconfig/util')
+local nvim_lsp = require("lspconfig")
+local protocol = require("vim.lsp.protocol")
+local util = require("lspconfig/util")
 local lsp_status = require("lsp-status")
-local status = require('sharks.lsp.status')
-local sharks_lsp = require('sharks.lsp.config')
+local status = require("sharks.lsp.status")
+local sharks_lsp = require("sharks.lsp.config")
 
 local on_attach = function(client)
   protocol.CompletionItemKind = {
-    ' '; -- text
-    ' '; -- method
-    ' '; -- function
-    ' '; -- ctor
-    ' '; -- field
-    ' '; -- variable
-    ' '; -- class
-    ' '; -- interface
-    ' '; -- module
-    ' '; -- property
-    ' '; -- unit
-    ' '; -- value
-    '螺'; -- enum
-    ' '; -- keyword
-    ' '; -- snippet
-    ' '; -- color
-    ' '; -- file
-    ' '; -- reference
-    ' '; -- folder
-    ' '; -- enum member
-    ' '; -- constant
-    ' '; -- struct
-    ' '; -- event
-    '璉'; -- operator
-    ' '; -- type parameter
+    " ", -- text
+    " ", -- method
+    " ", -- function
+    " ", -- ctor
+    " ", -- field
+    " ", -- variable
+    " ", -- class
+    " ", -- interface
+    " ", -- module
+    " ", -- property
+    " ", -- unit
+    " ", -- value
+    "螺", -- enum
+    " ", -- keyword
+    " ", -- snippet
+    " ", -- color
+    " ", -- file
+    " ", -- reference
+    " ", -- folder
+    " ", -- enum member
+    " ", -- constant
+    " ", -- struct
+    " ", -- event
+    "璉", -- operator
+    " ", -- type parameter
   }
 
   if client.config.flags then
@@ -39,23 +39,25 @@ local on_attach = function(client)
   end
 
   if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_exec([[
+    vim.api.nvim_exec(
+      [[
     augroup lsp_document_highlight
       autocmd! * <buffer>
       autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
       autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
     augroup END
-    ]], false)
+    ]],
+      false
+    )
   end
 
   -- format on save?
   --vim.cmd [[
-    --augroup lsp_buf_format
-      --au! BufWritePre <buffer>
-      --autocmd BufWritePre <buffer> :lua vim.lsp.buf.formatting_sync()
-    --augroup END
+  --augroup lsp_buf_format
+  --au! BufWritePre <buffer>
+  --autocmd BufWritePre <buffer> :lua vim.lsp.buf.formatting_sync()
+  --augroup END
   --]]
-
 
   -- this breaks git-gutter?
   --lsp_status.on_attach(client)
@@ -65,11 +67,11 @@ end
 
 local updated_capabilities = vim.lsp.protocol.make_client_capabilities()
 
-updated_capabilities = require('cmp_nvim_lsp').update_capabilities(updated_capabilities)
+updated_capabilities = require("cmp_nvim_lsp").update_capabilities(updated_capabilities)
 
-local extension_path = '/opt/codelldb/extension/'
-local codelldb_path = extension_path .. 'adapter/codelldb'
-local liblldb_path = extension_path .. 'lldb/lib/liblldb.so'
+local extension_path = "/opt/codelldb/extension/"
+local codelldb_path = extension_path .. "adapter/codelldb"
+local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
 
 local rust_opts = {
   tools = {
@@ -88,19 +90,18 @@ local rust_opts = {
     },
   },
   dap = {
-    adapter = require('rust-tools.dap').get_codelldb_adapter(
-            codelldb_path, liblldb_path)
+    adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path),
     --adapter = {
-      --type = 'executable',
-      --command = 'lldb-vscode',
-      --name = "rt_lldb"
+    --type = 'executable',
+    --command = 'lldb-vscode',
+    --name = "rt_lldb"
     --}
   },
   server = {
     --cmd = {"/home/sharks/source/dotfiles/misc/misc/rust-analyzer-wrapper"},
-    on_attach=on_attach,
+    on_attach = on_attach,
     root_dir = util.root_pattern("Cargo.toml"),
-    capabilities=updated_capabilities,
+    capabilities = updated_capabilities,
     settings = {
       -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
       ["rust-analyzer"] = {
@@ -175,17 +176,17 @@ local rust_opts = {
         procMacro = {
           enable = true,
         },
-      } -- ["rust-analyzer"]
-    } -- settings
-  } -- lsp server
+      }, -- ["rust-analyzer"]
+    }, -- settings
+  }, -- lsp server
 }
 
-require('rust-tools').setup(rust_opts)
+require("rust-tools").setup(rust_opts)
 
 local function switch_source_header_splitcmd(bufnr, splitcmd)
-  bufnr = require'lspconfig'.util.validate_bufnr(bufnr)
-  local clangd_client = require'lspconfig'.util.get_active_client_by_name(bufnr, 'clangd')
-  local params = {uri = vim.uri_from_bufnr(bufnr)}
+  bufnr = require("lspconfig").util.validate_bufnr(bufnr)
+  local clangd_client = require("lspconfig").util.get_active_client_by_name(bufnr, "clangd")
+  local params = { uri = vim.uri_from_bufnr(bufnr) }
   if clangd_client then
     clangd_client.request("textDocument/switchSourceHeader", params, function(err, result)
       if err then
@@ -198,7 +199,7 @@ local function switch_source_header_splitcmd(bufnr, splitcmd)
       vim.api.nvim_command(splitcmd .. " " .. vim.uri_to_fname(result))
     end, bufnr)
   else
-    print 'textDocument/switchSourceHeader is not supported by the clangd server active on the current buffer'
+    print("textDocument/switchSourceHeader is not supported by the clangd server active on the current buffer")
   end
 end
 
@@ -216,9 +217,10 @@ end
 
 -- local util = require 'lspconfig/util'
 nvim_lsp.clangd.setup({
-  on_attach=on_attach,
+  on_attach = on_attach,
   -- cmd = { "clangd", "--background-index", "--compile-commands-dir", "build/" },
-  cmd = { "clangd",
+  cmd = {
+    "clangd",
     "--background-index",
     "--suggest-missing-includes",
     "--clang-tidy",
@@ -229,33 +231,39 @@ nvim_lsp.clangd.setup({
   },
   filetypes = { "c", "cpp", "objc", "objcpp" },
   init_options = {
-    compilationDatabasePath="build",
+    compilationDatabasePath = "build",
   },
   commands = {
     ClangdSwitchSourceHeader = {
-      function() switch_source_header_splitcmd(0, "edit") end;
-      description = "Open source/header in current buffer";
+      function()
+        switch_source_header_splitcmd(0, "edit")
+      end,
+      description = "Open source/header in current buffer",
     },
     ClangdSwitchSourceHeaderVSplit = {
-      function() switch_source_header_splitcmd(0, "vsplit") end;
-      description = "Open source/header in a new vsplit";
+      function()
+        switch_source_header_splitcmd(0, "vsplit")
+      end,
+      description = "Open source/header in a new vsplit",
     },
     ClangdSwitchSourceHeaderSplit = {
-      function() switch_source_header_splitcmd(0, "split") end;
-      description = "Open source/header in a new split";
-    }
-  }
+      function()
+        switch_source_header_splitcmd(0, "split")
+      end,
+      description = "Open source/header in a new split",
+    },
+  },
   -- root_dir=util.root_pattern("build/compile_commands.json", "compile_commands.json", "compile_flags.txt", ".git") or util.path.dirname
 })
-nvim_lsp.pylsp.setup({ 
+nvim_lsp.pylsp.setup({
   -- pip install 'python-language-server[all]'
-  cmd={os.getenv("HOME") .. "/.virtualenvs/pyls/bin/pyls"},
-  on_attach=on_attach
+  cmd = { os.getenv("HOME") .. "/.virtualenvs/pyls/bin/pyls" },
+  on_attach = on_attach,
 })
 nvim_lsp.gopls.setup({
   on_attach = on_attach,
-  root_dir = util.root_pattern('.git'),
-  cmd = {"gopls", "serve"},
+  root_dir = util.root_pattern(".git"),
+  cmd = { "gopls", "serve" },
   settings = {
     gopls = {
       analyses = {
@@ -296,33 +304,33 @@ require("lspconfig").sumneko_lua.setup({
 })
 
 -- sudo cpanm --notest PLS
-require'lspconfig'.perlpls.setup({
-  on_attach=on_attach,
+require("lspconfig").perlpls.setup({
+  on_attach = on_attach,
 })
 
 --require'lspconfig'.ansiblels.setup {
-  --on_attach = on_attach,
-  --filetypes = { "yml", "yaml", "yaml.ansible" }
+--on_attach = on_attach,
+--filetypes = { "yml", "yaml", "yaml.ansible" }
 --}
 
 --nvim_lsp["yamlls"].setup {
-  --settings = {
-    --yaml =
-      --{
-        --schemas =
-          --{
-            --['https://raw.githubusercontent.com/docker/cli/master/cli/compose/schema/data/config_schema_v3.9.json'] = '/docker-compose.yml',
-            --['https://raw.githubusercontent.com/docker/cli/master/cli/compose/schema/data/config_schema_v3.9.json'] = '/docker-compose.yaml',
-            --['https://schema-for-ansible'] = 'ansible/**.yaml'
-          --}
-      --}
-    --},
-  --on_attach = on_attach,
+--settings = {
+--yaml =
+--{
+--schemas =
+--{
+--['https://raw.githubusercontent.com/docker/cli/master/cli/compose/schema/data/config_schema_v3.9.json'] = '/docker-compose.yml',
+--['https://raw.githubusercontent.com/docker/cli/master/cli/compose/schema/data/config_schema_v3.9.json'] = '/docker-compose.yaml',
+--['https://schema-for-ansible'] = 'ansible/**.yaml'
+--}
+--}
+--},
+--on_attach = on_attach,
 --}
 
 local symbols_outline_opts = {
-    highlight_hovered_item = true,
-    show_guides = true,
+  highlight_hovered_item = true,
+  show_guides = true,
 }
 
-require('symbols-outline').setup(symbols_outline_opts)
+require("symbols-outline").setup(symbols_outline_opts)
