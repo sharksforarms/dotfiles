@@ -113,12 +113,15 @@ opt.smartcase = true
 --   + "j" -- Auto-remove comments if possible.
 --   - "2" -- I'm not in gradeschool anymore
 --
-vim.api.nvim_exec([[
+vim.api.nvim_exec(
+  [[
   augroup NoAutoComment
     au!
     au FileType * setlocal formatoptions-=ro
   augroup end
-]], false)
+]],
+  false
+)
 
 -- Disable backup files
 opt.backup = false

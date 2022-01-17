@@ -113,9 +113,9 @@ return require("packer").startup({
           resize = {
             -- enables default keybindings (A-hjkl) for normal mode
             enable_default_keybindings = true,
-          }
+          },
         })
-      end
+      end,
     })
     use("Saecki/crates.nvim")
     use("mfussenegger/nvim-dap")

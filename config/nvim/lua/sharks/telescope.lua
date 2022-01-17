@@ -6,8 +6,8 @@ local pickers = require("telescope.pickers")
 local sorters = require("telescope.sorters")
 local actions = require("telescope.actions")
 local previewers = require("telescope.previewers")
-local action_state = require "telescope.actions.state"
-local action_set = require "telescope.actions.set"
+local action_state = require("telescope.actions.state")
+local action_set = require("telescope.actions.set")
 local conf = require("telescope.config").values
 local Path = require("plenary.path")
 local keymap_lua = require("sharks.keymap").keymap_lua
@@ -72,7 +72,7 @@ function M.setup()
 end
 
 function M.find_files()
-  local opts = require('telescope.themes').get_dropdown{
+  local opts = require("telescope.themes").get_dropdown({
     attach_mappings = function(_, map)
       local function goto_nerdtree()
         local selection = action_state.get_selected_entry().path
@@ -81,13 +81,13 @@ function M.find_files()
         vim.cmd(":NERDTreeFind " .. selection)
       end
 
-      map('i', '<C-o>', goto_nerdtree)
-      map('n', '<C-o>', goto_nerdtree)
+      map("i", "<C-o>", goto_nerdtree)
+      map("n", "<C-o>", goto_nerdtree)
 
       return true
     end,
-  }
-  require('telescope.builtin').find_files(opts)
+  })
+  require("telescope.builtin").find_files(opts)
 end
 function M.dotfiles(opts)
   local opts = require("telescope.themes").get_dropdown({
