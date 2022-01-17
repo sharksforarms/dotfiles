@@ -4,17 +4,12 @@
   become: true
   apt: name=zsh state=present
 
-- name: Check for oh-my-zsh installation
-  stat: "path={{ localuser_dir }}/.oh-my-zsh"
-  register: oh_my_zsh_stat
-
 - name: Install oh-my-zsh
   git:
     repo: https://github.com/robbyrussell/oh-my-zsh.git
     version: master
     depth: "1"
     dest: "{{ localuser_dir }}/.oh-my-zsh/"
-  when: not oh_my_zsh_stat.stat.exists
 
 - name: Install zsh plugins
   git:
