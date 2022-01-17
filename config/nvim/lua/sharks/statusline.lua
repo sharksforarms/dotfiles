@@ -160,7 +160,7 @@ end
 local function lsp_status()
   if #vim.lsp.buf_get_clients() > 0 then
     local res = ""
-    local errors = vim.lsp.diagnostic.get_count(0, "Error")
+    local errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
     if errors > 0 then
       res = res .. "%#StatusLineLSPErrors#"
     else
@@ -168,7 +168,7 @@ local function lsp_status()
     end
     res = res .. string.format(" %d", errors)
 
-    local warnings = vim.lsp.diagnostic.get_count(0, "Warning")
+    local warnings = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARNING })
     if warnings > 0 then
       res = res .. "%#StatusLineLSPWarnings#"
     else
@@ -176,7 +176,7 @@ local function lsp_status()
     end
     res = res .. string.format("  %d", warnings)
 
-    local informations = vim.lsp.diagnostic.get_count(0, "Information")
+    local informations = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
     if informations > 0 then
       res = res .. "%#StatusLineLSPInformations#"
     else
@@ -184,7 +184,7 @@ local function lsp_status()
     end
     res = res .. string.format("  %d", informations)
 
-    local hints = vim.lsp.diagnostic.get_count(0, "Hint")
+    local hints = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINTS })
     if hints > 0 then
       res = res .. "%#StatusLineLSPHints#"
     else
