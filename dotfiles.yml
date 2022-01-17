@@ -12,15 +12,19 @@
     - role: zsh
       tags:
         - zsh
+        - dev
     - role: rust
       tags:
         - rust
+        - dev
     - role: rust_analyzer
       tags:
         - rust_analyzer
+        - dev
     - role: lua_language_server
       tags:
         - lua_language_server
+        - dev
     - role: alacritty
       tags:
         - alacritty
@@ -30,9 +34,11 @@
     - role: nvim
       tags:
         - nvim
+        - dev
     - role: fzf
       tags:
         - fzf
+        - dev
     - role: github
       tags:
         - github
@@ -42,6 +48,8 @@
     - role: misc
       tags:
         - misc
+        - dev
     - role: stow
       tags:
         - stow
+        - dev
