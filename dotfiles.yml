@@ -13,6 +13,10 @@
       tags:
         - zsh
         - dev
+    - role: tmux
+      tags:
+        - tmux
+        - dev
     - role: rust
       tags:
         - rust

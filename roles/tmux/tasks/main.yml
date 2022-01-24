@@ -1,0 +1,12 @@
+---
+
+- name: Install tmux
+  become: true
+  apt: name=tmux state=present
+
+- name: Install TPM
+  git:
+    repo: https://github.com/tmux-plugins/tpm
+    version: master
+    depth: "1"
+    dest: "{{ localuser_dir }}/.tmux/plugins/tpm/"

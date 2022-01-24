@@ -275,7 +275,7 @@ nvim_lsp.gopls.setup({
 })
 
 local sumneko_root_path = "/opt/lua-language-server/"
-local sumneko_binary = sumneko_root_path .. "/bin/Linux/lua-language-server"
+local sumneko_binary = sumneko_root_path .. "/bin/lua-language-server"
 
 require("lspconfig").sumneko_lua.setup({
   on_attach = on_attach,
@@ -327,10 +327,3 @@ require("lspconfig").perlpls.setup({
 --},
 --on_attach = on_attach,
 --}
-
-local symbols_outline_opts = {
-  highlight_hovered_item = true,
-  show_guides = true,
-}
-
-require("symbols-outline").setup(symbols_outline_opts)

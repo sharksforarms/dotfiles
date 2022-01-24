@@ -33,6 +33,20 @@ return require("packer").startup({
     use("tpope/vim-fugitive")
     use("airblade/vim-gitgutter")
     use("rhysd/git-messenger.vim")
+    use({
+      "ruifm/gitlinker.nvim",
+      requires = 'nvim-lua/plenary.nvim',
+      config = function()
+        require("gitlinker").setup({
+          opts = {
+            remote = nil,
+            add_current_line_on_normal_mode = true,
+            print_url = true,
+          },
+          mappings = "<leader>gy"
+      })
+      end,
+    })
     use("pwntester/octo.nvim")
     use("mg979/vim-visual-multi")
     use("tpope/vim-repeat")
@@ -84,7 +98,17 @@ return require("packer").startup({
     -- temporary until glepnir is back?
     use("tami5/lspsaga.nvim")
     use("nvim-lua/lsp-status.nvim")
-    use("simrat39/symbols-outline.nvim")
+    use({
+      "simrat39/symbols-outline.nvim",
+      config = function()
+        local symbols_outline_opts = {
+          highlight_hovered_item = true,
+          show_guides = true,
+        }
+
+        require("symbols-outline").setup(symbols_outline_opts)
+      end,
+    })
     use("ray-x/lsp_signature.nvim")
 
     -- line completion
@@ -102,9 +126,11 @@ return require("packer").startup({
           -- overwrite default configuration
           -- here, e.g. to enable default bindings
           copy_sync = {
-            -- enables copy sync and overwrites all register actions to
-            -- sync registers *, +, unnamed, and 0 till 9 from tmux in advance
-            enable = true,
+            -- TODO: Couldn't get this to work properly, not sure if I really want this anyway
+            enable = false,
+            sync_clipboard = false,
+            sync_deletes = false,
+            sync_unnamed = false,
           },
           navigation = {
             -- enables default keybindings (C-hjkl) for normal mode

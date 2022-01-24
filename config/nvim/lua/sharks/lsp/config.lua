@@ -51,8 +51,8 @@ end
 -- Code actions
 M.code_action = function()
   --require('lspsaga.codeaction').code_action()
-  --require('telescope.builtin').lsp_code_actions()
-  vim.lsp.buf.code_action()
+  require('telescope.builtin').lsp_code_actions()
+  -- vim.lsp.buf.code_action()
 end
 
 M.code_action_range = function()

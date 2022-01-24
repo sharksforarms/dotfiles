@@ -24,10 +24,11 @@ endfunction
 
 function! OnUIEnter(event) abort
   if s:IsFirenvimActive(a:event)
-    set lines=15
+    " set lines=15
     set laststatus=0
     set wrap
     set linebreak
+    au BufEnter github.com_*.txt set filetype=markdown
   endif
 endfunction
 autocmd UIEnter * call OnUIEnter(deepcopy(v:event))

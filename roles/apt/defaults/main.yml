@@ -3,7 +3,6 @@
 packages:
   # Env
   - i3
-  - tmux
   - py3status
   # Utils
   - zsh
