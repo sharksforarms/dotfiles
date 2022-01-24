@@ -35,7 +35,7 @@ return require("packer").startup({
     use("rhysd/git-messenger.vim")
     use({
       "ruifm/gitlinker.nvim",
-      requires = 'nvim-lua/plenary.nvim',
+      requires = "nvim-lua/plenary.nvim",
       config = function()
         require("gitlinker").setup({
           opts = {
@@ -43,8 +43,8 @@ return require("packer").startup({
             add_current_line_on_normal_mode = true,
             print_url = true,
           },
-          mappings = "<leader>gy"
-      })
+          mappings = "<leader>gy",
+        })
       end,
     })
     use("pwntester/octo.nvim")
