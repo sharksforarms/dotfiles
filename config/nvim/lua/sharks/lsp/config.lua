@@ -22,6 +22,7 @@ M.init = function()
 
   saga.init_lsp_saga({
     use_saga_diagnostic_sign = false,
+    use_diagnostic_virtual_text = false,
     finder_action_keys = {
       open = "<CR>",
       vsplit = "v",

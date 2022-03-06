@@ -66,7 +66,7 @@ return require("packer").startup({
     use({
       "iamcco/markdown-preview.nvim",
       run = function()
-        vim.fn["mkdp#util#install"]()
+        vim.cmd([[ call mkdp#util#install" ]])
       end,
     })
     use("hrsh7th/nvim-cmp")
@@ -94,6 +94,7 @@ return require("packer").startup({
         require("trouble").setup()
       end,
     })
+    use("p00f/clangd_extensions.nvim")
     use("simrat39/rust-tools.nvim")
     -- temporary until glepnir is back?
     use("tami5/lspsaga.nvim")
@@ -158,6 +159,7 @@ return require("packer").startup({
     use("nvim-telescope/telescope.nvim")
     use("nvim-telescope/telescope-fzy-native.nvim")
     use("tami5/sql.nvim")
+    use("nvim-telescope/telescope-ui-select.nvim")
     use("nvim-telescope/telescope-frecency.nvim")
     use("nvim-telescope/telescope-dap.nvim")
     --  use 'wincent/scalpel'

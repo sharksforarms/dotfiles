@@ -11,6 +11,18 @@ cmp.setup({
       require("luasnip").lsp_expand(args.body)
     end,
   },
+  sorting = {
+    comparators = {
+      cmp.config.compare.offset,
+      cmp.config.compare.exact,
+      cmp.config.compare.recently_used,
+      require("clangd_extensions.cmp_scores"),
+      cmp.config.compare.kind,
+      cmp.config.compare.sort_text,
+      cmp.config.compare.length,
+      cmp.config.compare.order,
+    },
+  },
 
   mapping = {
     ["<C-p>"] = cmp.mapping.select_prev_item(),
@@ -35,7 +47,7 @@ cmp.setup({
       end
     end,
     ["<C-d>"] = cmp.mapping.scroll_docs(4),
-    ["<C-f>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-u>"] = cmp.mapping.scroll_docs(-4),
     ["<C-Space>"] = cmp.mapping.complete(),
     ["<C-e>"] = cmp.mapping.close(),
     ["<CR>"] = cmp.mapping.confirm({

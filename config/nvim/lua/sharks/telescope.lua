@@ -67,6 +67,7 @@ function M.setup()
   telescope.load_extension("fzy_native")
   telescope.load_extension("octo")
   telescope.load_extension("dap")
+  telescope.load_extension("ui-select")
 
   keymap_lua("n", "<leader>fe", "require('telescope.builtin').file_browser()")
 end
@@ -93,6 +94,16 @@ function M.dotfiles(opts)
   local opts = require("telescope.themes").get_dropdown({
     find_command = { "rg", "--no-ignore", "--files", "--hidden" },
     cwd = "~/dotfiles", --vim.fn.stdpath("config"),
+    file_ignore_patterns = { ".git", "plugged/" },
+  })
+
+  require("telescope.builtin").find_files(opts)
+end
+
+function M.notes(opts)
+  local opts = require("telescope.themes").get_dropdown({
+    find_command = { "rg", "--no-ignore", "--files", "--hidden" },
+    cwd = "~/src/fastly/ethompson_notes/", --vim.fn.stdpath("config"),
     file_ignore_patterns = { ".git", "plugged/" },
   })
 

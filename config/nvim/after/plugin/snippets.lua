@@ -91,3 +91,4 @@ ls.snippets = {
     ls.parser.parse_snippet({ trig = "fn" }, "/// $1\nfn $2($3) ${4:-> $5 }\\{\n\t$0\n\\}"),
   },
 }
+ls.filetype_set("cpp", { "c" })

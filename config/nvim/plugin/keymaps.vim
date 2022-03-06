@@ -4,6 +4,7 @@
 
 " Quickly edit/reload the vimrc file
 noremap <silent><leader>ev :lua require('sharks.telescope').dotfiles()<cr>
+noremap <silent><leader>ej :lua require('sharks.telescope').notes()<cr>
 noremap <silent><leader>et :vsplit ~/TODO.md<cr>
 noremap <silent><leader>en :vsplit ~/NOTES.md<cr>
 

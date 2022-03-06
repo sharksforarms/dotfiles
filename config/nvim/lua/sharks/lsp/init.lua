@@ -77,9 +77,8 @@ local rust_opts = {
   tools = {
     autoSetHints = true,
     hover_with_actions = true,
-    runnables = {
-      use_telescope = true,
-    },
+    runnables = { use_telescope = true },
+    debuggables = { use_telescope = true },
     inlay_hints = {
       show_parameter_hints = false,
       parameter_hints_prefix = "",
@@ -97,6 +96,8 @@ local rust_opts = {
     --name = "rt_lldb"
     --}
   },
+  runnables = { use_telescope = true },
+  debuggables = { use_telescope = true },
   server = {
     --cmd = {"/home/sharks/source/dotfiles/misc/misc/rust-analyzer-wrapper"},
     on_attach = on_attach,
@@ -106,7 +107,6 @@ local rust_opts = {
       -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
       ["rust-analyzer"] = {
         updates = { channel = "stable" },
-        notifications = { cargoTomlNotFound = false },
         assist = {
           importGroup = true,
           importMergeBehaviour = "full",
@@ -126,7 +126,7 @@ local rust_opts = {
         checkOnSave = {
           command = "clippy",
           allFeatures = true,
-          extraArgs = "--tests",
+          extraArgs = { "--tests" },
         },
 
         completion = {
@@ -215,8 +215,7 @@ end
 --   capabilities = require'lsp'.capabilities
 -- }
 
--- local util = require 'lspconfig/util'
-nvim_lsp.clangd.setup({
+local clangd_args = {
   on_attach = on_attach,
   -- cmd = { "clangd", "--background-index", "--compile-commands-dir", "build/" },
   cmd = {
@@ -229,7 +228,7 @@ nvim_lsp.clangd.setup({
     "--clang-tidy-checks=clang-diagnostic-*,clang-analyzer-*,-*,bugprone*,modernize*,performance*,-modernize-pass-by-value,-modernize-use-auto,-modernize-use-using,-modernize-use-trailing-return-type",
     -- "--clang-tidy-checks=*",
   },
-  filetypes = { "c", "cpp", "objc", "objcpp" },
+  filetypes = { "c", "cc", "cpp" },
   init_options = {
     compilationDatabasePath = "build",
   },
@@ -254,12 +253,34 @@ nvim_lsp.clangd.setup({
     },
   },
   -- root_dir=util.root_pattern("build/compile_commands.json", "compile_commands.json", "compile_flags.txt", ".git") or util.path.dirname
+}
+
+require("clangd_extensions").setup({
+  server = clangd_args,
+  extensions = {
+    autoSetHints = true,
+    hover_with_actions = true,
+    inlay_hints = {
+      only_current_line = false,
+      only_current_line_autocmd = "CursorHold",
+      show_parameter_hints = true,
+      parameter_hints_prefix = "<- ",
+      other_hints_prefix = "=> ",
+      max_len_align = false,
+      max_len_align_padding = 1,
+      right_align = false,
+      right_align_padding = 7,
+      highlight = "Comment",
+    },
+  },
 })
+
 nvim_lsp.pylsp.setup({
   -- pip install 'python-language-server[all]'
   cmd = { os.getenv("HOME") .. "/.virtualenvs/pyls/bin/pyls" },
   on_attach = on_attach,
 })
+
 nvim_lsp.gopls.setup({
   on_attach = on_attach,
   root_dir = util.root_pattern(".git"),
@@ -307,23 +328,6 @@ require("lspconfig").sumneko_lua.setup({
 require("lspconfig").perlpls.setup({
   on_attach = on_attach,
 })
-
---require'lspconfig'.ansiblels.setup {
---on_attach = on_attach,
---filetypes = { "yml", "yaml", "yaml.ansible" }
---}
-
---nvim_lsp["yamlls"].setup {
---settings = {
---yaml =
---{
---schemas =
---{
---['https://raw.githubusercontent.com/docker/cli/master/cli/compose/schema/data/config_schema_v3.9.json'] = '/docker-compose.yml',
---['https://raw.githubusercontent.com/docker/cli/master/cli/compose/schema/data/config_schema_v3.9.json'] = '/docker-compose.yaml',
---['https://schema-for-ansible'] = 'ansible/**.yaml'
---}
---}
---},
---on_attach = on_attach,
---}
+require("lspconfig").tsserver.setup({
+  on_attach = on_attach,
+})

@@ -9,6 +9,9 @@
     - role: sudo
       tags:
         - sudo
+    - role: obsidian
+      tags:
+        - obsidian
     - role: zsh
       tags:
         - zsh

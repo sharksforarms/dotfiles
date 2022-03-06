@@ -35,5 +35,5 @@ packages:
   - cmake
   - clang
   - automake
-  - autotools
+  - autotools-dev
   - libtool
