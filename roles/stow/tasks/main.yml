@@ -23,7 +23,6 @@
 - name: Run stow
   shell: |
     # bin
-    mkdir ~/tools/
     stow --dotfiles -R --verbose=3 -t ~/ tools/
     # config
     stow --dotfiles -R --verbose=3 -t ~/.config/ config/
@@ -40,7 +39,6 @@
     # tmux
     stow --dotfiles -R --verbose=3 -t ~/ tmux/
     # misc
-    mkdir ~/misc/
     stow --dotfiles -R --verbose=3 -t ~/ misc/
   register: stow_result
   failed_when:

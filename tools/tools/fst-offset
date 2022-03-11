@@ -1,0 +1,12 @@
+#!/bin/bash
+
+function offset {
+    ip=$(dig +short "$1" | tail -n1)
+    if [ -z "$ip" ]; then
+        echo "no IP for $1"
+        return
+    fi
+    dig +short @ns1.fastly.host -x "$ip"
+}
+
+offset $1
