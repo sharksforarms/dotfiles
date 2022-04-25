@@ -37,3 +37,4 @@ packages:
   - automake
   - autotools-dev
   - libtool
+  - exuberant-ctags

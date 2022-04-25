@@ -84,11 +84,11 @@ nnoremap <silent><leader><leader>o :lua require("harpoon.ui").toggle_quick_menu(
 :command! Keys lua require('telescope.builtin').keymaps()
 :command! Highlights lua require('telescope.builtin').highlights()
 :command! Fmt lua vim.lsp.buf.formatting_sync()
-:command! Files lua require('sharks.telescope').search_all_files()
+:command! Files lua require('sharks.telescope').find_all_files()
 
 " conflicts with C-R,C-W in :command line
 "cmap <C-R> <Plug>(TelescopeFuzzyCommandSearch)
-nnoremap <leader>ps <cmd>lua require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ")})<CR>
+nnoremap <leader>ps <cmd>lua require('sharks.telescope').search()<CR>
 nnoremap <silent><leader>tg <cmd>lua require'telescope.builtin'.live_grep{}<CR>
 nnoremap <silent><leader>tp <cmd>lua require'telescope.builtin'.git_files{}<CR>
 "nnoremap <silent><C-p> <cmd>lua require'telescope.builtin'.find_files{}<CR>

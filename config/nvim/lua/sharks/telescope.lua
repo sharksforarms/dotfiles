@@ -72,6 +72,10 @@ function M.setup()
   keymap_lua("n", "<leader>fe", "require('telescope.builtin').file_browser()")
 end
 
+function M.search()
+  require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ")})
+end
+
 function M.find_files()
   local opts = require("telescope.themes").get_dropdown({
     attach_mappings = function(_, map)
@@ -87,9 +91,11 @@ function M.find_files()
 
       return true
     end,
+    file_ignore_patterns = { "/build/" },
   })
   require("telescope.builtin").find_files(opts)
 end
+
 function M.dotfiles(opts)
   local opts = require("telescope.themes").get_dropdown({
     find_command = { "rg", "--no-ignore", "--files", "--hidden" },
@@ -110,7 +116,7 @@ function M.notes(opts)
   require("telescope.builtin").find_files(opts)
 end
 
-function M.search_all_files()
+function M.find_all_files()
   local opts = require("telescope.themes").get_dropdown({
     find_command = { "rg", "--no-ignore", "--files", "--hidden" },
   })

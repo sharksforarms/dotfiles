@@ -84,6 +84,13 @@ M.keymap("n", "<leader>tt", "<CMD>Trouble<CR>")
 -- Clear highlights
 M.keymap("n", "<leader>l", "<CMD>nohl<CR>")
 
+-- tagbar
+M.keymap("n", "<leader>to", "<CMD>TagbarToggle<CR>")
+
+-- C development
+M.keymap_lua("n", "mM", "vim.cmd(':Man 2 ' .. vim.fn.input('Man 2 > '))")
+M.keymap("n", "<leader>cv", "<CMD>ClangdSwitchSourceHeaderVSplit<CR>")
+
 M.keymap_lua("n", "<leader>$", "require('hop').hint_words()", {})
 
 return M

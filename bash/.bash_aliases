@@ -46,25 +46,12 @@ alias gitlog="git log --pretty=oneline"
 alias len="xargs echo -n | wc -c"
 alias cargoupdate="cargo install --list | egrep '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' ' | xargs -i cargo install --force {}"
 
+gch() {
+    git checkout "$(git branch --all | fzf| tr -d '[:space:]')"
+}
+
 function hl() {
     egrep --color "$1|"
-}
-
-function update_rust_analyzer {
-    curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-linux -o ~/.local/bin/rust-analyzer
-    chmod +x ~/.local/bin/rust-analyzer
-}
-
-function update_neovim {
-    cd ~/source/neovim \
-    && sudo git clean -dfx \
-    && git stash \
-    && git pull \
-    && git stash pop \
-    && make CMAKE_BUILD_TYPE=RelWithDebInfo \
-    && sudo make install \
-    && cd - \
-    && nvim +PlugInstall +UpdateRemotePlugins +qa
 }
 
 # Add an "alert" alias for long running commands.  Use like so:
