@@ -78,6 +78,12 @@ return require("packer").startup({
     use("hrsh7th/cmp-buffer")
     use("f3fora/cmp-spell")
     use("saadparwaiz1/cmp_luasnip")
+    use({
+      "rafamadriz/friendly-snippets",
+      config = function()
+        require("luasnip.loaders.from_vscode").lazy_load()
+      end,
+    })
     use("hrsh7th/vim-vsnip")
     use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
     use("nvim-treesitter/nvim-treesitter-textobjects")
@@ -116,7 +122,7 @@ return require("packer").startup({
     use("tjdevries/complextras.nvim")
 
     -- Snippets
-    use("norcalli/snippets.nvim")
+    -- use("norcalli/snippets.nvim")
     use("L3MON4D3/LuaSnip")
 
     use("machakann/vim-highlightedyank")

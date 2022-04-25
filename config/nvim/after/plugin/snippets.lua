@@ -1,79 +1,47 @@
-local snippets = require("snippets")
-local indent = require("snippets.utils").match_indentation
-
-snippets.set_ux(require("snippets.inserters.floaty"))
-snippets.use_suggested_mappings()
-
-local snips = {}
-
--- Global snippets
-snips._global = {
-  ["date"] = [[${=os.date("%Y-%m-%d")}]],
-  --["helloworld"] = [[${=examplefn()}]],
-}
-
--- Rust snippets
-snips.rust = {}
-snips.rust.print = [[println!("${2:$1}: {:?}", ${1});]]
-snips.rust.testmod = [[
-#[cfg(test)]
-mod tests {
-  use super::*;
-
-  #[test]
-  fn test_$0() {
-  }
-
-}]]
-snips.rust.test = indent([[
-#[test]
-fn test_$0() {
-}
-]])
-
--- Markdown snippets
-snips.markdown = {}
-snips.markdown.link = indent([[
-[$0]($1)
-]])
-
--- Add to snippets.nvim
-snippets.snippets = snips
-
---
--- luasnip experimentation below
---
-
 local ls = require("luasnip")
-local s = ls.s
-local sn = ls.sn
-local t = ls.t
-local i = ls.i
-local f = ls.f
-local c = ls.c
-local d = ls.d
 
-local function copy(args)
-  return args[1]
-end
+-- some shorthands...
+local s = ls.snippet
+local sn = ls.snippet_node
+local t = ls.text_node
+local i = ls.insert_node
+local f = ls.function_node
+local c = ls.choice_node
+local d = ls.dynamic_node
+local r = ls.restore_node
+local l = require("luasnip.extras").lambda
+local rep = require("luasnip.extras").rep
+local p = require("luasnip.extras").partial
+local m = require("luasnip.extras").match
+local n = require("luasnip.extras").nonempty
+local dl = require("luasnip.extras").dynamic_lambda
+local fmt = require("luasnip.extras.fmt").fmt
+local fmta = require("luasnip.extras.fmt").fmta
+local types = require("luasnip.util.types")
+local conds = require("luasnip.extras.expand_conditions")
 
-local function char_count_same(c1, c2)
-  local line = vim.api.nvim_get_current_line()
-  local _, ct1 = string.gsub(line, c1, "")
-  local _, ct2 = string.gsub(line, c2, "")
-  return ct1 == ct2
-end
+ls.config.set_config({
+  history = true,
+  update_events = "TextChanged,TextChangedI",
+  delete_check_events = "TextChanged",
+  ext_opts = {
+    [types.choiceNode] = {
+      active = {
+        virt_text = { { "choiceNode", "Comment" } },
+      },
+    },
+  },
+  ext_base_prio = 300,
+  ext_prio_increase = 1,
+  enable_autosnippets = true,
+  store_selection_keys = "<Tab>",
+  ft_func = function()
+    return vim.split(vim.bo.filetype, ".", true)
+  end,
+})
 
-local function even_count(c)
-  local line = vim.api.nvim_get_current_line()
-  local _, ct = string.gsub(line, c, "")
-  return ct % 2 == 0
-end
 
-local function neg(fn, ...)
-  return not fn(...)
-end
-
+-- Make sure to not pass an invalid command, as io.popen() may write over nvim-text.
 local function bash(_, _, command)
   local file = io.popen(command, "r")
   local res = {}
@@ -83,12 +51,37 @@ local function bash(_, _, command)
   return res
 end
 
-ls.snippets = {
-  all = {
-    ls.snippet("date", ls.function_node(bash, {}, "date +'%Y-%m-%d'")),
-  },
-  rust = {
-    ls.parser.parse_snippet({ trig = "fn" }, "/// $1\nfn $2($3) ${4:-> $5 }\\{\n\t$0\n\\}"),
-  },
-}
+ls.add_snippets("all", {
+  s("date", f(bash, {}, { user_args = { "date +'%Y-%m-%d'" } })),
+}, {
+  key = "all",
+})
+
+-- set type to "autosnippets" for adding autotriggered snippets.
+ls.add_snippets("all", {
+  s("autotrigger", {
+    t("autosnippet"),
+  }),
+}, {
+  type = "autosnippets",
+  key = "all_auto",
+})
+
+ls.filetype_extend("lua", { "c" })
 ls.filetype_set("cpp", { "c" })
+
+-- <c-k> is my expansion key
+-- this will expand the current item or jump to the next item within the snippet.
+vim.keymap.set({ "i", "s" }, "<c-k>", function()
+  if ls.expand_or_jumpable() then
+    ls.expand_or_jump()
+  end
+end, { silent = true })
+
+-- <c-j> is my jump backwards key.
+-- this always moves to the previous item within the snippet
+vim.keymap.set({ "i", "s" }, "<c-j>", function()
+  if ls.jumpable(-1) then
+    ls.jump(-1)
+  end
+end, { silent = true })
