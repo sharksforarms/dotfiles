@@ -36,6 +36,8 @@
     stow --dotfiles -R --verbose=3 -t ~/ git/
     # bash
     stow --dotfiles -R --verbose=3 -t ~/ bash/
+    # gdb
+    stow --dotfiles -R --verbose=3 -t ~/ gdb/
     # tmux
     stow --dotfiles -R --verbose=3 -t ~/ tmux/
     # misc
