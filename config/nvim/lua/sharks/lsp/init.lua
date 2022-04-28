@@ -221,13 +221,13 @@ local clangd_args = {
   cmd = {
     "clangd",
     "--background-index",
-    "--suggest-missing-includes",
     "--clang-tidy",
     "--header-insertion=iwyu",
     "--cross-file-rename",
     "--clang-tidy-checks=clang-diagnostic-*,clang-analyzer-*,-*,bugprone*,modernize*,performance*,-modernize-pass-by-value,-modernize-use-auto,-modernize-use-using,-modernize-use-trailing-return-type",
     -- "--clang-tidy-checks=*",
   },
+  root_dir=util.root_pattern(".git") or util.path.dirname,
   filetypes = { "c", "cc", "cpp" },
   init_options = {
     compilationDatabasePath = "build",
