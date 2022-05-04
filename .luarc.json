@@ -2,6 +2,18 @@
     "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
     "Lua.diagnostics.globals": [
         "vim",
-        "require"
+        "require",
+        "io",
+        "table",
+        "pcall",
+        "string",
+        "print",
+        "ipairs",
+        "error",
+        "tostring",
+        "os",
+        "package",
+        "_G",
+        "pairs"
     ]
 }
