@@ -38,7 +38,7 @@ local on_attach = function(client)
     client.config.flags.allow_incremental_sync = true
   end
 
-  if client.resolved_capabilities.document_highlight then
+  if client.server_capabilities.document_highlight then
     vim.api.nvim_exec(
       [[
     augroup lsp_document_highlight

@@ -10,7 +10,6 @@ local action_state = require("telescope.actions.state")
 local action_set = require("telescope.actions.set")
 local conf = require("telescope.config").values
 local Path = require("plenary.path")
-local keymap_lua = require("sharks.keymap").keymap_lua
 
 function M.setup()
   telescope.setup({
@@ -68,8 +67,6 @@ function M.setup()
   telescope.load_extension("octo")
   telescope.load_extension("dap")
   telescope.load_extension("ui-select")
-
-  keymap_lua("n", "<leader>fe", "require('telescope.builtin').file_browser()")
 end
 
 function M.search()
@@ -120,6 +117,16 @@ function M.find_all_files()
   local opts = require("telescope.themes").get_dropdown({
     find_command = { "rg", "--no-ignore", "--files", "--hidden" },
   })
+  require("telescope.builtin").find_files(opts)
+end
+
+function M.h2o_configs(opts)
+  local opts = require("telescope.themes").get_dropdown({
+    find_command = { "rg", "--no-ignore", "--files", "--hidden", "--iglob", "h2o*.conf" },
+    file_ignore_patterns = { ".git", "plugged/" },
+    default_text = 'tmp',
+  })
+
   require("telescope.builtin").find_files(opts)
 end
 

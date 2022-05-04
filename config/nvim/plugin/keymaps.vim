@@ -97,6 +97,7 @@ nnoremap <silent><C-p> <cmd>lua require'sharks.telescope'.find_files()<CR>
 "nnoremap <silent><leader>ch <cmd>lua require('telescope.builtin').command_history{}<CR>
 nnoremap <silent><leader>qf :lua require'telescope.builtin'.quickfix{}<CR>
 nnoremap <silent><leader>gc    <cmd>lua require'telescope.builtin'.git_branches{}<CR>
+nnoremap <leader>hc <cmd>lua require('sharks.telescope').h2o_configs()<CR>
 
 " not really working:
 nnoremap <silent><leader>fz <cmd>lua require('telescope.builtin').current_buffer_fuzzy_find{}<CR>

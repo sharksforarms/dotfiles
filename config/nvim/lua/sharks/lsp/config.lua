@@ -1,8 +1,7 @@
 local saga = require("lspsaga")
-local keymap = require("sharks.keymap").keymap
-local keymap_lua = require("sharks.keymap").keymap_lua
 
 local M = {}
+local init_keymaps;
 
 M.init = function()
   local cfg = {
@@ -163,36 +162,36 @@ end
 
 function init_keymaps()
   -- Formatting
-  keymap_lua("n", "<leader>=", "vim.lsp.buf.formatting_sync()")
+  vim.keymap.set("n", "<leader>=", "vim.lsp.buf.formatting_sync()")
 
   -- Code action
-  keymap_lua("n", "ga", "require('sharks.lsp.config').code_action()")
-  keymap("v", "ga", "<cmd>'<,'>lua require('sharks.lsp.config').code_action_range()<CR>")
-  keymap("x", "ga", "<cmd>'<,'>lua require('sharks.lsp.config').code_action_range()<CR>")
+  vim.keymap.set("n", "ga", require('sharks.lsp.config').code_action)
+  vim.keymap.set("v", "ga", require('sharks.lsp.config').code_action_range)
+  vim.keymap.set("x", "ga", require('sharks.lsp.config').code_action_range)
 
   -- Symbols
-  keymap_lua("n", "gn", "require('sharks.lsp.config').symbol_rename()")
-  keymap_lua("n", "gd", "require('sharks.lsp.config').symbol_definition()")
-  keymap_lua("n", "<C+]>", "require('sharks.lsp.config').symbol_definition()")
-  keymap_lua("n", "gD", "require('sharks.lsp.config').symbol_implementation()")
-  keymap_lua("n", "gT", "require('sharks.lsp.config').symbol_type()")
-  keymap_lua("n", "gR", "require('sharks.lsp.config').symbol_references()")
-  keymap_lua("n", "g0", "require('sharks.lsp.config').symbol_document()")
-  keymap_lua("n", "gW", "require('sharks.lsp.config').symbol_workspace()")
+  vim.keymap.set("n", "gn", require('sharks.lsp.config').symbol_rename)
+  vim.keymap.set("n", "gd", require('sharks.lsp.config').symbol_definition)
+  vim.keymap.set("n", "<C+]>", require('sharks.lsp.config').symbol_definition)
+  vim.keymap.set("n", "gD", require('sharks.lsp.config').symbol_implementation)
+  vim.keymap.set("n", "gT", require('sharks.lsp.config').symbol_type)
+  vim.keymap.set("n", "gR", require('sharks.lsp.config').symbol_references)
+  vim.keymap.set("n", "g0", require('sharks.lsp.config').symbol_document)
+  vim.keymap.set("n", "gW", require('sharks.lsp.config').symbol_workspace)
 
   -- Docs
-  keymap_lua("n", "K", "require('sharks.lsp.config').doc_hover()")
-  keymap_lua("n", "<C-u>", "require('sharks.lsp.config').doc_scroll_up('<C-u>')")
-  keymap_lua("n", "<C-d>", "require('sharks.lsp.config').doc_scroll_down('<C-d>')")
-  --keymap_lua('n', '<leader>k', "require('sharks.lsp.config').doc_signature()")
-  keymap_lua("i", "<C-y><C-y>", "require('sharks.lsp.config').doc_signature()")
+  vim.keymap.set("n", "K", require('sharks.lsp.config').doc_hover)
+  vim.keymap.set("n", "<C-u>", function() require('sharks.lsp.config').doc_scroll_up('<C-u>') end)
+  vim.keymap.set("n", "<C-d>", function() require('sharks.lsp.config').doc_scroll_down('<C-d>') end)
+  --vim.keymap.set('n', '<leader>k', "require('sharks.lsp.config').doc_signature()")
+  vim.keymap.set("i", "<C-y><C-y>", require('sharks.lsp.config').doc_signature)
 
   -- Diagnostic
-  vim.cmd([[ 
+  vim.cmd([[
   autocmd CursorHold * :lua require('sharks.lsp.config').diagnostic_preview()
   ]])
-  keymap_lua("n", "<leader>dj", "require('sharks.lsp.config').diagnostic_next()")
-  keymap_lua("n", "<leader>dk", "require('sharks.lsp.config').diagnostic_prev()")
+  vim.keymap.set("n", "<leader>dj", require('sharks.lsp.config').diagnostic_next)
+  vim.keymap.set("n", "<leader>dk", require('sharks.lsp.config').diagnostic_prev)
 
   vim.cmd("hi FloatBorder guifg=#777777")
   vim.cmd("hi LspSagaDiagnosticBorder guifg=#7e8294")

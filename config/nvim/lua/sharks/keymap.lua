@@ -2,19 +2,6 @@ local api = vim.api
 
 local M = {}
 
--- Util functions
-
--- normal keymap
-M.keymap = function(mode, key, action)
-  api.nvim_set_keymap(mode, key, action, { noremap = true, silent = true })
-end
-
--- lua wrapper keymap
-M.keymap_lua = function(mode, key, action)
-  local action = "<CMD>lua " .. action .. "<CR>"
-  api.nvim_set_keymap(mode, key, action, { noremap = true, silent = true })
-end
-
 M.quickfix_toggle = function()
   local windows = api.nvim_tabpage_list_wins(0)
   local closed = false
@@ -72,25 +59,33 @@ end
 -- Start keymaps
 
 -- Quickfix actions
-M.keymap("n", "<leader>qe", "<CMD>lua require('sharks.diagnostics').errors_to_quickfix()<CR><CMD>copen<CR>")
-M.keymap("n", "<leader>qw", "<CMD>lua require('sharks.diagnostics').warnings_to_quickfix()<CR><CMD>copen<CR>")
-M.keymap_lua("n", "<leader>qo", "require('sharks.keymap').quickfix_toggle()")
-M.keymap_lua("n", "<leader>ql", "require('sharks.keymap').quickfix_clear()")
-M.keymap_lua("n", "<leader>qt", "require('telescope.builtin').quickfix()")
-M.keymap_lua("n", "<leader>j", "require('sharks.keymap').qf_next()")
-M.keymap_lua("n", "<leader>k", "require('sharks.keymap').qf_prev()")
-M.keymap("n", "<leader>tt", "<CMD>Trouble<CR>")
+vim.keymap.set("n", "<leader>qe", function()
+  require('sharks.diagnostics').errors_to_quickfix()
+  vim.cmd('copen')
+end)
+vim.keymap.set("n", "<leader>qw", function()
+  require('sharks.diagnostics').warnings_to_quickfix()
+  vim.cmd('copen')
+end)
+vim.keymap.set("n", "<leader>qo", require('sharks.keymap').quickfix_toggle())
+vim.keymap.set("n", "<leader>ql", require('sharks.keymap').quickfix_clear())
+vim.keymap.set("n", "<leader>qt", require('telescope.builtin').quickfix())
+vim.keymap.set("n", "<leader>j", require('sharks.keymap').qf_next())
+vim.keymap.set("n", "<leader>k", require('sharks.keymap').qf_prev())
+vim.keymap.set("n", "<leader>tt", function()
+  vim.cmd([[ Trouble<cr> ]])
+end)
 
 -- Clear highlights
-M.keymap("n", "<leader>l", "<CMD>nohl<CR>")
+vim.keymap.set("n", "<leader>l", "<CMD>nohl<CR>")
 
 -- tagbar
-M.keymap("n", "<leader>to", "<CMD>TagbarToggle<CR>")
+vim.keymap.set("n", "<leader>to", "<CMD>TagbarToggle<CR>")
 
 -- C development
-M.keymap_lua("n", "mM", "vim.cmd(':Man 2 ' .. vim.fn.input('Man 2 > '))")
-M.keymap("n", "<leader>cv", "<CMD>ClangdSwitchSourceHeaderVSplit<CR>")
+vim.keymap.set("n", "mM", "vim.cmd(':Man 2 ' .. vim.fn.input('Man 2 > '))")
+vim.keymap.set("n", "<leader>cv", "<CMD>ClangdSwitchSourceHeaderVSplit<CR>")
 
-M.keymap_lua("n", "<leader>$", "require('hop').hint_words()", {})
+vim.keymap.set("n", "<leader>$", "require('hop').hint_words()")
 
 return M

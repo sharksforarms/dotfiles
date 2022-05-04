@@ -5,15 +5,13 @@ require("dap-python").setup("/usr/bin/python3")
 
 require("nvim-dap-virtual-text").setup()
 
-local keymap_lua = require("sharks.keymap").keymap_lua
-
-keymap_lua("n", "<leader>dd", "require('dapui').toggle()")
-keymap_lua("n", "<leader>db", "require('dap').toggle_breakpoint()")
-keymap_lua("n", "<leader>dc", "require('dap').continue()")
-keymap_lua("n", "<leader>dn", "require('dap').step_over()")
-keymap_lua("n", "<leader>di", "require('dap').step_into()")
-keymap_lua("n", "<leader>do", "require('dap').step_out()")
-keymap_lua("n", "<leader>dr", "require('dap').run_last()")
+vim.keymap.set("n", "<leader>dd", require('dapui').toggle)
+vim.keymap.set("n", "<leader>db", require('dap').toggle_breakpoint)
+vim.keymap.set("n", "<leader>dc", require('dap').continue)
+vim.keymap.set("n", "<leader>dn", require('dap').step_over)
+vim.keymap.set("n", "<leader>di", require('dap').step_into)
+vim.keymap.set("n", "<leader>do", require('dap').step_out)
+vim.keymap.set("n", "<leader>dr", require('dap').run_last)
 
 vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "healthError", linehl = "CursorLine", numhl = "" })
 
