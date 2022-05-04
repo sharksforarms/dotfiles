@@ -18,8 +18,6 @@ alias cctags="ctags --languages=C -R"
 alias ccscope="find . -name '*.c' -o -name '*.h' -o -name '*.cpp' -o -name '*.cxx' -o -name '*.hxx' > cscope.files; cscope -b"
 alias cvim="cctags && ccscope && vim"
 alias pvim="vim + -b -c\"set noeol\""
-alias mergeremotemaster="git remote update origin && git merge origin/master"
-alias vundle="vim +PluginInstall +qall"
 alias upper="tr '[:lower:]' '[:upper:]'"
 alias lower="tr '[:upper:]' '[:lower:]'"
 alias open='gnome-open'
@@ -48,6 +46,13 @@ alias cargoupdate="cargo install --list | egrep '^[a-z0-9_-]+ v[0-9.]+:$' | cut 
 
 gch() {
     git checkout "$(git branch --all | fzf| tr -d '[:space:]')"
+}
+
+wssh() {
+    pushd ~/misc-w/work_home/ > /dev/null
+    ./transfer.sh --dotfiles $1
+    popd  > /dev/null
+    ssh $@
 }
 
 function hl() {
