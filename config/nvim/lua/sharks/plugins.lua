@@ -28,7 +28,12 @@ return require("packer").startup({
     use("preservim/nerdtree")
     use("jistr/vim-nerdtree-tabs")
     use("ThePrimeagen/harpoon")
-    use("phaazon/hop.nvim")
+    use({
+      "phaazon/hop.nvim",
+      config = function()
+        require("hop").setup()
+      end
+    })
     use("tpope/vim-dispatch")
     use("tpope/vim-fugitive")
     use("airblade/vim-gitgutter")

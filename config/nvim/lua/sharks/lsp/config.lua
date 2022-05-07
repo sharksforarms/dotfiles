@@ -162,7 +162,8 @@ end
 
 function init_keymaps()
   -- Formatting
-  vim.keymap.set("n", "<leader>=", "vim.lsp.buf.formatting_sync()")
+  vim.keymap.set("n", "<leader>=", vim.lsp.buf.format)
+
 
   -- Code action
   vim.keymap.set("n", "ga", require('sharks.lsp.config').code_action)

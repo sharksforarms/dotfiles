@@ -56,36 +56,80 @@ M.qf_prev = function()
   end
 end
 
--- Start keymaps
+-- START KEYMAPS --
 
--- Quickfix actions
+-- Quickfix menu actions
 vim.keymap.set("n", "<leader>qe", function()
-  require('sharks.diagnostics').errors_to_quickfix()
-  vim.cmd('copen')
+  vim.diagnostic.setqflist({
+    open = true,
+    title = "Language Server (Errors)",
+    severity = vim.diagnostic.severity.ERROR,
+  })
 end)
+
 vim.keymap.set("n", "<leader>qw", function()
-  require('sharks.diagnostics').warnings_to_quickfix()
-  vim.cmd('copen')
-end)
-vim.keymap.set("n", "<leader>qo", require('sharks.keymap').quickfix_toggle())
-vim.keymap.set("n", "<leader>ql", require('sharks.keymap').quickfix_clear())
-vim.keymap.set("n", "<leader>qt", require('telescope.builtin').quickfix())
-vim.keymap.set("n", "<leader>j", require('sharks.keymap').qf_next())
-vim.keymap.set("n", "<leader>k", require('sharks.keymap').qf_prev())
-vim.keymap.set("n", "<leader>tt", function()
-  vim.cmd([[ Trouble<cr> ]])
+  vim.diagnostic.setqflist({
+    open = true,
+    title = "Language Server (Warnings)",
+    severity = vim.diagnostic.severity.WARNING,
+  })
 end)
 
--- Clear highlights
-vim.keymap.set("n", "<leader>l", "<CMD>nohl<CR>")
+vim.keymap.set("n", "<leader>qo", M.quickfix_toggle)
+vim.keymap.set("n", "<leader>ql", M.quickfix_clear)
+vim.keymap.set("n", "<leader>qt", require('telescope.builtin').quickfix)
+vim.keymap.set("n", "<leader>j", M.qf_next)
+vim.keymap.set("n", "<leader>k", M.qf_prev)
+vim.keymap.set("n", "<leader>tt", "<CMD>Trouble<CR>")
 
--- tagbar
-vim.keymap.set("n", "<leader>to", "<CMD>TagbarToggle<CR>")
 
--- C development
+-- C development --
 vim.keymap.set("n", "mM", "vim.cmd(':Man 2 ' .. vim.fn.input('Man 2 > '))")
 vim.keymap.set("n", "<leader>cv", "<CMD>ClangdSwitchSourceHeaderVSplit<CR>")
 
-vim.keymap.set("n", "<leader>$", "require('hop').hint_words()")
+-- General --
+-- clear highlights
+vim.keymap.set("n", "<leader>l", "<CMD>nohl<CR>")
+-- shortcuts
+vim.keymap.set("n", "<leader>ev", require('sharks.telescope').dotfiles)
+vim.keymap.set("n", "<leader>ej", require('sharks.telescope').notes)
+vim.keymap.set("n", "<leader>et", "<CMD>vsplit ~/TODO.md<CR>")
+vim.keymap.set("n", "<leader>en", "<CMD>vsplit ~/NOTES.md<CR>")
+-- move visual selection up/down
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+-- select last inserted text
+vim.keymap.set("n", "gV", "`[v`]")
+-- previous tab
+vim.keymap.set("n", "gr", "gT")
+-- faster escape
+vim.keymap.set("i", "jk", "<ESC>")
+vim.keymap.set("i", "kj", "<ESC>")
+-- jump to start and end of line
+vim.keymap.set({ "n", "v" }, "H", "^")
+vim.keymap.set({ "n", "v" }, "L", "$")
+-- clipboard
+vim.keymap.set({ "n", "v" }, "<leader>pp", '"+p')
+vim.keymap.set({ "n", "v" }, "<leader>cc", '"+y')
+-- terminal
+vim.keymap.set("t", "<Esc>", '<C-\\><C-n>', { buffer = true })
+-- no arrow keys >:)
+vim.keymap.set({ "n", "v", "i" }, "<up>", "<NOP>")
+vim.keymap.set({ "n", "v", "i" }, "<down>", "<NOP>")
+vim.keymap.set({ "n", "v", "i" }, "<left>", "<NOP>")
+vim.keymap.set({ "n", "v", "i" }, "<right>", "<NOP>")
+-- external json format
+vim.keymap.set("n", "<leader><leader>jq", ":%!python3 -m json.tool<CR>", { silent = true })
+
+-- Plugin: tagbar
+vim.keymap.set("n", "<leader>to", "<CMD>TagbarToggle<CR>")
+
+-- Plugin: hop
+vim.keymap.set("n", "<leader>$", require('hop').hint_words)
+
+
+-- NOTES: (keymaps to remember)
+-- g<c-g> -- show stats col/line/etc
+
 
 return M

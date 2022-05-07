@@ -9,6 +9,7 @@ end
 vim.g.mapleader = " "
 
 require("sharks.globals")
+require("sharks.keymap")
 require("sharks.lsp")
 require("sharks.telescope").setup()
 require("sharks.statusline").setup()

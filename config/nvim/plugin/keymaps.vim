@@ -3,61 +3,58 @@
 "
 
 " Quickly edit/reload the vimrc file
-noremap <silent><leader>ev :lua require('sharks.telescope').dotfiles()<cr>
-noremap <silent><leader>ej :lua require('sharks.telescope').notes()<cr>
-noremap <silent><leader>et :vsplit ~/TODO.md<cr>
-noremap <silent><leader>en :vsplit ~/NOTES.md<cr>
+" noremap <silent><leader>ev :lua require('sharks.telescope').dotfiles()<cr>
+" noremap <silent><leader>ej :lua require('sharks.telescope').notes()<cr>
+" noremap <silent><leader>et :vsplit ~/TODO.md<cr>
+" noremap <silent><leader>en :vsplit ~/NOTES.md<cr>
 
 " move visual selection up and down
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
-
-" Keymap for replacing up to next _
-noremap <leader>m ct_
+" vnoremap J :m '>+1<CR>gv=gv
+" vnoremap K :m '<-2<CR>gv=gv
 
 " <leader>q shows stats
-nnoremap <leader>q g<c-g>
+" nnoremap <leader>q g<c-g>
 
 " select last inserted text
-nnoremap gV `[v`]
+" nnoremap gV `[v`]
 
 " previous tab
-nnoremap gr gT
+" nnoremap gr gT
 
 " Faster escape
-inoremap jk <esc>
-inoremap kj <esc>
-inoremap <C-c> <esc>
+" inoremap jk <esc>
+" inoremap kj <esc>
+" inoremap <C-c> <esc>
 
 " Jump to start and end of line using the home row keys
-map H ^
-map L $
+" map H ^
+" map L $
 
 " scroll and center
 "nnoremap <silent> <c-d> <c-d>zz
 "nnoremap <silent> <c-u> <c-u>zz
 
 " X clipboard integration
-nnoremap <leader>pp "+p
-vnoremap <leader>pp "+p
-nnoremap <leader>cc "+y
-vnoremap <leader>cc "+y
+" nnoremap <leader>pp "+p
+" vnoremap <leader>pp "+p
+" nnoremap <leader>cc "+y
+" vnoremap <leader>cc "+y
 
 " Terminal escape
 au TermOpen * tnoremap <buffer> <Esc> <c-\><c-n>
-tnoremap <buffer> <Esc> <c-\><c-n>
+" tnoremap <buffer> <Esc> <c-\><c-n>
 au TermOpen * nnoremap <buffer> oo i<Up><CR><c-\><c-n>
 au FileType fzf tunmap <buffer> <Esc>
 
 " No arrow keys >:) --- force usage of the home row
-map <up> <nop>
-map <down> <nop>
-map <left> <nop>
-map <right> <nop>
-imap <up> <nop>
-imap <down> <nop>
-imap <left> <nop>
-imap <right> <nop>
+" map <up> <nop>
+" map <down> <nop>
+" map <left> <nop>
+" map <right> <nop>
+" imap <up> <nop>
+" imap <down> <nop>
+" imap <left> <nop>
+" imap <right> <nop>
 
 " Alias
 :command! WQ wq
@@ -67,7 +64,7 @@ imap <right> <nop>
 :command! Qa qa
 
 " JSON reformat
-noremap <silent><leader><leader>jq :%!python3 -m json.tool<cr>
+" noremap <silent><leader><leader>jq :%!python3 -m json.tool<cr>
 
 "
 " PLUGINS
