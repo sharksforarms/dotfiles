@@ -47,6 +47,7 @@ select-word-style bash
 export PATH=$PATH:$HOME/tools/
 export PATH=$PATH:$HOME/tools-w/
 export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:$HOME/go/bin/
 export PATH=$PATH:$HOME/.local/bin
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
