@@ -54,6 +54,12 @@ wssh() {
     popd  > /dev/null
     ssh $@
 }
+wwssh() {
+    pushd ~/misc-w/work_home/ > /dev/null
+    ./transfer.sh $1
+    popd  > /dev/null
+    ssh $@
+}
 
 function hl() {
     egrep --color "$1|"
