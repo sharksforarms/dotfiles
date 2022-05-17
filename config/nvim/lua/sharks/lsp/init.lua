@@ -275,25 +275,25 @@ require("clangd_extensions").setup({
   },
 })
 
-nvim_lsp.pylsp.setup({
-  -- pip install 'python-language-server[all]'
-  cmd = { os.getenv("HOME") .. "/.virtualenvs/pyls/bin/pyls" },
-  on_attach = on_attach,
-})
+-- nvim_lsp.pylsp.setup({
+--   -- pip install 'python-language-server[all]'
+--   cmd = { os.getenv("HOME") .. "/.virtualenvs/pyls/bin/pyls" },
+--   on_attach = on_attach,
+-- })
 
-nvim_lsp.gopls.setup({
-  on_attach = on_attach,
-  root_dir = util.root_pattern(".git"),
-  cmd = { "gopls", "serve" },
-  settings = {
-    gopls = {
-      analyses = {
-        unusedparams = true,
-      },
-      staticcheck = true,
-    },
-  },
-})
+-- nvim_lsp.gopls.setup({
+--   on_attach = on_attach,
+--   root_dir = util.root_pattern(".git"),
+--   cmd = { "gopls", "serve" },
+--   settings = {
+--     gopls = {
+--       analyses = {
+--         unusedparams = true,
+--       },
+--       staticcheck = true,
+--     },
+--   },
+-- })
 
 local sumneko_root_path = "/opt/lua-language-server/"
 local sumneko_binary = sumneko_root_path .. "/bin/lua-language-server"
@@ -328,6 +328,61 @@ require("lspconfig").sumneko_lua.setup({
 require("lspconfig").perlpls.setup({
   on_attach = on_attach,
 })
-require("lspconfig").tsserver.setup({
+
+-- docker'ized LSP
+require'lspconfig'.bashls.setup {
+  before_init = function(params)
+    params.processId = vim.NIL
+  end,
+  cmd = require'lspcontainers'.command('bashls'),
+  root_dir = util.root_pattern(".git", vim.fn.getcwd()),
   on_attach = on_attach,
-})
+}
+require'lspconfig'.dockerls.setup {
+  before_init = function(params)
+    params.processId = vim.NIL
+  end,
+  cmd = require'lspcontainers'.command('dockerls'),
+  root_dir = util.root_pattern(".git", vim.fn.getcwd()),
+  on_attach = on_attach,
+}
+require'lspconfig'.gopls.setup {
+  cmd = require'lspcontainers'.command('gopls'),
+  on_attach = on_attach,
+}
+require'lspconfig'.jsonls.setup {
+  before_init = function(params)
+    params.processId = vim.NIL
+  end,
+  cmd = require'lspcontainers'.command('jsonls'),
+  root_dir = util.root_pattern(".git", vim.fn.getcwd()),
+  on_attach = on_attach,
+}
+-- require'lspconfig'.pyright.setup {
+--   before_init = function(params)
+--     params.processId = vim.NIL
+--   end,
+--   cmd = require'lspcontainers'.command('pyright'),
+--   root_dir = util.root_pattern(".git", vim.fn.getcwd()),
+--   on_attach = on_attach,
+-- }
+-- require'lspconfig'.sumneko_lua.setup {
+--   cmd = require'lspcontainers'.command('sumneko_lua'),
+--   on_attach = on_attach,
+-- }
+require'lspconfig'.tsserver.setup {
+  before_init = function(params)
+    params.processId = vim.NIL
+  end,
+  cmd = require'lspcontainers'.command('tsserver'),
+  root_dir = util.root_pattern(".git", vim.fn.getcwd()),
+  on_attach = on_attach,
+}
+require'lspconfig'.yamlls.setup {
+  before_init = function(params)
+    params.processId = vim.NIL
+  end,
+  cmd = require'lspcontainers'.command('yamlls'),
+  root_dir = util.root_pattern(".git", vim.fn.getcwd()),
+  on_attach = on_attach,
+}
