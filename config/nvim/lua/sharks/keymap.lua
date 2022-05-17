@@ -84,7 +84,9 @@ vim.keymap.set("n", "<leader>tt", "<CMD>Trouble<CR>")
 
 
 -- C development --
-vim.keymap.set("n", "mM", "vim.cmd(':Man 2 ' .. vim.fn.input('Man 2 > '))")
+vim.keymap.set("n", "mM", function()
+  vim.cmd(':Man 2 ' .. vim.fn.input('Man 2 > '))
+end)
 vim.keymap.set("n", "<leader>cv", "<CMD>ClangdSwitchSourceHeaderVSplit<CR>")
 
 -- General --
