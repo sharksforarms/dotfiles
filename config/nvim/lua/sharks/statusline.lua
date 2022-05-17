@@ -9,7 +9,16 @@ local M = {}
 
 M.setup = function()
   vim.g.statusline_signaturehelp = ""
-  vim.cmd("autocmd CursorHoldI,CursorMovedI * lua require('sharks.statusline').doc_signature_str()")
+  local cap_found = false
+  for _, client in ipairs(vim.lsp.buf_get_clients()) do
+    if client.supports_method("textDocument/signatureHelp") then
+      cap_found = true
+      break
+    end
+  end
+  if cap_found then
+    vim.cmd("autocmd CursorHoldI,CursorMovedI * lua require('sharks.statusline').doc_signature_str()")
+  end
 end
 
 M.doc_signature_str = function()
@@ -118,7 +127,7 @@ vim.api.nvim_command([[  au ColorScheme * lua require'sharks.statusline'.create_
 vim.api.nvim_command("augroup END")
 
 local function vcs_status()
-  local branch = vim.fn["fugitive#head"]()
+  local branch = vim.fn["FugitiveHead"]()
 
   if #branch == 0 then
     return ""
