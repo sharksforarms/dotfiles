@@ -71,7 +71,13 @@ return require("packer").startup({
     use({
       "iamcco/markdown-preview.nvim",
       run = function()
-        vim.cmd([[ call mkdp#util#install" ]])
+        vim.cmd([[ call mkdp#util#install()" ]])
+      end,
+      config = function()
+        vim.cmd [[
+          "let $NVIM_MKDP_LOG_FILE = expand('~/mkdp-log.log')
+          "let $NVIM_MKDP_LOG_LEVEL = 'debug'
+        ]]
       end,
     })
     use("hrsh7th/nvim-cmp")
