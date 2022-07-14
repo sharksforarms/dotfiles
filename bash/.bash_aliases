@@ -48,6 +48,14 @@ gch() {
     git checkout "$(git branch --all | fzf| tr -d '[:space:]')"
 }
 
+gitclean() {
+    find . -name '*.orig' -delete
+    find . -name '*BACKUP*' -delete
+    find . -name '*REMOTE*' -delete
+    find . -name '*BASE*' -delete
+    find . -name '*LOCAL*' -delete
+}
+
 wssh() {
     pushd ~/misc-w/work_home/ > /dev/null
     ./transfer.sh --dotfiles $1
