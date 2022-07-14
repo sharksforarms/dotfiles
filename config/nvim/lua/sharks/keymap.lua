@@ -94,7 +94,9 @@ vim.keymap.set("n", "<leader>cv", "<CMD>ClangdSwitchSourceHeaderVSplit<CR>")
 vim.keymap.set("n", "<leader>l", "<CMD>nohl<CR>")
 -- shortcuts
 vim.keymap.set("n", "<leader>ev", require('sharks.telescope').dotfiles)
+vim.keymap.set("n", "<leader>eV", require('sharks.telescope').dotfiles_grep)
 vim.keymap.set("n", "<leader>ej", require('sharks.telescope').notes)
+vim.keymap.set("n", "<leader>eJ", require('sharks.telescope').notes_grep)
 vim.keymap.set("n", "<leader>et", "<CMD>vsplit ~/TODO.md<CR>")
 vim.keymap.set("n", "<leader>en", "<CMD>vsplit ~/NOTES.md<CR>")
 -- move visual selection up/down
@@ -129,6 +131,9 @@ vim.keymap.set("n", "<leader>to", "<CMD>TagbarToggle<CR>")
 -- Plugin: hop
 vim.keymap.set("n", "<leader>$", require('hop').hint_words)
 
+
+vim.keymap.set("n", "vv", require('lsp-selection-range').trigger, { noremap = true })
+vim.keymap.set("v", "vv", require('lsp-selection-range').expand, { noremap = true })
 
 -- NOTES: (keymaps to remember)
 -- g<c-g> -- show stats col/line/etc

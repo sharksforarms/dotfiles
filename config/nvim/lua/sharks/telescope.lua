@@ -33,6 +33,7 @@ function M.setup()
           ["<C-x>"] = false,
           ["<C-s>"] = actions.select_horizontal,
           ["<C-q>"] = actions.send_to_qflist,
+          ["<C-f>"] = actions.to_fuzzy_refine,
         },
         n = {
           ["<C-x>"] = false,
@@ -103,6 +104,16 @@ function M.dotfiles(opts)
   require("telescope.builtin").find_files(opts)
 end
 
+function M.dotfiles_grep(opts)
+  local opts = require("telescope.themes").get_dropdown({
+    cwd = "~/dotfiles", --vim.fn.stdpath("config"),
+    file_ignore_patterns = { ".git", "plugged/" },
+    search = vim.fn.input("Grep For > "),
+  })
+
+  require('telescope.builtin').grep_string(opts)
+end
+
 function M.notes(opts)
   local opts = require("telescope.themes").get_dropdown({
     find_command = { "rg", "--no-ignore", "--files", "--hidden" },
@@ -111,6 +122,16 @@ function M.notes(opts)
   })
 
   require("telescope.builtin").find_files(opts)
+end
+
+function M.notes_grep(opts)
+  local opts = require("telescope.themes").get_dropdown({
+    cwd = "~/src/fastly/ethompson_notes/", --vim.fn.stdpath("config"),
+    file_ignore_patterns = { ".git", "plugged/" },
+    search = vim.fn.input("Grep For > "),
+  })
+
+  require('telescope.builtin').grep_string(opts)
 end
 
 function M.find_all_files()
@@ -122,7 +143,7 @@ end
 
 function M.h2o_configs(opts)
   local opts = require("telescope.themes").get_dropdown({
-    find_command = { "rg", "--no-ignore", "--files", "--hidden", "--iglob", "h2o*.conf" },
+    find_command = { "rg", "--no-ignore", "--files", "--hidden", "--iglob", "h2o.conf", "--iglob", "h2o-quic.conf" },
     file_ignore_patterns = { ".git", "plugged/" },
     default_text = 'tmp',
   })

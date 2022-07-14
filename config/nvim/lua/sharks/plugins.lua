@@ -69,7 +69,8 @@ return require("packer").startup({
     use("godlygeek/tabular")
     use("plasticboy/vim-markdown")
     use({
-      "iamcco/markdown-preview.nvim",
+      -- "iamcco/markdown-preview.nvim",
+      "Avimitin/markdown-preview.nvim",
       run = function()
         vim.cmd([[ call mkdp#util#install()" ]])
       end,
@@ -117,6 +118,12 @@ return require("packer").startup({
     use("tami5/lspsaga.nvim")
     use("nvim-lua/lsp-status.nvim")
     use({
+      "j-hui/fidget.nvim",
+      config = function()
+        require("fidget").setup()
+      end
+    })
+    use({
       "simrat39/symbols-outline.nvim",
       config = function()
         local symbols_outline_opts = {
@@ -128,6 +135,7 @@ return require("packer").startup({
       end,
     })
     use("ray-x/lsp_signature.nvim")
+    use("camilledejoye/nvim-lsp-selection-range")
 
     -- line completion
     use("tjdevries/complextras.nvim")

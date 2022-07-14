@@ -4,6 +4,7 @@ local util = require("lspconfig/util")
 local lsp_status = require("lsp-status")
 local status = require("sharks.lsp.status")
 local sharks_lsp = require("sharks.lsp.config")
+local lsp_selection_range = require('lsp-selection-range')
 
 local on_attach = function(client)
   protocol.CompletionItemKind = {
@@ -67,6 +68,7 @@ end
 
 local updated_capabilities = vim.lsp.protocol.make_client_capabilities()
 
+updated_capabilities = lsp_selection_range.update_capabilities(updated_capabilities)
 updated_capabilities = require("cmp_nvim_lsp").update_capabilities(updated_capabilities)
 
 local extension_path = "/opt/codelldb/extension/"
@@ -107,10 +109,11 @@ local rust_opts = {
       -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
       ["rust-analyzer"] = {
         updates = { channel = "stable" },
-        assist = {
-          importGroup = true,
-          importMergeBehaviour = "full",
-          importPrefix = "by_crate",
+        imports = {
+          granularity = {
+            enforce = false,
+            group = "crate",
+          }
         },
 
         callInfo = {
@@ -295,34 +298,34 @@ require("clangd_extensions").setup({
 --   },
 -- })
 
-local sumneko_root_path = "/opt/lua-language-server/"
-local sumneko_binary = sumneko_root_path .. "/bin/lua-language-server"
-
-require("lspconfig").sumneko_lua.setup({
-  on_attach = on_attach,
-  cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" },
-  settings = {
-    Lua = {
-      runtime = {
-        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-        version = "LuaJIT",
-        -- Setup your lua path
-        path = vim.split(package.path, ";"),
-      },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global
-        globals = { "vim" },
-      },
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = {
-          [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-          [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
-        },
-      },
-    },
-  },
-})
+-- local sumneko_root_path = "/opt/lua-language-server/"
+-- local sumneko_binary = sumneko_root_path .. "/bin/lua-language-server"
+--
+-- require("lspconfig").sumneko_lua.setup({
+--   on_attach = on_attach,
+--   cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" },
+--   settings = {
+--     Lua = {
+--       runtime = {
+--         -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+--         version = "LuaJIT",
+--         -- Setup your lua path
+--         path = vim.split(package.path, ";"),
+--       },
+--       diagnostics = {
+--         -- Get the language server to recognize the `vim` global
+--         globals = { "vim" },
+--       },
+--       workspace = {
+--         -- Make the server aware of Neovim runtime files
+--         library = {
+--           [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+--           [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
+--         },
+--       },
+--     },
+--   },
+-- })
 
 -- sudo cpanm --notest PLS
 require("lspconfig").perlpls.setup({
@@ -366,10 +369,10 @@ require'lspconfig'.jsonls.setup {
 --   root_dir = util.root_pattern(".git", vim.fn.getcwd()),
 --   on_attach = on_attach,
 -- }
--- require'lspconfig'.sumneko_lua.setup {
---   cmd = require'lspcontainers'.command('sumneko_lua'),
---   on_attach = on_attach,
--- }
+require'lspconfig'.sumneko_lua.setup {
+  cmd = require'lspcontainers'.command('sumneko_lua'),
+  on_attach = on_attach,
+}
 require'lspconfig'.tsserver.setup {
   before_init = function(params)
     params.processId = vim.NIL

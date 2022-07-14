@@ -15,6 +15,7 @@ M.init = function()
       border = "none",
     },
     decorator = { "`", "`" },
+    debug=true,
   }
 
   require("lsp_signature").on_attach(cfg)
@@ -185,7 +186,7 @@ function init_keymaps()
   vim.keymap.set("n", "<C-u>", function() require('sharks.lsp.config').doc_scroll_up('<C-u>') end)
   vim.keymap.set("n", "<C-d>", function() require('sharks.lsp.config').doc_scroll_down('<C-d>') end)
   --vim.keymap.set('n', '<leader>k', "require('sharks.lsp.config').doc_signature()")
-  vim.keymap.set("i", "<C-y><C-y>", require('sharks.lsp.config').doc_signature)
+  -- vim.keymap.set("i", "<C-y><C-y>", require('sharks.lsp.config').doc_signature)
 
   -- Diagnostic
   vim.cmd([[
