@@ -6,7 +6,8 @@ local status = require("sharks.lsp.status")
 local sharks_lsp = require("sharks.lsp.config")
 local lsp_selection_range = require('lsp-selection-range')
 
-local on_attach = function(client)
+local on_attach = function(client, bufnr)
+  local caps = client.server_capabilities
   protocol.CompletionItemKind = {
     " ", -- text
     " ", -- method
@@ -39,7 +40,7 @@ local on_attach = function(client)
     client.config.flags.allow_incremental_sync = true
   end
 
-  if client.server_capabilities.document_highlight then
+  if caps.document_highlight then
     vim.api.nvim_exec(
       [[
     augroup lsp_document_highlight
@@ -50,6 +51,22 @@ local on_attach = function(client)
     ]],
       false
     )
+  end
+
+  if caps.semanticTokensProvider and caps.semanticTokensProvider.full then
+    local augroup = vim.api.nvim_create_augroup("SemanticTokens", {})
+    vim.cmd [[
+      hi link LspComment TSComment
+    ]]
+    vim.api.nvim_create_autocmd({"BufEnter","CursorHold","InsertLeave"}, {
+      group = augroup,
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.semantic_tokens_full()
+      end,
+    })
+    -- fire it first time on load as well
+    vim.lsp.buf.semantic_tokens_full()
   end
 
   -- format on save?
@@ -77,11 +94,10 @@ local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
 
 local rust_opts = {
   tools = {
-    autoSetHints = true,
-    hover_with_actions = true,
-    runnables = { use_telescope = true },
-    debuggables = { use_telescope = true },
+    runnables = {},
+    debuggables = {},
     inlay_hints = {
+      auto = true,
       show_parameter_hints = false,
       parameter_hints_prefix = "",
       other_hints_prefix = "",
@@ -98,8 +114,6 @@ local rust_opts = {
     --name = "rt_lldb"
     --}
   },
-  runnables = { use_telescope = true },
-  debuggables = { use_telescope = true },
   server = {
     --cmd = {"/home/sharks/source/dotfiles/misc/misc/rust-analyzer-wrapper"},
     on_attach = on_attach,
@@ -214,8 +228,9 @@ end
 -- }
 --
 -- require("lspconfig").clangd.setup {
+--   on_attach = on_attach,
 --   cmd = {"clangd", unpack(clangd_flags)},
---   capabilities = require'lsp'.capabilities
+--   capabilities = updated_capabilities,
 -- }
 
 local clangd_args = {
@@ -230,7 +245,12 @@ local clangd_args = {
     "--clang-tidy-checks=clang-diagnostic-*,clang-analyzer-*,-*,bugprone*,modernize*,performance*,-modernize-pass-by-value,-modernize-use-auto,-modernize-use-using,-modernize-use-trailing-return-type",
     -- "--clang-tidy-checks=*",
   },
-  root_dir=util.root_pattern(".git") or util.path.dirname,
+  -- root_dir=util.root_pattern(".git") or util.path.dirname,
+  root_dir = function(fname)
+    local primary = util.root_pattern('build')(fname)
+    local fallback = util.root_pattern('.git')(fname)
+    return primary or fallback
+  end,
   filetypes = { "c", "cc", "cpp" },
   init_options = {
     compilationDatabasePath = "build",
@@ -361,14 +381,18 @@ require'lspconfig'.jsonls.setup {
   root_dir = util.root_pattern(".git", vim.fn.getcwd()),
   on_attach = on_attach,
 }
--- require'lspconfig'.pyright.setup {
---   before_init = function(params)
---     params.processId = vim.NIL
---   end,
---   cmd = require'lspcontainers'.command('pyright'),
---   root_dir = util.root_pattern(".git", vim.fn.getcwd()),
---   on_attach = on_attach,
--- }
+require'lspconfig'.pyright.setup {
+  before_init = function(params)
+    params.processId = vim.NIL
+  end,
+  cmd = require'lspcontainers'.command('pyright'),
+  root_dir = util.root_pattern(".git", vim.fn.getcwd()),
+  on_attach = on_attach,
+}
+require'lspconfig'.pylsp.setup {
+  cmd = require'lspcontainers'.command('pylsp'),
+  on_attach = on_attach,
+}
 require'lspconfig'.sumneko_lua.setup {
   cmd = require'lspcontainers'.command('sumneko_lua'),
   on_attach = on_attach,

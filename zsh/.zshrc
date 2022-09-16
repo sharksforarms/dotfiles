@@ -31,7 +31,7 @@ bindkey -M vicmd "^V" edit-command-line
 # Alias
 source ~/.bash_aliases
 
-export MANPAGER='nvim --appimage-extract-and-run +Man!'
+export MANPAGER='nvim +Man!'
 export MANWIDTH=999
 
 # Virtualenv setup

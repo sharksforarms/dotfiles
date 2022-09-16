@@ -15,6 +15,7 @@ return require("packer").startup({
     use("norcalli/nvim-colorizer.lua")
     use("cespare/vim-toml")
     use("sainnhe/sonokai")
+    use("rebelot/kanagawa.nvim")
 
     use("majutsushi/tagbar")
     use({
@@ -136,6 +137,17 @@ return require("packer").startup({
     })
     use("ray-x/lsp_signature.nvim")
     use("camilledejoye/nvim-lsp-selection-range")
+    -- use({
+    --   "jose-elias-alvarez/null-ls.nvim",
+    --   config = function()
+    --     require("null-ls").setup({
+    --       sources = {
+    --         require("null-ls").builtins.formatting.stylua,
+    --         -- require("null-ls").builtins.diagnostics.cppcheck,
+    --       },
+    --     })
+    --   end,
+    -- })
 
     -- line completion
     use("tjdevries/complextras.nvim")
@@ -172,8 +184,39 @@ return require("packer").startup({
     use("Saecki/crates.nvim")
     use("mfussenegger/nvim-dap")
     use("theHamsta/nvim-dap-virtual-text")
+    use({
+      -- requires https://github.com/neovim/neovim/pull/15723
+      "theHamsta/nvim-semantic-tokens",
+      config = function()
+        require("nvim-semantic-tokens").setup {
+          preset = "default",
+          -- highlighters is a list of modules following the interface of nvim-semantic-tokens.table-highlighter or 
+          -- function with the signature: highlight_token(ctx, token, highlight) where 
+          --        ctx (as defined in :h lsp-handler)
+          --        token  (as defined in :h vim.lsp.semantic_tokens.on_full())
+          --        highlight (a helper function that you can call (also multiple times) with the determined highlight group(s) as the only parameter)
+          highlighters = { require 'nvim-semantic-tokens.table-highlighter'}
+        }
+
+        local semantic_tokens = require'nvim-semantic-tokens.table-highlighter'
+        semantic_tokens.modifiers_map["unsafe"] = {
+          ["function"] = "Identifier",
+          keyword = "Identifier",
+        }
+      end,
+    })
     use("rcarriga/nvim-dap-ui")
     use("mfussenegger/nvim-dap-python")
+    -- using this to fix python identation, can probably remove in the fututre
+    use({
+      "yioneko/nvim-yati",
+      requires = "nvim-treesitter/nvim-treesitter",
+      config = function ()
+        require("nvim-treesitter.configs").setup {
+          yati = { enable = true },
+        }
+      end
+    })
     use("Pocco81/DAPInstall.nvim")
     use("szw/vim-maximizer")
     use("benmills/vimux")

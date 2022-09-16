@@ -57,6 +57,26 @@ ls.add_snippets("all", {
   key = "all",
 })
 
+ls.add_snippets("python", {
+  s("default_tool", fmt(
+[[
+#!/bin/env python3
+import argparse
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('file', help='filename')
+
+    args = parser.parse_args()
+
+if __name__ == "__main__":
+    main()
+]],
+{})),
+}, {
+  key = "all",
+})
+
 -- set type to "autosnippets" for adding autotriggered snippets.
 ls.add_snippets("all", {
   s("autotrigger", {

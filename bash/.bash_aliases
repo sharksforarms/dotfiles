@@ -1,5 +1,6 @@
 # Custom commands
 alias vim="nvim"
+alias nvim="/home/ethompson/src/neovim/build/bin/nvim"
 alias editbashrc="vim ~/.bashrc"
 alias editaliases="vim ~/.bash_aliases"
 alias edithosts="sudo vim /etc/hosts"
@@ -43,9 +44,15 @@ alias less="less -N"
 alias gitlog="git log --pretty=oneline"
 alias len="xargs echo -n | wc -c"
 alias cargoupdate="cargo install --list | egrep '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' ' | xargs -i cargo install --force {}"
+alias scp_noreuse="scp -o \"ControlPath none\""
 
 gch() {
     git checkout "$(git branch --all | fzf| tr -d '[:space:]')"
+}
+
+function debug_valgrind() {
+    VALGRIND_PATH=$HOME/Downloads/valgrind/
+    rm -f valg && VALGRIND_LIB=$VALGRIND_PATH/build/libexec/valgrind $VALGRIND_PATH/build/bin/valgrind --leak-check=full --log-file=valg $@
 }
 
 gitclean() {
