@@ -77,6 +77,15 @@ if __name__ == "__main__":
   key = "all",
 })
 
+ls.add_snippets("c", {
+  s("here", fmt([[fprintf(stderr, "DEBUG [%s:%d]: {}:%d\n", __func__, __LINE__, {});]], {
+    i(1, "var"),
+    rep(1),
+  })),
+}, {
+  key = "all"
+})
+
 -- set type to "autosnippets" for adding autotriggered snippets.
 ls.add_snippets("all", {
   s("autotrigger", {
