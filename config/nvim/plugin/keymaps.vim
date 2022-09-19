@@ -133,12 +133,6 @@ nmap gh :GitGutterPreviewHunk<CR>
 nnoremap <leader>grum :Git rebase upstream/master<CR>
 nnoremap <leader>grom :Git rebase origin/master<CR>
 
-" vimux
-map <Leader>rc :wa<CR> :CargoRun<CR>
-map <Leader>ra :wa<CR> :CargoTestAll<CR>
-map <Leader>rb :wa<CR> :CargoUnitTestCurrentFile<CR>
-map <Leader>rf :wa<CR> :CargoUnitTestFocused<CR>
-
 " vim-test
 function! HarpoonStrategy(cmd)
   "call SendTerminalCommand(0, "cd " . getcwd() . " && " . a:cmd . "\n")
