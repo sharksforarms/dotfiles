@@ -125,13 +125,6 @@ vim.keymap.set({ "n", "v", "i" }, "<right>", "<NOP>")
 -- external json format
 vim.keymap.set("n", "<leader><leader>jq", ":%!python3 -m json.tool<CR>", { silent = true })
 
--- Plugin: tagbar
-vim.keymap.set("n", "<leader>to", "<CMD>TagbarToggle<CR>")
-
--- Plugin: hop
-vim.keymap.set("n", "<leader>$", require('hop').hint_words)
-
-
 vim.keymap.set("n", "vv", require('lsp-selection-range').trigger, { noremap = true })
 vim.keymap.set("v", "vv", require('lsp-selection-range').expand, { noremap = true })
 

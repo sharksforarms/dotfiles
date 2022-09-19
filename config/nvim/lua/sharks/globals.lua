@@ -1,3 +1,6 @@
+-- Leader Key
+vim.g.mapleader = " "
+
 P = function(v)
   print(vim.inspect(v))
   return v

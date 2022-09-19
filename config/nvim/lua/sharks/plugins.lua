@@ -37,6 +37,20 @@ return require("packer").startup({
     })
     use("tpope/vim-dispatch")
     use("tpope/vim-fugitive")
+    use {
+      'TimUntersberger/neogit',
+      requires = {
+        'nvim-lua/plenary.nvim',
+        'sindrets/diffview.nvim'
+      },
+      config = function()
+        require("neogit").setup({
+          integrations = {
+            diffview = true
+          },
+        })
+      end
+    }
     use("airblade/vim-gitgutter")
     use("rhysd/git-messenger.vim")
     use({
@@ -190,8 +204,8 @@ return require("packer").startup({
       config = function()
         require("nvim-semantic-tokens").setup {
           preset = "default",
-          -- highlighters is a list of modules following the interface of nvim-semantic-tokens.table-highlighter or 
-          -- function with the signature: highlight_token(ctx, token, highlight) where 
+          -- highlighters is a list of modules following the interface of nvim-semantic-tokens.table-highlighter or
+          -- function with the signature: highlight_token(ctx, token, highlight) where
           --        ctx (as defined in :h lsp-handler)
           --        token  (as defined in :h vim.lsp.semantic_tokens.on_full())
           --        highlight (a helper function that you can call (also multiple times) with the determined highlight group(s) as the only parameter)
@@ -219,8 +233,6 @@ return require("packer").startup({
     })
     use("Pocco81/DAPInstall.nvim")
     use("szw/vim-maximizer")
-    use("benmills/vimux")
-    use("jtdowney/vimux-cargo")
     use("vim-test/vim-test")
     use("nvim-lua/popup.nvim")
     use("nvim-lua/plenary.nvim")

@@ -5,9 +5,6 @@ if require("sharks.first_load")() then
   return
 end
 
--- Leader Key
-vim.g.mapleader = " "
-
 require("sharks.globals")
 require("sharks.keymap")
 require("sharks.lsp")

@@ -83,13 +83,9 @@ nnoremap <silent><leader><leader>o :lua require("harpoon.ui").toggle_quick_menu(
 :command! Fmt lua vim.lsp.buf.formatting_sync()
 :command! Files lua require('sharks.telescope').find_all_files()
 
-" conflicts with C-R,C-W in :command line
-"cmap <C-R> <Plug>(TelescopeFuzzyCommandSearch)
 nnoremap <leader>ps <cmd>lua require('sharks.telescope').search()<CR>
 nnoremap <silent><leader>tg <cmd>lua require'telescope.builtin'.live_grep{}<CR>
 nnoremap <silent><leader>tp <cmd>lua require'telescope.builtin'.git_files{}<CR>
-"nnoremap <silent><C-p> <cmd>lua require'telescope.builtin'.find_files{}<CR>
-"nnoremap <silent><C-p> <cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({}))<CR>
 nnoremap <silent><C-p> <cmd>lua require'sharks.telescope'.find_files()<CR>
 "nnoremap <silent><leader>ch <cmd>lua require('telescope.builtin').command_history{}<CR>
 nnoremap <silent><leader>qf :lua require'telescope.builtin'.quickfix{}<CR>
@@ -117,18 +113,13 @@ nmap <silent> <C-_>   :lua require('Comment.api').toggle.linewise.current()<CR>
 vmap <silent> <C-_>   :lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>
 
 " fzf
-nnoremap <leader>pw :Rg <C-R>=expand("<cword>")<CR><CR>
-"nnoremap <C-p> :Files<CR>
-"nnoremap <Leader>ps :Rg<SPACE>
 nnoremap <Leader>pf :Files<CR>
 
 " nerdtree
 map <Leader>n <plug>NERDTreeTabsToggle<CR>
 
 " FuGITive
-nmap <leader>gl :diffget //3<CR>
-nmap <leader>gh :diffget //2<CR>
-nmap <leader>gs :tab G<CR>
+" nmap <leader>gs :tab Neogit<CR>
 nmap gh :GitGutterPreviewHunk<CR>
 nnoremap <leader>grum :Git rebase upstream/master<CR>
 nnoremap <leader>grom :Git rebase origin/master<CR>

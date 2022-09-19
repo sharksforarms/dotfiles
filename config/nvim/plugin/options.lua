@@ -85,7 +85,7 @@ opt.listchars = {
   -- BULLET (U+2022, UTF-8: E2 80 A2)
   trail = "•",
 }
---opt.mouse-=a
+opt.mouse=""
 opt.splitright = true
 opt.splitbelow = true
 vim.wo.colorcolumn = "80"
