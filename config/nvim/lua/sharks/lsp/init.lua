@@ -116,6 +116,7 @@ local rust_opts = {
   },
   server = {
     --cmd = {"/home/sharks/source/dotfiles/misc/misc/rust-analyzer-wrapper"},
+    cmd = {"rustup", "run", "stable", "rust-analyzer"},
     on_attach = on_attach,
     root_dir = util.root_pattern("Cargo.toml"),
     capabilities = updated_capabilities,

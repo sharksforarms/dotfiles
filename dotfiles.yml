@@ -9,9 +9,6 @@
     - role: sudo
       tags:
         - sudo
-    - role: obsidian
-      tags:
-        - obsidian
     - role: zsh
       tags:
         - zsh
@@ -24,13 +21,9 @@
       tags:
         - rust
         - dev
-    - role: rust_analyzer
+    - role: codelldb
       tags:
-        - rust_analyzer
-        - dev
-    - role: lua_language_server
-      tags:
-        - lua_language_server
+        - codelldb
         - dev
     - role: alacritty
       tags:
@@ -38,10 +31,10 @@
     - role: fonts
       tags:
         - fonts
-    - role: nvim
-      tags:
-        - nvim
-        - dev
+    # - role: nvim
+    #   tags:
+    #     - nvim
+    #     - dev
     - role: fzf
       tags:
         - fzf
