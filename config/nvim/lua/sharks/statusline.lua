@@ -396,14 +396,16 @@ local function make_active_status_line()
   end
 
   local status_line = string.format(
-    "%%#%s# %d %%#%s# %s ",
+    "%%#%s# %d %%#%s# %s",
     hl2,
     vim.fn.win_id2win(vim.g.statusline_winid),
     hl,
     get_file_name()
   )
   status_line = status_line
-    .. "%#StatusLineLinNbr# %v%#StatusLineBg2b#:%#StatusLineColNbr#%l%< %#StatusLineBg2b#(%p%% %LL)"
+    .. "%#StatusLineLinNbr# %v%#StatusLineBg2b#:%#StatusLineColNbr#%l%< %#StatusLineBg2b#(%p%% %LL) "
+  status_line = status_line
+    .. "%#StatusLineBg2#" .. require'nvim-navic'.get_location()
   status_line = status_line
     .. string.format("%%=%%#StatusLineBg# %s %s %s ", signature_help(), lsp_status(), vcs_status())
 

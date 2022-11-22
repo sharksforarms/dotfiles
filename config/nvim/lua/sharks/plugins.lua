@@ -1,11 +1,14 @@
 vim.cmd([[packadd packer.nvim]])
 
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-  augroup end
-]])
+local packer_user_config = vim.api.nvim_create_augroup("PackerUserConfig", {})
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+  group = packer_user_config,
+  pattern = "plugins.lua",
+  callback = function()
+    vim.cmd([[ :source % | :PackerCompile ]])
+    print("Done PackerCompile")
+  end,
+})
 
 return require("packer").startup({
   function(use)
@@ -17,7 +20,7 @@ return require("packer").startup({
     use("sainnhe/sonokai")
     use("rebelot/kanagawa.nvim")
 
-    use("majutsushi/tagbar")
+    use("preservim/tagbar")
     use({
       "junegunn/fzf",
       run = function()
@@ -45,8 +48,15 @@ return require("packer").startup({
       },
       config = function()
         require("neogit").setup({
+          disable_commit_confirmation=true,
+          disable_builtin_notifications=true,
           integrations = {
             diffview = true
+          },
+          sections = {
+            untracked = {
+              folded = true
+            }
           },
         })
       end
@@ -116,9 +126,20 @@ return require("packer").startup({
     use("nvim-treesitter/nvim-treesitter-textobjects")
     use("RRethy/nvim-treesitter-textsubjects")
     use("romgrk/nvim-treesitter-context")
+    use {
+      "SmiteshP/nvim-navic",
+      requires = "neovim/nvim-lspconfig"
+    }
     use("nvim-treesitter/playground")
     use("mizlan/iswap.nvim")
     use("lspcontainers/lspcontainers.nvim")
+    use({
+      "williamboman/mason.nvim",
+      config = function ()
+       require("mason").setup() 
+      end
+    })
+    use("williamboman/mason-lspconfig.nvim")
     use("neovim/nvim-lspconfig")
     use({
       "folke/trouble.nvim",
@@ -151,17 +172,52 @@ return require("packer").startup({
     })
     use("ray-x/lsp_signature.nvim")
     use("camilledejoye/nvim-lsp-selection-range")
-    -- use({
-    --   "jose-elias-alvarez/null-ls.nvim",
-    --   config = function()
-    --     require("null-ls").setup({
-    --       sources = {
-    --         require("null-ls").builtins.formatting.stylua,
-    --         -- require("null-ls").builtins.diagnostics.cppcheck,
-    --       },
-    --     })
-    --   end,
-    -- })
+    use("jose-elias-alvarez/null-ls.nvim")
+    use({
+      'saecki/crates.nvim',
+      requires = { 'nvim-lua/plenary.nvim', 'jose-elias-alvarez/null-ls.nvim' },
+    })
+
+    use {
+      "NTBBloodbath/rest.nvim",
+      requires = { "nvim-lua/plenary.nvim" },
+      config = function()
+        require("rest-nvim").setup({
+          -- Open request results in a horizontal split
+          result_split_horizontal = false,
+          -- Keep the http file buffer above|left when split horizontal|vertical
+          result_split_in_place = false,
+          -- Skip SSL verification, useful for unknown certificates
+          skip_ssl_verification = true,
+          -- Encode URL before making request
+          encode_url = true,
+          -- Highlight request on run
+          highlight = {
+            enabled = true,
+            timeout = 150,
+          },
+          result = {
+            -- toggle showing URL, HTTP info, headers at top the of result window
+            show_url = true,
+            show_http_info = true,
+            show_headers = true,
+            -- executables or functions for formatting response body [optional]
+            -- set them to nil if you want to disable them
+            formatters = {
+              json = "jq",
+              html = function(body)
+                return vim.fn.system({"tidy", "-i", "-q", "-"}, body)
+              end
+            },
+          },
+          -- Jump to request line on run
+          jump_to_request = false,
+          env_file = '.env',
+          custom_dynamic_variables = {},
+          yank_dry_run = true,
+        })
+      end
+    }
 
     -- line completion
     use("tjdevries/complextras.nvim")
@@ -195,7 +251,6 @@ return require("packer").startup({
         })
       end,
     })
-    use("Saecki/crates.nvim")
     use("mfussenegger/nvim-dap")
     use("theHamsta/nvim-dap-virtual-text")
     use({
@@ -225,9 +280,10 @@ return require("packer").startup({
     use({
       "yioneko/nvim-yati",
       requires = "nvim-treesitter/nvim-treesitter",
+      ft = { "python" },
       config = function ()
         require("nvim-treesitter.configs").setup {
-          yati = { enable = true },
+          yati = { enable = false },
         }
       end
     })

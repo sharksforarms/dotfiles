@@ -70,11 +70,17 @@ au FileType fzf tunmap <buffer> <Esc>
 " PLUGINS
 "
 "harpoon
-nnoremap <silent><leader><leader>a :lua require("harpoon.mark").add_file()<CR>
-nnoremap <silent><leader><leader>h :lua require("harpoon.ui").nav_file(1)<CR>
-nnoremap <silent><leader><leader>j :lua require("harpoon.ui").nav_file(2)<CR>
-nnoremap <silent><leader><leader>k :lua require("harpoon.ui").nav_file(3)<CR>
-nnoremap <silent><leader><leader>l :lua require("harpoon.ui").nav_file(4)<CR>
+nnoremap <silent><leader><leader>h :lua require("harpoon.mark").set_current_at(1)<CR>
+nnoremap <silent><leader><leader>j :lua require("harpoon.mark").set_current_at(2)<CR>
+nnoremap <silent><leader><leader>k :lua require("harpoon.mark").set_current_at(3)<CR>
+nnoremap <silent><leader><leader>l :lua require("harpoon.mark").set_current_at(4)<CR>
+nnoremap <silent><leader><CR>h :lua require("harpoon.ui").nav_file(1)<CR>
+nnoremap <silent><leader><CR>j :lua require("harpoon.ui").nav_file(2)<CR>
+nnoremap <silent><leader><CR>k :lua require("harpoon.ui").nav_file(3)<CR>
+nnoremap <silent><leader><CR>l :lua require("harpoon.ui").nav_file(4)<CR>
+
+" nnoremap <silent><leader><leader>t :lua require("harpoon.mark").toggle_file()<CR>
+" nnoremap <silent><leader><leader>r :lua require("harpoon.mark").rm_file()<CR>
 nnoremap <silent><leader><leader>o :lua require("harpoon.ui").toggle_quick_menu()<CR>
 
 "telescope
@@ -120,9 +126,11 @@ map <Leader>n <plug>NERDTreeTabsToggle<CR>
 
 " FuGITive
 " nmap <leader>gs :tab Neogit<CR>
-nmap gh :GitGutterPreviewHunk<CR>
-nnoremap <leader>grum :Git rebase upstream/master<CR>
-nnoremap <leader>grom :Git rebase origin/master<CR>
+nmap gh <Plug>(GitGutterPreviewHunk)
+nmap <leader>gj <Plug>(GitGutterNextHunk)
+nmap <leader>gk <Plug>(GitGutterPrevHunk)
+" nnoremap <leader>grum :Git rebase upstream/master<CR>
+" nnoremap <leader>grom :Git rebase origin/master<CR>
 
 " vim-test
 function! HarpoonStrategy(cmd)

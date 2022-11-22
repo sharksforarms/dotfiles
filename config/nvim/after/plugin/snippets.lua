@@ -78,9 +78,12 @@ if __name__ == "__main__":
 })
 
 ls.add_snippets("c", {
-  s("here", fmt([[fprintf(stderr, "DEBUG [%s:%d]: {}:%d\n", __func__, __LINE__, {});]], {
-    i(1, "var"),
+  s("here_var", fmt([[fprintf(stderr, "DEBUG [%s:%d]: {}:%d\n", __func__, __LINE__, {});]], {
     rep(1),
+    i(1, "var"),
+  })),
+  s("here", fmt([[fprintf(stderr, "DEBUG [%s:%d] {} \n", __func__, __LINE__);]], {
+    i(1, "info"),
   })),
 }, {
   key = "all"

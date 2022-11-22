@@ -1,0 +1,14 @@
+#!/bin/bash
+
+APP=$1
+if [ -z "$APP" ]; then
+  echo Usage: $0 EXECUTABLE_NAME
+  exit 1
+fi
+
+pids=$(pgrep -f $APP)
+for pid in $pids; do
+    echo $pid
+    name=$(xdotool getwindowname $pid)
+    echo $pid $name
+done

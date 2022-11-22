@@ -4,7 +4,9 @@ local util = require("lspconfig/util")
 local lsp_status = require("lsp-status")
 local status = require("sharks.lsp.status")
 local sharks_lsp = require("sharks.lsp.config")
-local lsp_selection_range = require('lsp-selection-range')
+local lsp_selection_range = require("lsp-selection-range")
+local null_ls = require("null-ls")
+local navic = require("nvim-navic")
 
 local on_attach = function(client, bufnr)
   local caps = client.server_capabilities
@@ -36,6 +38,10 @@ local on_attach = function(client, bufnr)
     " ", -- type parameter
   }
 
+  if client.server_capabilities.documentSymbolProvider then
+    -- vim.o.winbar = "    %{%v:lua.require'nvim-navic'.get_location()%}"
+    navic.attach(client, bufnr)
+  end
   if client.config.flags then
     client.config.flags.allow_incremental_sync = true
   end
@@ -55,10 +61,10 @@ local on_attach = function(client, bufnr)
 
   if caps.semanticTokensProvider and caps.semanticTokensProvider.full then
     local augroup = vim.api.nvim_create_augroup("SemanticTokens", {})
-    vim.cmd [[
+    vim.cmd([[
       hi link LspComment TSComment
-    ]]
-    vim.api.nvim_create_autocmd({"BufEnter","CursorHold","InsertLeave"}, {
+    ]])
+    vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
       group = augroup,
       buffer = bufnr,
       callback = function()
@@ -83,10 +89,8 @@ local on_attach = function(client, bufnr)
   sharks_lsp.init()
 end
 
-local updated_capabilities = vim.lsp.protocol.make_client_capabilities()
-
+local updated_capabilities = require("cmp_nvim_lsp").default_capabilities()
 updated_capabilities = lsp_selection_range.update_capabilities(updated_capabilities)
-updated_capabilities = require("cmp_nvim_lsp").update_capabilities(updated_capabilities)
 
 local extension_path = "/opt/codelldb/extension/"
 local codelldb_path = extension_path .. "adapter/codelldb"
@@ -116,7 +120,7 @@ local rust_opts = {
   },
   server = {
     --cmd = {"/home/sharks/source/dotfiles/misc/misc/rust-analyzer-wrapper"},
-    cmd = {"rustup", "run", "stable", "rust-analyzer"},
+    cmd = { "rustup", "run", "stable", "rust-analyzer" },
     on_attach = on_attach,
     root_dir = util.root_pattern("Cargo.toml"),
     capabilities = updated_capabilities,
@@ -128,7 +132,7 @@ local rust_opts = {
           granularity = {
             enforce = false,
             group = "crate",
-          }
+          },
         },
 
         callInfo = {
@@ -243,13 +247,12 @@ local clangd_args = {
     "--clang-tidy",
     "--header-insertion=iwyu",
     "--cross-file-rename",
-    "--clang-tidy-checks=clang-diagnostic-*,clang-analyzer-*,-*,bugprone*,modernize*,performance*,-modernize-pass-by-value,-modernize-use-auto,-modernize-use-using,-modernize-use-trailing-return-type",
-    -- "--clang-tidy-checks=*",
+    "--clang-tidy-checks=misc-unused-*,clang-diagnostic-*,clang-analyzer-*,-*,bugprone*,modernize*,performance*,-modernize-pass-by-value,-modernize-use-auto,-modernize-use-using,-modernize-use-trailing-return-type",
   },
   -- root_dir=util.root_pattern(".git") or util.path.dirname,
   root_dir = function(fname)
-    local primary = util.root_pattern('build')(fname)
-    local fallback = util.root_pattern('.git')(fname)
+    local primary = util.root_pattern("build")(fname)
+    local fallback = util.root_pattern(".git")(fname)
     return primary or fallback
   end,
   filetypes = { "c", "cc", "cpp" },
@@ -354,63 +357,101 @@ require("lspconfig").perlpls.setup({
 })
 
 -- docker'ized LSP
-require'lspconfig'.bashls.setup {
+require("lspconfig").bashls.setup({
   before_init = function(params)
     params.processId = vim.NIL
   end,
-  cmd = require'lspcontainers'.command('bashls'),
+  cmd = require("lspcontainers").command("bashls"),
   root_dir = util.root_pattern(".git", vim.fn.getcwd()),
   on_attach = on_attach,
-}
-require'lspconfig'.dockerls.setup {
+})
+require("lspconfig").dockerls.setup({
   before_init = function(params)
     params.processId = vim.NIL
   end,
-  cmd = require'lspcontainers'.command('dockerls'),
+  cmd = require("lspcontainers").command("dockerls"),
   root_dir = util.root_pattern(".git", vim.fn.getcwd()),
   on_attach = on_attach,
-}
-require'lspconfig'.gopls.setup {
-  cmd = require'lspcontainers'.command('gopls'),
+})
+require("lspconfig").gopls.setup({
+  cmd = require("lspcontainers").command("gopls"),
   on_attach = on_attach,
-}
-require'lspconfig'.jsonls.setup {
+})
+require("lspconfig").jsonls.setup({
   before_init = function(params)
     params.processId = vim.NIL
   end,
-  cmd = require'lspcontainers'.command('jsonls'),
+  cmd = require("lspcontainers").command("jsonls"),
   root_dir = util.root_pattern(".git", vim.fn.getcwd()),
   on_attach = on_attach,
-}
-require'lspconfig'.pyright.setup {
+})
+require("lspconfig").pyright.setup({
   before_init = function(params)
     params.processId = vim.NIL
   end,
-  cmd = require'lspcontainers'.command('pyright'),
+  cmd = require("lspcontainers").command("pyright"),
   root_dir = util.root_pattern(".git", vim.fn.getcwd()),
   on_attach = on_attach,
-}
-require'lspconfig'.pylsp.setup {
-  cmd = require'lspcontainers'.command('pylsp'),
+})
+require("lspconfig").pylsp.setup({
+  cmd = require("lspcontainers").command("pylsp"),
   on_attach = on_attach,
-}
-require'lspconfig'.sumneko_lua.setup {
-  cmd = require'lspcontainers'.command('sumneko_lua'),
+})
+require("lspconfig").sumneko_lua.setup({
+  cmd = require("lspcontainers").command("sumneko_lua"),
+  settings = { Lua = { diagnostics = { globals = { "vim" } } } },
   on_attach = on_attach,
-}
-require'lspconfig'.tsserver.setup {
+})
+require("lspconfig").tsserver.setup({
   before_init = function(params)
     params.processId = vim.NIL
   end,
-  cmd = require'lspcontainers'.command('tsserver'),
+  cmd = require("lspcontainers").command("tsserver"),
   root_dir = util.root_pattern(".git", vim.fn.getcwd()),
   on_attach = on_attach,
-}
-require'lspconfig'.yamlls.setup {
+})
+require("lspconfig").yamlls.setup({
   before_init = function(params)
     params.processId = vim.NIL
   end,
-  cmd = require'lspcontainers'.command('yamlls'),
+  cmd = require("lspcontainers").command("yamlls"),
   root_dir = util.root_pattern(".git", vim.fn.getcwd()),
   on_attach = on_attach,
-}
+})
+
+local path = require("mason-core.path")
+local groovy_lsp = path.concat({
+  vim.fn.stdpath("data"),
+  "mason",
+  "packages/groovy-language-server/build/libs/groovy-language-server-all.jar",
+})
+require("lspconfig").groovyls.setup({
+  cmd = { "java", "-jar", groovy_lsp },
+  on_attach = on_attach,
+})
+require("null-ls").setup({
+  on_attach = on_attach,
+  sources = {
+    require("null-ls").builtins.formatting.stylua,
+  },
+})
+require("crates").setup({
+  null_ls = {
+    enabled = true,
+    name = "crates.nvim",
+  },
+})
+local mason_lspconfig = require("mason-lspconfig")
+mason_lspconfig.setup({
+  ensure_installed = {
+    "groovyls",
+    "yamlls",
+  },
+})
+mason_lspconfig.setup_handlers({
+  function(server_name)
+    require("lspconfig")[server_name].setup({
+      on_attach = on_attach,
+    })
+  end,
+})

@@ -6,14 +6,21 @@ if [ -z "$APP" ]; then
   exit 1
 fi
 
-PID=$(pgrep -f $APP | head -n 1)
-if [ -z "$PID" ]; then
-  echo $APP executable not found
-  exit 2
-fi
-
-for WINDOW_ID in $(xdotool search --pid $PID); do
+for WINDOW_ID in $(xdotool search --onlyvisible --class $APP | sort); do
   xdotool windowactivate $WINDOW_ID
+  break
 done
+
+# PID=$(pgrep -f $APP | head -n 1)
+# if [ -z "$PID" ]; then
+#   echo $APP executable not found
+#   exit 2
+# fi
+#
+# for WINDOW_ID in $(xdotool search --onlyvisible --pid $PID | sort); do
+#   xdotool windowactivate $WINDOW_ID
+#   break
+# done
+#
 
 # notify-send "Switched to $APP (PID=$PID)"
