@@ -136,11 +136,32 @@ return require("packer").startup({
     use({
       "williamboman/mason.nvim",
       config = function ()
-       require("mason").setup() 
+       require("mason").setup()
       end
     })
     use("williamboman/mason-lspconfig.nvim")
     use("neovim/nvim-lspconfig")
+    use("ryanoasis/vim-devicons")
+    use("DaikyXendo/nvim-material-icon")
+    use({
+      "kyazdani42/nvim-web-devicons",
+      config = function()
+        require("trouble").setup()
+        local web_devicons_ok, web_devicons = pcall(require, "nvim-web-devicons")
+        if not web_devicons_ok then
+          return
+        end
+
+        local material_icon_ok, material_icon = pcall(require, "nvim-material-icon")
+        if not material_icon_ok then
+          return
+        end
+
+        web_devicons.setup({
+          override = material_icon.get_icons(),
+        })
+      end,
+    })
     use({
       "folke/trouble.nvim",
       requires = "kyazdani42/nvim-web-devicons",
@@ -150,8 +171,7 @@ return require("packer").startup({
     })
     use("p00f/clangd_extensions.nvim")
     use("simrat39/rust-tools.nvim")
-    -- temporary until glepnir is back?
-    use("tami5/lspsaga.nvim")
+    use("glepnir/lspsaga.nvim")
     use("nvim-lua/lsp-status.nvim")
     use({
       "j-hui/fidget.nvim",
@@ -225,8 +245,6 @@ return require("packer").startup({
     -- Snippets
     -- use("norcalli/snippets.nvim")
     use("L3MON4D3/LuaSnip")
-
-    use("machakann/vim-highlightedyank")
     use({
       "aserowy/tmux.nvim",
       config = function()
@@ -311,8 +329,6 @@ return require("packer").startup({
         vim.fn["firenvim#install"](0)
       end,
     })
-    use("ryanoasis/vim-devicons")
-    use("kyazdani42/nvim-web-devicons")
   end,
   config = {
     -- Move to lua dir so impatient.nvim can cache it

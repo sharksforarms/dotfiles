@@ -51,9 +51,9 @@ end
 
 -- Code actions
 M.code_action = function()
-  --require('lspsaga.codeaction').code_action()
+  require('lspsaga.codeaction').code_action()
   -- require("telescope.builtin").lsp_code_actions()
-  vim.lsp.buf.code_action()
+  -- vim.lsp.buf.code_action()
 end
 
 M.code_action_range = function()
@@ -142,8 +142,8 @@ M.diagnostic_preview = function()
     return
   end
 
-  vim.diagnostic.open_float(nil, { focusable = false })
-  --require('lspsaga.diagnostic').show_line_diagnostics()
+  -- vim.diagnostic.open_float(nil, { focusable = false })
+  require('lspsaga.diagnostic').show_line_diagnostics()
 end
 
 local goto_opts = {

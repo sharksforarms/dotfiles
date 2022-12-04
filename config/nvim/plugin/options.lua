@@ -131,6 +131,14 @@ opt.swapfile = false
 opt.undodir = vim.fn.stdpath("data") .. "/undodir"
 opt.undofile = true
 
+local hilight_yank_au = vim.api.nvim_create_augroup("HighlightYank", {})
+vim.api.nvim_create_autocmd({ "TextYankPost" }, {
+  group = hilight_yank_au,
+  callback = function()
+    vim.highlight.on_yank({timeout=850})
+  end,
+})
+
 -- Profiling
 --profile start freezing_debug.txt
 --profile func *
