@@ -171,7 +171,10 @@ return require("packer").startup({
     })
     use("p00f/clangd_extensions.nvim")
     use("simrat39/rust-tools.nvim")
-    use("glepnir/lspsaga.nvim")
+    use({
+      "glepnir/lspsaga.nvim",
+      branch = "version_2.3",
+    })
     use("nvim-lua/lsp-status.nvim")
     use({
       "j-hui/fidget.nvim",
