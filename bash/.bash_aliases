@@ -1,6 +1,6 @@
 # Custom commands
 alias vim="nvim"
-alias nvim="/home/ethompson/src/neovim/build/bin/nvim"
+#alias nvim="/home/ethompson/src/neovim/build/bin/nvim"
 alias editbashrc="vim ~/.bashrc"
 alias editaliases="vim ~/.bash_aliases"
 alias edithosts="sudo vim /etc/hosts"

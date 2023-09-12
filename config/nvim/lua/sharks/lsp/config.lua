@@ -1,12 +1,10 @@
-local saga = require("lspsaga")
 
 local M = {}
 local init_keymaps;
 
 M.init = function()
-  saga.init_lsp_saga({
-    -- use_saga_diagnostic_sign = false,
-    -- use_diagnostic_virtual_text = false,
+  local saga = require("lspsaga")
+  saga.setup({
     finder_action_keys = {
       open = "<CR>",
       vsplit = "v",
@@ -15,12 +13,18 @@ M.init = function()
       scroll_down = "<C-d>",
       scroll_up = "<C-u>",
     },
+    rename_action_quit = '<ESC>',
+    rename_in_select = false,
     code_action_keys = { quit = "<ESC>", exec = "<CR>" },
-    -- rename_action_keys = {
-    --   quit = "<ESC>",
-    --   exec = "<CR>",
-    -- },
-    code_action_icon = "",
+    lightbulb = {
+      enable = false,
+    },
+    symbol_in_winbar = {
+      enable = false,
+    },
+    -- ui = {
+    --   code_action = '',
+    -- }
     -- code_action_prompt = {
     --   enable = false,
     --   sign = false,
@@ -51,15 +55,22 @@ end
 
 -- Code actions
 M.code_action = function()
-  require('lspsaga.codeaction'):code_action()
+  -- vim.cmd("Lspsaga code_action")
   -- require("telescope.builtin").lsp_code_actions()
-  -- vim.lsp.buf.code_action()
+  vim.lsp.buf.code_action()
+end
+
+-- Code lens
+M.code_lens = function()
+  -- TODO: if on function, run, else goto function def using treesitter then run
+  -- TODO: or if outside of function, show all runables
+  vim.lsp.codelens.run()
 end
 
 -- Symbols
 M.symbol_rename = function()
-  --vim.lsp.buf.rename()
-  require("lspsaga.rename"):rename()
+  vim.lsp.buf.rename()
+  -- vim.cmd("Lspsaga rename")
 end
 
 M.symbol_definition = function()
@@ -75,8 +86,8 @@ M.symbol_type = function()
 end
 
 M.symbol_references = function()
-  -- require("telescope.builtin").lsp_references(require("telescope.themes").get_dropdown({}))
-  require("lspsaga.provider"):lsp_finder()
+  require("telescope.builtin").lsp_references(require("telescope.themes").get_dropdown({}))
+  -- require("lspsaga.provider"):lsp_finder()
 end
 
 M.symbol_document = function()
@@ -88,7 +99,7 @@ M.symbol_workspace = function()
 end
 
 M.symbol_preview = function()
-  require("lspsaga.provider").preview_definition()
+  vim.cmd("Lspsaga peek_definition")
 end
 
 -- Docs
@@ -97,13 +108,8 @@ M.doc_hover = function()
   if vim.bo.filetype == "rust" then
     require("rust-tools.hover_actions").hover_actions()
   else
-    require("lspsaga.hover"):render_hover_doc()
+    vim.cmd("Lspsaga hover_doc")
   end
-end
-
-M.doc_signature = function()
-  --vim.lsp.buf.signature_help()
-  require("lspsaga.signaturehelp"):signature_help()
 end
 
 -- Diagnostic
@@ -147,10 +153,12 @@ function init_keymaps()
   -- Code action
   vim.keymap.set("n", "ga", require('sharks.lsp.config').code_action)
   vim.keymap.set("v", "ga", require('sharks.lsp.config').code_action)
+  vim.keymap.set("n", "gs", require('sharks.lsp.config').code_lens)
 
   -- Symbols
   vim.keymap.set("n", "gn", require('sharks.lsp.config').symbol_rename)
   vim.keymap.set("n", "gd", require('sharks.lsp.config').symbol_definition)
+  vim.keymap.set("n", "gp", require('sharks.lsp.config').symbol_preview)
   vim.keymap.set("n", "<C+]>", require('sharks.lsp.config').symbol_definition)
   vim.keymap.set("n", "gD", require('sharks.lsp.config').symbol_implementation)
   vim.keymap.set("n", "gT", require('sharks.lsp.config').symbol_type)
@@ -160,8 +168,6 @@ function init_keymaps()
 
   -- Docs
   vim.keymap.set("n", "K", require('sharks.lsp.config').doc_hover)
-  --vim.keymap.set('n', '<leader>k', "require('sharks.lsp.config').doc_signature()")
-  -- vim.keymap.set("i", "<C-y><C-y>", require('sharks.lsp.config').doc_signature)
 
   -- Diagnostic
   vim.cmd([[

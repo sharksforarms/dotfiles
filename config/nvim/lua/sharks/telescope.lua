@@ -89,7 +89,7 @@ function M.find_files()
 
       return true
     end,
-    file_ignore_patterns = { "/build/" },
+    file_ignore_patterns = { "/build/", "doc/assets/mermaid" },
   })
   require("telescope.builtin").find_files(opts)
 end

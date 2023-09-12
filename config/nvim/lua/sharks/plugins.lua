@@ -36,31 +36,41 @@ return require("packer").startup({
       "phaazon/hop.nvim",
       config = function()
         require("hop").setup()
-      end
+      end,
     })
     use("tpope/vim-dispatch")
     use("tpope/vim-fugitive")
-    use {
-      'TimUntersberger/neogit',
+    use({
+      "TimUntersberger/neogit",
       requires = {
-        'nvim-lua/plenary.nvim',
-        'sindrets/diffview.nvim'
+        "nvim-lua/plenary.nvim",
+        "sindrets/diffview.nvim",
       },
       config = function()
         require("neogit").setup({
-          disable_commit_confirmation=true,
-          disable_builtin_notifications=true,
+          disable_commit_confirmation = true,
+          disable_builtin_notifications = true,
           integrations = {
-            diffview = true
+            diffview = true,
           },
           sections = {
             untracked = {
-              folded = true
-            }
+              folded = true,
+            },
           },
         })
-      end
-    }
+
+        -- set colorcolumn to 50 and 72 to represent max title and body
+        local augroup = vim.api.nvim_create_augroup("NeogitCC", {})
+        vim.api.nvim_create_autocmd({ "FileType" }, {
+          group = augroup,
+          pattern = "NeogitCommitMessage",
+          callback = function()
+            vim.wo.colorcolumn = "50,72"
+          end,
+        })
+      end,
+    })
     use("airblade/vim-gitgutter")
     use("rhysd/git-messenger.vim")
     use({
@@ -100,10 +110,10 @@ return require("packer").startup({
         vim.cmd([[ call mkdp#util#install()" ]])
       end,
       config = function()
-        vim.cmd [[
+        vim.cmd([[
           "let $NVIM_MKDP_LOG_FILE = expand('~/mkdp-log.log')
           "let $NVIM_MKDP_LOG_LEVEL = 'debug'
-        ]]
+        ]])
       end,
     })
     use("hrsh7th/nvim-cmp")
@@ -126,18 +136,18 @@ return require("packer").startup({
     use("nvim-treesitter/nvim-treesitter-textobjects")
     use("RRethy/nvim-treesitter-textsubjects")
     use("romgrk/nvim-treesitter-context")
-    use {
+    use({
       "SmiteshP/nvim-navic",
-      requires = "neovim/nvim-lspconfig"
-    }
+      requires = "neovim/nvim-lspconfig",
+    })
     use("nvim-treesitter/playground")
     use("mizlan/iswap.nvim")
     use("lspcontainers/lspcontainers.nvim")
     use({
       "williamboman/mason.nvim",
-      config = function ()
-       require("mason").setup()
-      end
+      config = function()
+        require("mason").setup()
+      end,
     })
     use("williamboman/mason-lspconfig.nvim")
     use("neovim/nvim-lspconfig")
@@ -172,15 +182,19 @@ return require("packer").startup({
     use("p00f/clangd_extensions.nvim")
     use("simrat39/rust-tools.nvim")
     use({
-      "glepnir/lspsaga.nvim",
-      branch = "version_2.3",
+      "nvimdev/lspsaga.nvim",
+      after = "nvim-lspconfig",
+      -- config = function()
+      --   require("lspsaga").setup({})
+      -- end,
     })
     use("nvim-lua/lsp-status.nvim")
     use({
       "j-hui/fidget.nvim",
+      tag = "legacy", -- TODO update
       config = function()
         require("fidget").setup()
-      end
+      end,
     })
     use({
       "simrat39/symbols-outline.nvim",
@@ -197,11 +211,36 @@ return require("packer").startup({
     use("camilledejoye/nvim-lsp-selection-range")
     use("jose-elias-alvarez/null-ls.nvim")
     use({
-      'saecki/crates.nvim',
-      requires = { 'nvim-lua/plenary.nvim', 'jose-elias-alvarez/null-ls.nvim' },
+      "saecki/crates.nvim",
+      requires = { "nvim-lua/plenary.nvim", "jose-elias-alvarez/null-ls.nvim" },
     })
-
-    use {
+    use({
+      "jbyuki/venn.nvim",
+      config = function() 
+        -- venn.nvim: enable or disable keymappings
+        function _G.Toggle_venn()
+          local venn_enabled = vim.inspect(vim.b.venn_enabled)
+          if venn_enabled == "nil" then
+            vim.b.venn_enabled = true
+            vim.cmd[[setlocal ve=all]]
+            -- draw a line on HJKL keystokes
+            vim.api.nvim_buf_set_keymap(0, "n", "J", "<C-v>j:VBox<CR>", {noremap = true})
+            vim.api.nvim_buf_set_keymap(0, "n", "K", "<C-v>k:VBox<CR>", {noremap = true})
+            vim.api.nvim_buf_set_keymap(0, "n", "L", "<C-v>l:VBox<CR>", {noremap = true})
+            vim.api.nvim_buf_set_keymap(0, "n", "H", "<C-v>h:VBox<CR>", {noremap = true})
+            -- draw a box by pressing "f" with visual selection
+            vim.api.nvim_buf_set_keymap(0, "v", "f", ":VBox<CR>", {noremap = true})
+          else
+            vim.cmd[[setlocal ve=]]
+            vim.cmd[[mapclear <buffer>]]
+            vim.b.venn_enabled = nil
+          end
+        end
+        -- toggle keymappings for venn using <leader>v
+        vim.api.nvim_set_keymap('n', '<leader>v', ":lua Toggle_venn()<CR>", { noremap = true})
+      end,
+    })
+    use({
       "NTBBloodbath/rest.nvim",
       requires = { "nvim-lua/plenary.nvim" },
       config = function()
@@ -227,20 +266,18 @@ return require("packer").startup({
             -- executables or functions for formatting response body [optional]
             -- set them to nil if you want to disable them
             formatters = {
-              json = "jq",
-              html = function(body)
-                return vim.fn.system({"tidy", "-i", "-q", "-"}, body)
-              end
+              json = nil,
+              html = nil,
             },
           },
           -- Jump to request line on run
           jump_to_request = false,
-          env_file = '.env',
+          env_file = ".env",
           custom_dynamic_variables = {},
           yank_dry_run = true,
         })
-      end
-    }
+      end,
+    })
 
     -- line completion
     use("tjdevries/complextras.nvim")
@@ -278,17 +315,17 @@ return require("packer").startup({
       -- requires https://github.com/neovim/neovim/pull/15723
       "theHamsta/nvim-semantic-tokens",
       config = function()
-        require("nvim-semantic-tokens").setup {
+        require("nvim-semantic-tokens").setup({
           preset = "default",
           -- highlighters is a list of modules following the interface of nvim-semantic-tokens.table-highlighter or
           -- function with the signature: highlight_token(ctx, token, highlight) where
           --        ctx (as defined in :h lsp-handler)
           --        token  (as defined in :h vim.lsp.semantic_tokens.on_full())
           --        highlight (a helper function that you can call (also multiple times) with the determined highlight group(s) as the only parameter)
-          highlighters = { require 'nvim-semantic-tokens.table-highlighter'}
-        }
+          highlighters = { require("nvim-semantic-tokens.table-highlighter") },
+        })
 
-        local semantic_tokens = require'nvim-semantic-tokens.table-highlighter'
+        local semantic_tokens = require("nvim-semantic-tokens.table-highlighter")
         semantic_tokens.modifiers_map["unsafe"] = {
           ["function"] = "Identifier",
           keyword = "Identifier",
@@ -302,11 +339,11 @@ return require("packer").startup({
       "yioneko/nvim-yati",
       requires = "nvim-treesitter/nvim-treesitter",
       ft = { "python" },
-      config = function ()
-        require("nvim-treesitter.configs").setup {
+      config = function()
+        require("nvim-treesitter.configs").setup({
           yati = { enable = false },
-        }
-      end
+        })
+      end,
     })
     use("Pocco81/DAPInstall.nvim")
     use("szw/vim-maximizer")
