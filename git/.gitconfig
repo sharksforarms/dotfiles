@@ -1,17 +1,25 @@
 [user]
-    email = eet6646@gmail.com
+	email = eet6646@gmail.com
     name = Emmanuel Thompson
 [core]
     editor = nvim
+	excludesfile = /home/ethompson/.gitignore
 [merge]
     tool = meld
 [init]
     defaultBranch = main
 [pull]
     rebase = true
-
+[branch]
+    sort = committerdate
 [includeIf "gitdir:~/src/fastly/"]
     path = ~/.gitconfig-work
 [gui]
 	fontui = -family \"DejaVu Sans\" -size 12 -weight normal -slant roman -underline 0 -overstrike 0
 	fontdiff = -family \"DejaVu Sans Mono\" -size 12 -weight normal -slant roman -underline 0 -overstrike 0
+[alias]
+	sbranch = for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
+    sms = submodule status --recursive
+    smu = submodule update --init --recursive
+    smsync = submodule sync --recursive
+    smd = submodule deinit --all

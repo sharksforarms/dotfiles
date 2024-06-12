@@ -47,7 +47,7 @@ alias cargoupdate="cargo install --list | egrep '^[a-z0-9_-]+ v[0-9.]+:$' | cut 
 alias scp_noreuse="scp -o \"ControlPath none\""
 
 gch() {
-    git checkout "$(git branch --all | fzf| tr -d '[:space:]')"
+    git checkout "$(git branch --all | fzf | tr -d '[:space:]')"
 }
 
 function debug_valgrind() {

@@ -51,3 +51,4 @@ export PATH=$PATH:$HOME/go/bin/
 export PATH=$PATH:$HOME/.local/bin
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+eval "$(atuin init zsh --disable-up-arrow)"

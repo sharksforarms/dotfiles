@@ -20,6 +20,7 @@ vim.cmd([[
   "hi! link LineNr NonText
   hi! TabLineSel guibg=#77d5f0
   hi! Visual guifg=#23272e guibg=#77d5f0
+  hi! link LspInlayHint Comment
 
   " Remove highlight from hover markdown menu, this is linked to `Visual` highlight
   " otherwise

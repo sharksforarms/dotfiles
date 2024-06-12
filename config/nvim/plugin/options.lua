@@ -69,7 +69,7 @@ opt.belloff = "all"
 -- command window height
 opt.cmdheight = 1
 -- toggle paste mode
-opt.pastetoggle = "<F10>"
+-- opt.pastetoggle = "<F10>"
 -- show whitespace
 opt.list = true
 opt.listchars = {

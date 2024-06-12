@@ -43,14 +43,21 @@ function M.setup()
       },
 
       extensions = {
-        fzy_native = {
-          override_generic_sorter = false,
-          override_file_sorter = true,
-        },
-
-        fzf_writer = {
-          use_highlighter = false,
-          minimum_grep_characters = 4,
+        -- fzy_native = {
+        --   override_generic_sorter = false,
+        --   override_file_sorter = true,
+        -- },
+        --
+        -- fzf_writer = {
+        --   use_highlighter = false,
+        --   minimum_grep_characters = 4,
+        -- },
+        fzf = {
+          fuzzy = true,                    -- false will only do exact matching
+          override_generic_sorter = true,  -- override the generic sorter
+          override_file_sorter = true,     -- override the file sorter
+          case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+                                           -- the default case_mode is "smart_case"
         },
 
         frecency = {
@@ -64,14 +71,17 @@ function M.setup()
   })
 
   telescope.load_extension("frecency")
-  telescope.load_extension("fzy_native")
+  telescope.load_extension('fzf')
   telescope.load_extension("octo")
   telescope.load_extension("dap")
   telescope.load_extension("ui-select")
 end
 
 function M.search()
-  require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ")})
+  require('telescope.builtin').grep_string({
+    search = vim.fn.input("Grep For > "),
+    file_ignore_patterns = { "mermaid.min.js" },
+  })
 end
 
 function M.find_files()
@@ -142,11 +152,36 @@ function M.find_all_files()
 end
 
 function M.h2o_configs(opts)
-  local opts = require("telescope.themes").get_dropdown({
-    find_command = { "rg", "--no-ignore", "--files", "--hidden", "--iglob", "h2o.conf", "--iglob", "h2o-quic.conf" },
-    file_ignore_patterns = { ".git", "plugged/" },
-    default_text = 'tmp',
-  })
+
+  local repo_name = vim.system(
+    {
+      "basename",
+      vim.system({"git", "rev-parse", "--show-toplevel"}, { text = true }):wait().stdout
+    }, { text = true }):wait().stdout
+
+  repo_name = string.gsub(repo_name, "\n", "")
+
+  local opts = {}
+  if repo_name == "h2o" then
+    opts = require("telescope.themes").get_dropdown({
+      find_command = { "rg", "--no-ignore", "--files", "--hidden", "--iglob", "h2o.conf", "--iglob", "h2o-quic.conf" },
+      file_ignore_patterns = { ".git", "plugged/" },
+      prompt_title = repo_name,
+      default_text = 'tmp',
+    })
+  elseif repo_name == "origind" then
+    opts = require("telescope.themes").get_dropdown({
+      file_ignore_patterns = { ".git", "plugged/" },
+      prompt_title = repo_name,
+      default_text = 'origind.toml',
+    })
+  elseif repo_name == "configly-data" then
+    opts = require("telescope.themes").get_dropdown({
+      file_ignore_patterns = { ".git", "plugged/" },
+      prompt_title = repo_name,
+      default_text = 'h2o_rc_autodeploy_',
+    })
+  end
 
   require("telescope.builtin").find_files(opts)
 end

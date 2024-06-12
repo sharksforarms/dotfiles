@@ -53,6 +53,13 @@ M.init = function()
   init_keymaps()
 end
 
+M.format = function()
+  -- vim.lsp.buf.format()
+  require("conform").format({
+    lsp_fallback = "always",
+  })
+end
+
 -- Code actions
 M.code_action = function()
   -- vim.cmd("Lspsaga code_action")
@@ -106,26 +113,18 @@ end
 M.doc_hover = function()
   --vim.lsp.buf.hover()
   if vim.bo.filetype == "rust" then
-    require("rust-tools.hover_actions").hover_actions()
+    vim.cmd.RustLsp { 'hover', 'actions' }
   else
     vim.cmd("Lspsaga hover_doc")
   end
 end
 
+M.toggle_inlay_hints = function()
+  vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
+end
+
 -- Diagnostic
 M.diagnostic_preview = function()
-  -- if we have documentation hover, don't show diagnostics
-  if require("rust-tools.hover_actions")._state.winnr ~= nil then
-    if vim.api.nvim_win_is_valid(require("rust-tools.hover_actions")._state.winnr) then
-      return
-    end
-  end
-
-  -- if we have documentation hover, don't show diagnostics
-  -- if require("lspsaga.hover").is_open() then
-  --   return
-  -- end
-  --
   vim.diagnostic.open_float(nil, { focusable = false })
   -- require('lspsaga.diagnostic').show_line_diagnostics()
 end
@@ -147,7 +146,7 @@ end
 
 function init_keymaps()
   -- Formatting
-  vim.keymap.set("n", "<leader>=", vim.lsp.buf.format)
+  vim.keymap.set("n", "<leader>=", require('sharks.lsp.config').format)
 
 
   -- Code action
@@ -168,6 +167,7 @@ function init_keymaps()
 
   -- Docs
   vim.keymap.set("n", "K", require('sharks.lsp.config').doc_hover)
+  vim.keymap.set("n", "<leader>hh", require('sharks.lsp.config').toggle_inlay_hints)
 
   -- Diagnostic
   vim.cmd([[

@@ -122,7 +122,7 @@ vmap <silent> <C-_>   :lua require("Comment.api").toggle.linewise(vim.fn.visualm
 nnoremap <Leader>pf :Files<CR>
 
 " nerdtree
-map <Leader>n <plug>NERDTreeTabsToggle<CR>
+map <Leader>n <cmd>NERDTreeToggle<CR>
 
 " FuGITive
 " nmap <leader>gs :tab Neogit<CR>

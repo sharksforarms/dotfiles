@@ -8,9 +8,10 @@
 local M = {}
 
 M.setup = function()
+  require'sharks.statusline'.create_highlights()
   vim.g.statusline_signaturehelp = ""
   local cap_found = false
-  for _, client in ipairs(vim.lsp.buf_get_clients()) do
+  for _, client in ipairs(vim.lsp.get_clients()) do
     if client.supports_method("textDocument/signatureHelp") then
       cap_found = true
       break
@@ -167,7 +168,7 @@ local function vcs_status()
 end
 
 local function lsp_status()
-  if #vim.lsp.buf_get_clients() > 0 then
+  if #vim.lsp.get_clients() > 0 then
     local res = ""
     local errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
     if errors > 0 then

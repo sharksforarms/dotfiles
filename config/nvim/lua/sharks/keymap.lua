@@ -70,8 +70,8 @@ end)
 vim.keymap.set("n", "<leader>qw", function()
   vim.diagnostic.setqflist({
     open = true,
-    title = "Language Server (Warnings)",
-    severity = vim.diagnostic.severity.WARNING,
+    title = "Diagnostics",
+    severity = { min = vim.diagnostic.severity.HINT } ,
   })
 end)
 
@@ -87,7 +87,16 @@ vim.keymap.set("n", "<leader>tt", "<CMD>Trouble<CR>")
 vim.keymap.set("n", "mM", function()
   vim.cmd(':Man 2 ' .. vim.fn.input('Man 2 > '))
 end)
-vim.keymap.set("n", "<leader>cv", "<CMD>ClangdSwitchSourceHeaderVSplit<CR>")
+
+function open_header()
+  if vim.bo.filetype == "rust" then
+    vim.cmd.RustLsp('openCargo')
+  else
+    vim.cmd.ClangdSwitchSourceHeaderVSplit()
+  end
+
+end
+vim.keymap.set("n", "<leader>cv", open_header)
 
 -- General --
 -- clear highlights
@@ -97,6 +106,7 @@ vim.keymap.set("n", "<leader>ev", require('sharks.telescope').dotfiles)
 vim.keymap.set("n", "<leader>eV", require('sharks.telescope').dotfiles_grep)
 vim.keymap.set("n", "<leader>ej", require('sharks.telescope').notes)
 vim.keymap.set("n", "<leader>eJ", require('sharks.telescope').notes_grep)
+vim.keymap.set("n", "<leader>r", "<Cmd>Telescope frecency workspace=CWD<CR>")
 vim.keymap.set("n", "<leader>et", "<CMD>vsplit ~/TODO.md<CR>")
 vim.keymap.set("n", "<leader>en", "<CMD>vsplit ~/NOTES.md<CR>")
 -- move visual selection up/down
