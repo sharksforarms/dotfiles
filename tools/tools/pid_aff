@@ -1,0 +1,19 @@
+#!/bin/bash
+#set -eux
+
+if [ -z "$1" ]; then
+  echo "Usage: $0 <PID>"
+  exit 1
+fi
+
+pid=$1
+
+affinities=$(taskset -acp "$pid")
+threads=$(ps -o 'spid ucmd' -Tp "$pid")
+
+while IFS= read -r line; do
+        tid=$(echo "$line" | grep -oP "pid (\d+)" | sed 's/pid //g')
+        name=$(echo "$threads" | grep "$tid" | sed "s/\s*$tid //g")
+        echo "\"$name\":" "$line"
+done <<< "$affinities"
+

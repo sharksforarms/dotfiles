@@ -115,7 +115,7 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 -- select last inserted text
 vim.keymap.set("n", "gV", "`[v`]")
 -- previous tab
-vim.keymap.set("n", "gr", "gT")
+vim.keymap.set("n", "gr", "gT", { nowait = true })
 -- faster escape
 vim.keymap.set("i", "jk", "<ESC>")
 vim.keymap.set("i", "kj", "<ESC>")

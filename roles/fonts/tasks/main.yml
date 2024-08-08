@@ -12,7 +12,7 @@
 # TODO: Check checksum is different
 - name: Get Jetbrains fonts
   get_url:
-    url: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/JetBrainsMono.zip
+    url: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip
     dest: "{{ temp_dir.path }}/JetBrainsMono.zip"
   changed_when: false
 

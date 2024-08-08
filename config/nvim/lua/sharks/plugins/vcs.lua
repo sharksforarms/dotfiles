@@ -2,22 +2,26 @@ return {
   "tpope/vim-fugitive",
   "rhysd/git-messenger.vim",
   "airblade/vim-gitgutter",
-  "pwntester/octo.nvim",
   {
-    "ruifm/gitlinker.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
+    'pwntester/octo.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+      -- OR 'ibhagwan/fzf-lua',
+      'nvim-tree/nvim-web-devicons',
     },
-    config = function()
-      require("gitlinker").setup({
-        opts = {
-          remote = nil,
-          add_current_line_on_normal_mode = true,
-          print_url = true,
-        },
-        mappings = "<leader>gy",
-      })
-    end,
+    config = function ()
+      -- require"octo".setup()
+    end
+  },
+  {
+    "linrongbin16/gitlinker.nvim",
+    cmd = "GitLink",
+    opts = {},
+    keys = {
+      { "<leader>gy", "<cmd>GitLink<cr>", mode = { "n", "v" }, desc = "Yank git link" },
+      { "<leader>gY", "<cmd>GitLink!<cr>", mode = { "n", "v" }, desc = "Open git link" },
+    },
   },
   {
     "sindrets/diffview.nvim",

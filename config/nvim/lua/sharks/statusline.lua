@@ -225,9 +225,8 @@ local function get_file_name()
       file_name = vim.fn.fnamemodify(file_name, ":t")
     end
 
-    if vim.fn.exists("*WebDevIconsGetFileTypeSymbol") then
-      file_name = string.format("%s %s", vim.fn["WebDevIconsGetFileTypeSymbol"](file_name), file_name)
-    end
+    local icon = require("nvim-web-devicons").get_icon_by_filetype(vim.bo.filetype, { default = true })
+    file_name = string.format("%s %s", icon, file_name)
   end
 
   return file_name

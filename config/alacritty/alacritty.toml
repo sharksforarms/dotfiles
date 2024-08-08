@@ -26,14 +26,14 @@ background = "0x2b2d3a"
 foreground = "0xc5cdd9"
 
 [font]
-size = 11.0
+size = 12.0
 
 [font.glyph_offset]
 x = 0
 y = 0
 
 [font.normal]
-family = "JetBrainsMono Nerd Font Mono"
+family = "JetBrainsMonoNerdFontMono"
 style = "Regular"
 
 [font.offset]
